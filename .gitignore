@@ -1,5 +1,5 @@
 ## Directory-based project format
-.idea/*.xml
+.idea/
 
 ## File-based project format
 *.ipr
