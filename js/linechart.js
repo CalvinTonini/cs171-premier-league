@@ -1,7 +1,7 @@
 /**
  * Created by cni on 2016-04-14.
  */
-function lineChart() {
+function lineChart(data) {
     // SVG Drawing Area
     var margin = {top: 40, right: 40, bottom: 60, left: 60};
 
@@ -36,4 +36,11 @@ function lineChart() {
         .classed("axis", true);
     svg.append("path")
         .attr("id", "thepath");
+    // Actual Rendering
+    x.domain(d3.extent(filteredData, function (d) {
+        return d.YEAR;
+    }));
+    y.domain([0, d3.max(filteredData, function (d) {
+        return d[selection];
+    })]);
 }
