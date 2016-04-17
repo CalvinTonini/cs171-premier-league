@@ -14,24 +14,23 @@ queue()
         });
 
         intraseason.forEach(function (d) {
-            var keys = d3.keys(d);
-            for (var i = 0; i < keys.length; i++) {
-                if (!isNaN(+d[keys[i]])) {
-                    d[keys[i]] = +d[keys[i]];
-                }
-            }
+            stringsToNumber(d);
             d.Date = d3.time.format("%Y-%m-%d").parse(d.Date);
         });
 
         aggregate.forEach(function (d) {
-            var keys = d3.keys(d);
+            stringsToNumber(d);
+        });
+
+        function stringsToNumber (object) {
+            var keys = d3.keys(object);
             for (var i = 0; i < keys.length; i++) {
-                if (!isNaN(+d[keys[i]])) {
-                    d[keys[i]] = +d[keys[i]];
+                if (!isNaN(+object[keys[i]])) {
+                    object[keys[i]] = +object[keys[i]];
                 }
             }
-        });
-        
+        }
+
         console.log(matches);
         console.log(intraseason);
         console.log(aggregate);
