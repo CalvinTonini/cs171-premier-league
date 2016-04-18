@@ -91,14 +91,14 @@ queue()
                 }
             }
         }
-
+        lineChart(aggregate);
     });
 
 
 
 function init_intra(data) {
 
-    var teams_unique = []
+    var teams_unique = [];
 
     for (var i in data){
         teams_unique.push(data[i].key)
@@ -151,8 +151,7 @@ function init_intra(data) {
     //    .attr("transform", function(d) { return trans(d.values) } )
     //    .attr("fill", function(d) { return color(d.key); });
 
-};
-
+}
 function trans(values){
     var len = values.length;
     var right = x(values[len-1].Date);
@@ -160,3 +159,5 @@ function trans(values){
     return "translate("+ right + "," + left + ")"
 
 }
+
+
