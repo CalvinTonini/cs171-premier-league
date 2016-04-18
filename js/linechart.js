@@ -2,6 +2,7 @@
  * Created by cni on 2016-04-14.
  */
 function lineChart(data) {
+
     var selection = "rank";
 
     // wrangle
