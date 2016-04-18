@@ -31,10 +31,10 @@ queue()
             }
         }
 
-        console.log(matches);
-        console.log(intraseason);
-        console.log(aggregate);
-
+        // console.log(matches);
+        // console.log(intraseason);
+        // console.log(aggregate);
+        lineChart(aggregate);
     });
 
 
