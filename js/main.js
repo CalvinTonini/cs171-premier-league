@@ -12,7 +12,7 @@ var x = d3.time.scale()
 var y = d3.scale.linear()
     .range([height, 0]);
 
-var color = d3.scale.category10();
+var color = d3.scale.category20();
 
 var xAxis = d3.svg.axis()
     .scale(x)
@@ -23,17 +23,17 @@ var yAxis = d3.svg.axis()
     .orient("left");
 
 var line = d3.svg.line()
-    .interpolate("basis")
-    .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.cummulative_TotalPoints); });
+    .x(function(d) { return x(d.Date); })
+    .y(function(d) { return y(d.cummulative_TotalPoints); })
+    .interpolate("basis");
+//.interpolate("step-before")
+
 
 var svg = d3.select("#intra_season").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-var alldata = {}
 
 
 queue()
@@ -42,7 +42,6 @@ queue()
     .defer(d3.csv,"data/season_aggregate_stats.csv")
     .await(function(error, matches, intraseason,aggregate) {
 
-        //console.log(intraseason);
 
         intraseason.forEach(function(d) {
 
@@ -55,42 +54,70 @@ queue()
             d.Date = parseDate(d.Date)
 
 
+
         });
 
+        function checkSeason(value) {
+            return value.Season == "2014-2015";
+        }
 
-        init_intra(intraseason);
+        intraseason = intraseason.filter(checkSeason);
+
+
+        var data_nested  = d3.nest()
+            .key(function(d) {return d.Team;})
+            .sortKeys(d3.ascending)
+            .entries(intraseason);
+
+        init_intra(data_nested);
+
+        // Data Wrangling
+        matches.forEach(function (d) {
+            d[""] = +d[""];
+            d.FTAG = +d.FTAG;
+            d.FTHG = +d.FTHG;
+            d.Date = d3.time.format("%m/%d/%Y").parse(d.Date);
+        });
+
+        aggregate.forEach(function (d) {
+            stringsToNumber(d);
+        });
+
+        function stringsToNumber (object) {
+            var keys = d3.keys(object);
+            for (var i = 0; i < keys.length; i++) {
+                if (!isNaN(+object[keys[i]])) {
+                    object[keys[i]] = +object[keys[i]];
+                }
+            }
+        }
 
     });
 
 
 
-function init_intra(intraseason) {
+function init_intra(data) {
 
-    function checkSeason(value) {
-        return value.Season == "2014-2015";
+    var teams_unique = []
+
+    for (var i in data){
+        teams_unique.push(data[i].key)
     }
-    intraseason = intraseason.filter(checkSeason);
 
 
-    console.log(intraseason);
+    color.domain(teams_unique);
 
-    //color.domain(d3.keys(intraseason[0]).filter(function(key) { return key !== "date"; }));
+    var xmin = d3.min(data, function(d) { return d3.min(d.values, function(e){ return e.Date})});
 
-    //var cities = color.domain().map(function(name) {
-    //    return {
-    //        name: name,
-    //        values: intraseason.map(function(d) {
-    //            return {date: d.date, cummulative_TotalPoints: +d[name]};
-    //        })
-    //    };
-    //});
+    var xmax = d3.max(data, function(d) { return d3.max(d.values, function(e){ return e.Date})});
 
-    x.domain(d3.extent(intraseason, function(d) { return d.Date; }));
+    var ymax = d3.max(data, function(d) { return d3.max(d.values, function(e){ return e.cummulative_TotalPoints})});
+
+
+
+    x.domain([xmin,xmax]);
+    y.domain([0,ymax]);
     //
-
-    console.log(d3.extent(intraseason, function(d) { return d.Date; }));
-
-    y.domain(d3.extent(intraseason, function(d) { return d.cummulative_TotalPoints; }));
 
     svg.append("g")
         .attr("class", "x axis")
@@ -101,30 +128,35 @@ function init_intra(intraseason) {
         .attr("class", "y axis")
         .call(yAxis)
         .append("text")
-        .attr("transform", "rotate(-90)")
+        .attr("transform", "translate("+(margin.left+30)+",0)")
         .attr("y", 6)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
-        .text("cummulative_TotalPoints");
+        .text("TotalPoints");
 
-    var city = svg.selectAll(".team")
-        .data(intraseason)
+    var team = svg.selectAll(".team")
+        .data(data)
         .enter().append("g")
         .attr("class", "team");
-    //
-    //city.append("path")
-    //    .attr("class", "line")
-    //    .attr("d", function(d) { return line(d.values); })
-    //    .style("stroke", function(d) { return color(d.name); });
-    //
-    //city.append("text")
-    //    .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
-    //    .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.cummulative_TotalPoints) + ")"; })
-    //    .attr("x", 3)
-    //    .attr("dy", ".35em")
-    //    .text(function(d) { return d.name; });
+
+    team
+        .append("path")
+        .attr("class", "line")
+        .attr("d", function(d) { return line(d.values);})
+        .style("stroke", function(d) { return color(d.key); });
+
+
+    //team.append("text")
+    //    .text(function(d) { return d.key; })
+    //    .attr("transform", function(d) { return trans(d.values) } )
+    //    .attr("fill", function(d) { return color(d.key); });
 
 };
 
+function trans(values){
+    var len = values.length;
+    var right = x(values[len-1].Date);
+    var left = y(values[len-1].cummulative_TotalPoints);
+    return "translate("+ right + "," + left + ")"
 
-
+}
