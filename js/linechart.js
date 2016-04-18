@@ -17,16 +17,15 @@ function lineChart(data) {
     // SVG Drawing Area
     var margin = {top: 40, right: 40, bottom: 60, left: 60};
 
-    var width = 600 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+    var width = 700 - margin.left - margin.right,
+        height = 600 - margin.top - margin.bottom;
 
     var svg = d3.select("#linechart").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    // Date parser (https://github.com/mbostock/d3/wiki/Time-Formatting)
-    var formatDate = d3.time.format("%Y");
+
     // Scales
     var x = d3.time.scale.utc()
         .range([0, width]);
@@ -50,11 +49,15 @@ function lineChart(data) {
     x.domain(d3.extent(data, function (d) {
         return d["seasonDate"];
     }));
-    y.domain([0, d3.max(data, function (d) {
+    y.domain([d3.max(data, function (d) {
+        return d[selection];
+    }), d3.min(data, function (d) {
         return d[selection];
     })]);
-
-    var color = d3.scale.category10();
+    // Call axis functions with the new domain
+    svg.select(".x-axis").call(xAxis);
+    svg.select(".y-axis").call(yAxis);
+    var color = d3.scale.category20();
 
     var line = d3.svg.line()
         .x(function (d) { return x(d["seasonDate"]); })
