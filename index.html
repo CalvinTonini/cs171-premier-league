@@ -22,6 +22,23 @@
       </div>
       <div class = "row">
           <div class = "col-xs-4">
+              <div class="form-group">
+                  <br>
+                  <label for="attribute">Metric:</label>
+                  <select class="form-control" id="attribute"  onchange="updatevars()">
+                      <option value = "cummulative_TotalPoints">Total Points</option>
+                      <option value ="cummulative_GoalsFor">Total Goals Scored</option>
+                      <option value = "cummulative_GoalsAllowed">Total Goals Allowed</option>
+                      <option value = "cummulative_GoalDifferential">Total Goal Differential</option>
+                      <option value = "cummulative_TotalFouls">Total Fouls</option>
+                  </select>
+                  <!--<label for="season"> Season:</label>-->
+                  <!--<select class="form-control" id="season"  onchange="updateChoropleth()">-->
+                      <!--<option value = "cummulative_TotalPoints">Total Points</option>-->
+                      <!--<option value ="cummulatie_GoalsFor">Total Goals Scored</option>-->
+                      <!--<option value = "cummulative_TotalFouls">Total Fouls</option>-->
+                  <!--</select>-->
+              </div>
               <div id="intra_season"></div>
           </div>
           <div class = "col-xs-8">
@@ -36,6 +53,9 @@
   <script src="js/bootstrap.min.js"></script>
   <script src="js/d3.min.js"></script>
   <script src="js/queue.min.js"></script>
+  <script src="js/linechart.js"></script>
+  <script src="js/line.js"></script>
+  <!--<script src="js/stackedarea.js"></script>-->
   <script src="js/main.js"></script>
 </body>
 </html>
