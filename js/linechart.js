@@ -44,6 +44,7 @@ function lineChart(data) {
         .classed("axis", true)
         .attr("transform", "translate(0, " + height + ")");
     svg.append("g")
+        .text("Mouseover Team")
         .classed("y-axis", true)
         .classed("axis", true);
     svg.append("text")
