@@ -14,6 +14,16 @@
       <div class = "row">
           <div class = "col-xs-4">
               <div id="map"></div>
+              <input type="range" id="myRange" min="1993" max="2016" list="tickmarks" onchange="updateMap()">
+              <datalist id=tickmarks>
+                  <option>1993</option>
+                  <option>1997</option>
+                  <option>2001</option>
+                  <option>2005</option>
+                  <option>2009</option>
+                  <option>2013</option>
+                  <option>2016</option>
+              </datalist>
           </div>
           <div class = "col-xs-8">
               <div id="across_season">
@@ -49,6 +59,7 @@
       <div id="linechart"></div>
   </div>
 
+  <script src="https://d3js.org/topojson.v1.min.js"></script>
   <script src="js/jquery.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/d3.min.js"></script>
@@ -57,5 +68,6 @@
   <script src="js/line.js"></script>
   <!--<script src="js/stackedarea.js"></script>-->
   <script src="js/main.js"></script>
+  <!--<script src="js/mbostockUK.js"></script>-->
 </body>
 </html>

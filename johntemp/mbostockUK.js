@@ -1,20 +1,20 @@
-var width = 380,
-    height = 500;
+var widthy = 380,
+    heighty = 500;
 
 var projection = d3.geo.albers()
     .center([2.5, 54.0])
     .rotate([4.4, 0])
     .parallels([50, 60])
     .scale(600 * 5)
-    .translate([width / 2, height / 2]);
+    .translate([widthy / 2, heighty / 2]);
 
 var path = d3.geo.path()
     .projection(projection)
     .pointRadius(2);
 
-var svg = d3.select("#map").append("svg")
-    .attr("width", width)
-    .attr("height", height);
+var svg1 = d3.select("#map").append("svg")
+    .attr("width", widthy)
+    .attr("height", heighty);
 
 var mapData;
 
@@ -38,31 +38,39 @@ function updateMap(){
         };
 
 
-    svg.selectAll(".subunit")
-        .data(subunits.features)
-        .enter().append("path")
+    var subunit1 = svg.selectAll(".subunit")
+        .data(subunits.features);
+
+    subunit1
+        .enter().append("path");
+
+    subunit1
         .attr("class", function(d) { return "subunit " + d.id; })
         .attr("d", path);
 
-    svg.append("path")
-        .datum(topojson.mesh(mapData, mapData.objects.subunits, function(a, b) { return a !== b && a.id !== "IRL"; }))
-        .attr("d", path)
-        .attr("class", "subunit-boundary");
+    //svg1.append("path")
+    //    .datum(topojson.mesh(mapData, mapData.objects.subunits, function(a, b) { return a !== b && a.id !== "IRL"; }))
+    //    .attr("d", path)
+    //    .attr("class", "subunit-boundary");
+    //
+    //svg1.append("path")
+    //    .datum(topojson.mesh(mapData, mapData.objects.subunits, function(a, b) { return a === b && a.id === "IRL"; }))
+    //    .attr("d", path)
+    //    .attr("class", "subunit-boundary IRL");
 
-    svg.append("path")
-        .datum(topojson.mesh(mapData, mapData.objects.subunits, function(a, b) { return a === b && a.id === "IRL"; }))
-        .attr("d", path)
-        .attr("class", "subunit-boundary IRL");
+    var subunit2 = svg1.selectAll(".subunit-label")
+        .data(subunits.features);
 
-    svg.selectAll(".subunit-label")
-        .data(subunits.features)
-        .enter().append("text")
+    subunit2
+        .enter().append("text");
+
+    subunit2
         .attr("class", function(d) { return "subunit-label " + d.id; })
         .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
         .attr("dy", ".35em")
         .text(function(d) { return d.properties.name; });
 
-    var labels = svg.selectAll(".place-label")
+    var labels = svg1.selectAll(".place-label")
         .data(places.features);
 
     labels
@@ -77,7 +85,7 @@ function updateMap(){
         .text(function(d) { return d.properties.club; });
 
 
-    var dots = svg.selectAll("circle")
+    var dots = svg1.selectAll("circle")
         .data(places.features);
 
     dots.enter()
