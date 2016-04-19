@@ -21,7 +21,7 @@ function lineChart(data) {
     var width = 700 - margin.left - margin.right,
         height = 600 - margin.top - margin.bottom;
 
-    var svg = d3.select("#linechart").append("svg")
+    var svg = d3.select("#across_season").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
