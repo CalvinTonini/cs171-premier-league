@@ -44,8 +44,11 @@ function lineChart(data) {
         .classed("axis", true)
         .attr("transform", "translate(0, " + height + ")");
     svg.append("g")
+        .text("Mouseover Team")
         .classed("y-axis", true)
         .classed("axis", true);
+    svg.append("text")
+        .classed("team-name", true);
     // Actual Rendering
     x.domain(d3.extent(data, function (d) {
         return d["seasonDate"];
@@ -68,16 +71,26 @@ function lineChart(data) {
         .data(nest)
         .enter().append("g")
         .attr("class", "team");
-
     teams.append("path")
         .attr({
             class: "line",
-            opacity: 1,
+            opacity: 0.4,
             d: function (d) {
                 return line(d.values);
             }
         })
         .style("stroke", function(d) {
             return color(d.key);
-        });
+        })
+        .on("mouseover", function (d) {
+            d3.select(this).style("opacity", 1);
+            d3.select(this).style("stroke-width", 5);
+            d3.select(".team-name").html(d["Team"]);
+        })
+        .on("mouseout", function (d) {
+            d3.select(this).style("opacity", 0.4);
+            d3.select(this).style("stroke-width", 1);
+        })
+
+
 }
