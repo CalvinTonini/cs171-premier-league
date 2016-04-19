@@ -46,12 +46,25 @@
               </div>
           </div>
       </div>
+      <form class="form-inline">
+          <div class="form-group">
+              <label for="attribute-type">Data Type</label>
+              <select class="form-control" id="attribute-type" onchange="updateVisualization()">
+                  <option value="GOALS">Goals</option>
+                  <option value="AVERAGE_GOALS">Average goals</option>
+                  <option value="MATCHES">Matches</option>
+                  <option value="TEAMS">Teams</option>
+                  <option value="AVERAGE_ATTENDANCE">Average Attendance</option>
+              </select>
+          </div>
+      </form>
       <div id="linechart"></div>
   </div>
 
   <script src="js/jquery.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/d3.min.js"></script>
+  <script src="js/d3.tip.js"></script>
   <script src="js/queue.min.js"></script>
   <script src="js/linechart.js"></script>
   <script src="js/line.js"></script>
