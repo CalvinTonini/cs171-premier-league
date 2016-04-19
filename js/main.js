@@ -62,7 +62,6 @@ function createvis(){
 
 function updatevars(){
 
-    console.log("asdfs");
     intraseason_chart.wrangleData();
 
 }
