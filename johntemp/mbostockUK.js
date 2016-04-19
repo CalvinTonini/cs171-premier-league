@@ -8,9 +8,6 @@ var projection = d3.geo.albers()
     .scale(600 * 5)
     .translate([width / 2, height / 2]);
 
-//console.log(transformation([-4.629,55.458]));
-//console.log(untransform([5868,5064]));
-
 var path = d3.geo.path()
     .projection(projection)
     .pointRadius(2);
@@ -20,57 +17,25 @@ var svg = d3.select("#map").append("svg")
     .attr("height", height);
 
 var mapData;
-var premData;
 
-queue()
-    .defer(d3.json, "johntemp/tsconfig.json")
-    .defer(d3.csv, "johntemp/currentprem.csv")
-    .await(function(error, mapJson, premierDataCsv){
+d3.json("tsconfig.json", function(error, jsonData) {
+    mapData = jsonData;
 
-        // --> PROCESS DATA
-        mapData = mapJson;
-        premData = premierDataCsv;
-
-        // Update map
-        updateMap();
-    });
+    // Update map
+    updateMap();
+});
 
 function updateMap(){
+    var dats = mapData;
+    var selected = +document.getElementById("myRange").value;
+    console.log(selected);
+
     var subunits = topojson.feature(mapData, mapData.objects.subunits),
         places = {
             type: "FeatureCollection",
-            features: topojson.feature(mapData, mapData.objects.places).features
-                .filter(function(d){ return d.properties.seasons.includes(2014); })
-    };
-
-    //var place3 = {
-    //    type: "FeatureCollection",
-    //    features: places.features.filter(function(d){ return d.properties.seasons.includes(2016); })
-    //};
-
-    //console.log(place3);
-
-    var teamDataBySeason = [];
-    premData.forEach(function(d){
-        // Convert numeric values to 'numbers'
-        teamDataBySeason.push({
-            type: "Feature",
-            geometry:{
-                type: "Point",
-                coordinates: [+d.lon, +d.lat]
-            },
-            properties: {name: d.club}
-        });
-    });
-
-    var place2 = {
-        type:"FeatureCollection",
-        features: teamDataBySeason
-    };
-
-    console.log(places);
-    console.log(places.features);
-    console.log(place2.features);
+            features: topojson.feature(dats, dats.objects.places).features
+                .filter(function(d){ return d.properties.seasons.includes(selected); })
+        };
 
 
     svg.selectAll(".subunit")
@@ -97,33 +62,34 @@ function updateMap(){
         .attr("dy", ".35em")
         .text(function(d) { return d.properties.name; });
 
-    svg.append("path")
-        .datum(places)
-        .attr("d", path)
-        .attr("class", "place");
+    var labels = svg.selectAll(".place-label")
+        .data(places.features);
 
-    svg.selectAll(".place-label")
-        .data(places.features)
-        //.data(teamDataBySeason)
-        .enter().append("text")
+    labels
+        .enter().append("text");
+
+    labels
         .attr("class", "place-label")
         .attr("transform", function(d) { return "translate(" + projection(d.geometry.coordinates) + ")"; })
         .attr("x", function(d) { return d.geometry.coordinates[0] > -1 ? 6 : -6; })
         .attr("dy", ".35em")
         .style("text-anchor", function(d) { return d.geometry.coordinates[0] > -1 ? "start" : "end"; })
         .text(function(d) { return d.properties.club; });
-        //.text("test");
 
 
+    var dots = svg.selectAll("circle")
+        .data(places.features);
 
-}
+    dots.enter()
+        .append("circle");
 
-function transformation(thing) {
-    return [(thing[0]+13.69131425699993)/0.001546403012701271,
-        (thing[1]-49.90961334800009)/0.001093936704870480];
-}
+    dots
+        .attr("class","place")
+        .attr("fill","black")
+        .attr("r",2)
+        .attr("cx", function(d){ return projection(d.geometry.coordinates)[0];})
+        .attr("cy", function(d){ return projection(d.geometry.coordinates)[1];});
 
-function untransform(thing) {
-    return [(thing[0]*0.001546403012701271)-13.69131425699993,
-        (thing[1]*0.001093936704870480)+49.90961334800009];
+    labels.exit().remove();
+    dots.exit().remove();
 }
