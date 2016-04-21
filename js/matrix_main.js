@@ -28,7 +28,7 @@ svg.call(tipmatrix);
 var Season_selection = "2014-2015";
 
 
-d3.csv("Cs_171_newMatrix/matchesDates.csv", function(d) {
+d3.csv("data/matchesDates.csv", function(d) {
 
     return {
         Season: d.Season,
@@ -123,7 +123,7 @@ d3.csv("Cs_171_newMatrix/matchesDates.csv", function(d) {
         placeholder ={
             AwayTeam: data[i].HomeTeam, FTAG:0, FTHG:0, FTR:"Na", HomeTeam: data[i].HomeTeam, Season: Season_selection};
 
-        console.log(placeholder);
+        //console.log(placeholder);
         if (i == 0 || (i % 21 == 0) ) {
             data.splice(i, 0, placeholder);
 
@@ -230,7 +230,7 @@ d3.csv("Cs_171_newMatrix/matchesDates.csv", function(d) {
         {
             return d.FTHG + "-" +d.FTAG
         } })
-        .on('mouseover', tipmatrix.show)
+        .on('mouseover',console.log("HELLO"))
         .on('mouseout', tipmatrix.hide);
 
     console.log(nodes);
