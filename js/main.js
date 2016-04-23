@@ -71,7 +71,7 @@ queue()
 
 function createvis(){
 
-    lineChart(aggregate);
+    interseason_chart = new lineChart("linechart", aggregate);
 
     intraseason_chart = new LineChart("intra_season",intraseason);
     updateMap();

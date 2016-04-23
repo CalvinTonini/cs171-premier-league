@@ -1,74 +1,93 @@
 /**
  * Created by cni on 2016-04-14.
  */
-function lineChart(data) {
 
-    var selection = "rank";
+lineChart = function(_parentElement, _data) {
+    this.parentElement = _parentElement;
+    this.data = _data;
+    this.initVis();
+};
 
-    // wrangle
-    data.forEach(function (d) {
+lineChart.prototype.initVis = function () {
+    var vis = this;
+    vis.margin = {
+        top: 40,
+        right: 40,
+        bottom: 60,
+        left: 60
+    };
+
+    vis.width = 700 - vis.margin.left - vis.margin.right;
+    vis.height = 600 - vis.margin.top - vis.margin.bottom;
+
+    vis.svg = d3.select("#" + vis.parentElement).append("svg")
+        .attr("width", vis.width + vis.margin.left + vis.margin.right)
+        .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
+
+    vis.x = d3.time.scale.utc()
+        .range([0, vis.width]);
+    vis.y = d3.scale.linear()
+        .range([vis.height, 0]);
+    vis.xAxis = d3.svg.axis()
+        .scale(vis.x)
+        .orient("bottom");
+    vis.yAxis = d3.svg.axis()
+        .scale(vis.y)
+        .orient("left");
+
+    vis.svg.append("g")
+        .attr("class", "x-axis axis")
+        .attr("transform", "translate(0," + vis.height + ")");
+
+    vis.svg.append("g")
+        .attr("class", "y-axis axis");
+
+    vis.svg.append("text")
+        .classed("team-name", true);
+
+    vis.wrangleData();
+};
+
+lineChart.prototype.wrangleData = function(){
+    var vis = this;
+
+    // In the first step no data wrangling/filtering needed
+    vis.data.forEach(function (d) {
         d["seasonDate"] = d3.time.format("%Y-%Y").parse(d["Season"]);
     });
-    var nest = d3.nest()
+    vis.nest = d3.nest()
         .key(function (d) {
             return d["Team"];
         })
-        .entries(data);
+        .entries(vis.data);
 
-    // SVG Drawing Area
-    var margin = {top: 40, right: 40, bottom: 60, left: 60};
+    // Update the visualization
+    vis.updateVis();
+};
 
-    var width = 700 - margin.left - margin.right,
-        height = 600 - margin.top - margin.bottom;
+lineChart.prototype.updateVis = function () {
+    var vis = this;
+    var selection = "rank";
 
-    var svg = d3.select("#across_season").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    // Scales
-    var x = d3.time.scale.utc()
-        .range([0, width]);
-    var y = d3.scale.linear()
-        .range([height, 0]);
-    // Axis
-    var xAxis = d3.svg.axis()
-        .scale(x)
-        .orient("bottom");
-    var yAxis = d3.svg.axis()
-        .scale(y)
-        .orient("left");
-    svg.append("g")
-        .classed("x-axis", true)
-        .classed("axis", true)
-        .attr("transform", "translate(0, " + height + ")");
-    svg.append("g")
-        .text("Mouseover Team")
-        .classed("y-axis", true)
-        .classed("axis", true);
-    svg.append("text")
-        .classed("team-name", true);
-    // Actual Rendering
-    x.domain(d3.extent(data, function (d) {
+    vis.x.domain(d3.extent(vis.data, function (d) {
         return d["seasonDate"];
     }));
-    y.domain([d3.max(data, function (d) {
+    vis.y.domain([d3.max(vis.data, function (d) {
         return d[selection];
-    }), d3.min(data, function (d) {
+    }), d3.min(vis.data, function (d) {
         return d[selection];
     })]);
-    // Call axis functions with the new domain
-    svg.select(".x-axis").call(xAxis);
-    svg.select(".y-axis").call(yAxis);
+    
     var color = d3.scale.category20();
 
     var line = d3.svg.line()
-        .x(function (d) { return x(d["seasonDate"]); })
-        .y(function (d) { return y(d[selection]); })
+        .x(function (d) { return vis.x(d["seasonDate"]); })
+        .y(function (d) { return vis.y(d[selection]); })
         .interpolate("monotone");
-    var teams = svg.selectAll(".teams")
-        .data(nest)
+    var teams = vis.svg.selectAll(".teams")
+        .data(vis.nest)
         .enter().append("g")
         .attr("class", "team");
     teams.append("path")
@@ -87,10 +106,11 @@ function lineChart(data) {
             d3.select(this).style("stroke-width", 5);
             d3.select(".team-name").html(d["Team"]);
         })
-        .on("mouseout", function (d) {
+        .on("mouseout", function () {
             d3.select(this).style("opacity", 0.4);
             d3.select(this).style("stroke-width", 1);
-        })
-
-
-}
+        });
+    
+    vis.svg.select(".x-axis").call(vis.xAxis);
+    vis.svg.select(".y-axis").call(vis.yAxis);
+};
