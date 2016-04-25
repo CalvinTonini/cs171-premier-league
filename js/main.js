@@ -21,7 +21,10 @@ var aggregate, intraseason_chart;
 
 var parseDate = d3.time.format("%Y-%m-%d").parse;
 
-var areachart,mapData;
+var parseDate_intra = d3.time.format("%Y-%m-%d").parse;
+
+
+var areachart, mapData;
 
 
 queue()
@@ -34,17 +37,6 @@ queue()
         intraseason = intra;
         aggregate = agg;
         mapData = mapJson;
-
-        intraseason.forEach(function(d) {
-
-            for (var name in d){
-                if(name!="Date" && name != "Team" && name!="Season"){
-                    d[name] = +d[name]
-                }
-            }
-            d.Date = parseDate(d.Date)
-
-        });
 
 
         matches.forEach(function (d) {
@@ -74,18 +66,45 @@ function createvis(){
     interseason_chart = new lineChart("linechart", aggregate);
 
     intraseason_chart = new LineChart("intra_season",intraseason);
+
+    bar_chart = new BarChart("bar_chart",aggregate);
+
+
     updateMap();
 
 }
 
 function updatevars(){
 
-    console.log("asdfs");
     intraseason_chart.wrangleData();
+    bar_chart.wrangleData();
+
 
 }
 
+function mapupDate(){
+
+    updateMap();
+    intraseason_chart.wrangleData();
+    bar_chart.wrangleData();
+
+}
+
+function highlightTeam(team){
+    intraseason_chart.svg.selectAll("#"+team).style("stroke","yellow");
+    bar_chart.svg.selectAll("#"+team).attr("fill","yellow");
+
+}
+
+function unhighlightTeam(team){
+    intraseason_chart.svg.selectAll("#"+team).style("stroke", function (d) {
+            return intraseason_chart.maincolor(d.key);
+        });
+    bar_chart.svg.selectAll("#"+team).attr("fill", function(d) { return bar_chart.maincolor(d.Team)});
+}
+
 function updateMap(){
+
     var dats = mapData;
     var selected = +document.getElementById("myRange").value;
 

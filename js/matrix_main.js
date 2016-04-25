@@ -1,9 +1,9 @@
 /**
  * Created by Eamon on 4/17/16.
  */
-var margin = {top: 80, right: 0, bottom: 10, left: 80},
-    width = 720,
-    height = 720;
+var margin = {top: 50, right: 60, bottom: 10, left: 50},
+    width = 550,
+    height = 550;
 
 /* Initialize tooltip */
 tipmatrix = d3.tip()
@@ -24,6 +24,8 @@ var svg = d3.select("#matrix-area").append("svg")
 svg.call(tipmatrix);
 
 
+var height_cell = width/22;
+var width_cell = height_cell;
 
 var Season_selection = "2014-2015";
 
@@ -147,7 +149,7 @@ d3.csv("data/matchesDates.csv", function(d) {
     //console.log(placeholder);
     //console.log(data);
 
-    var cell_size = 32;
+    var cell_size = height_cell;
     var rect = svg.selectAll("rect")
         .data(data);
 // Enter (initialize the newly added elements)
@@ -159,8 +161,8 @@ d3.csv("data/matchesDates.csv", function(d) {
 
     cells.append("rect")
         .attr("class", "rect")
-        .attr("height", 32)
-        .attr("width", 32)
+        .attr("height", height_cell)
+        .attr("width", width_cell)
         .attr("x", function(d, index) {
 
             function check_count(){
@@ -233,7 +235,7 @@ d3.csv("data/matchesDates.csv", function(d) {
         .on('mouseover',console.log("HELLO"))
         .on('mouseout', tipmatrix.hide);
 
-    console.log(nodes);
+    //console.log(nodes);
     var nodes_trunc = nodes;
 
     for (i=0; i<nodes_trunc.length; i++)
