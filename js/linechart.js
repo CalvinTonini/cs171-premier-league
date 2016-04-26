@@ -95,7 +95,6 @@ lineChart.prototype.updateVis = function () {
         return vis.line(d.values);
     });
 
-
     // d3.selectAll(".teams").remove();
     teams.enter()
         .append("path")
