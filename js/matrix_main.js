@@ -60,6 +60,8 @@ d3.csv("data/matchesDates.csv", function(d) {
 
     var vis = this;
 
+
+
     data = data.filter(function(d) { return d.Season == Season_selection});
 
     //console.log(data)
@@ -274,7 +276,7 @@ d3.csv("data/matchesDates.csv", function(d) {
                 .attr("height", "210")
                 .attr("fill", "white")
                 .attr("stroke", "black")
-                .attr("stroke-width", "3");
+                .attr("stroke-width", "1");
 
             svg_info.append("text")
                 .attr("class", "info")
