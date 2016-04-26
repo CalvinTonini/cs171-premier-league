@@ -124,14 +124,10 @@ lineChart.prototype.updateVis = function () {
             return vis.maincolor(d.key);
         })
         .on("mouseover", function (d) {
-            d3.select(this).style("opacity", 1);
-            d3.select(this).style("stroke-width", 5);
             d3.select(".team-name").html(d["Team"]);
             highlightTeam(d.key);
         })
         .on("mouseout", function (d) {
-            d3.select(this).style("opacity", 0.4);
-            d3.select(this).style("stroke-width", 1);
             unhighlightTeam(d.key);
         });
 
