@@ -64,6 +64,10 @@ path.secondline {
     fill: #444;
 }
 
+.place:hover{
+    fill: red;
+}
+
 text {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 10px;

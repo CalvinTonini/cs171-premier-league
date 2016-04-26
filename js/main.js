@@ -23,9 +23,16 @@ var parseDate = d3.time.format("%Y-%m-%d").parse;
 
 var parseDate_intra = d3.time.format("%Y-%m-%d").parse;
 
+var toggle = false;
+var currentTeam = "Arsenal";
 
 var areachart, mapData;
 
+var tip = d3.tip().attr('class', 'd3-tip').html(function(d) {
+    return "<strong>"+d.properties.club+"</strong> <br/> <span style='color:red'>" + d.properties.name + "</span>";
+});
+tip.offset([-10, 0]);
+svg1.call(tip);
 
 queue()
     .defer(d3.csv, "data/matches.csv")
@@ -107,12 +114,13 @@ function updateMap(){
 
     var dats = mapData;
     var selected = +document.getElementById("myRange").value;
+    console.log(selected);
 
     var subunits = topojson.feature(mapData, mapData.objects.subunits),
         places = {
             type: "FeatureCollection",
             features: topojson.feature(dats, dats.objects.places).features
-                .filter(function(d){ return d.properties.seasons.includes(selected); })
+                .filter(function(d){ return d.properties.seasons.includes(selected+1); })
         };
 
 
@@ -148,22 +156,6 @@ function updateMap(){
         .attr("dy", ".35em")
         .text(function(d) { return d.properties.name; });
 
-    var labels = svg1.selectAll(".place-label")
-        .data(places.features);
-
-    labels
-        .enter().append("text");
-
-    labels.transition()
-        .duration(800)
-        .attr("class", "place-label")
-        .attr("transform", function(d) { return "translate(" + projection(d.geometry.coordinates) + ")"; })
-        .attr("x", function(d) { return d.geometry.coordinates[0] > -1 ? 6 : -6; })
-        .attr("dy", ".35em")
-        .style("text-anchor", function(d) { return d.geometry.coordinates[0] > -1 ? "start" : "end"; })
-        .text(function(d) { return d.properties.club; });
-
-
     var dots = svg1.selectAll("circle")
         .data(places.features);
 
@@ -174,11 +166,31 @@ function updateMap(){
         .duration(800)
         .attr("class","place")
         .attr("fill","black")
-        .attr("r",2)
+        .attr("r",4)
         .attr("cx", function(d){ return projection(d.geometry.coordinates)[0];})
         .attr("cy", function(d){ return projection(d.geometry.coordinates)[1];});
 
-    labels.exit().remove();
+    dots.on('mouseover',tip.show)
+        .on('mouseout',tip.hide)
+        .on('click',function(d) {
+            toggle = !toggle;
+            var testInput = d.properties.team;
+            d3.selectAll("circle").style("fill","black");
+            places.features.forEach(function(d){
+               unhighlightTeam(d.properties.team);
+            });
+            if(toggle || (testInput != currentTeam)){
+                toggle = false;
+                d3.select(this).style("fill","yellow");
+                highlightTeam(d.properties.team);
+            }
+            else{
+                d3.select(this).style("fill","black");
+                unhighlightTeam(d.properties.team);
+            }
+
+        });
+
     dots.exit().remove();
     subunit1.exit().remove();
     subunit2.exit().remove();
