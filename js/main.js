@@ -19,12 +19,12 @@ var svg1 = d3.select("#map").append("svg")
 
 var aggregate, intraseason_chart;
 
-var parseDate = d3.time.format("%Y-%m-%d").parse;
+// var parseDate = d3.time.format("%Y-%m-%d").parse;
 
-var parseDate_intra = d3.time.format("%Y-%m-%d").parse;
+// var parseDate_intra = d3.time.format("%Y-%m-%d").parse;
 
 
-var areachart, mapData;
+var mapData;
 
 
 queue()
@@ -63,12 +63,11 @@ queue()
 
 function createvis(){
 
-    interseason_chart = new lineChart("linechart", aggregate);
+    interseason_chart = new lineChart("across_season", aggregate);
 
     intraseason_chart = new LineChart("intra_season",intraseason);
 
     bar_chart = new BarChart("bar_chart",aggregate);
-
 
     updateMap();
 
@@ -78,6 +77,7 @@ function updatevars(){
 
     intraseason_chart.wrangleData();
     bar_chart.wrangleData();
+    interseason_chart.wrangleData();
 
 
 }

@@ -29,7 +29,20 @@
           </div>
           <div class = "col-xs-8">
               <h4> Data Across Seasons </h4>
-
+              <br />
+              <div class="form-group">
+                  <label for="across_season_form">Metric:</label>
+                  <select class="form-control" id="across_season_form"  onchange="updatevars()">
+                      <option value = "rank">Rank</option>
+                      <option value = "TotalYellowCards">Total Yellow Cards</option>
+                      <option value = "TotalShotsOnTarget">Total Shots On Target</option>
+                      <option value = "TotalShots">Total Shots</option>
+                      <option value = "TotalRedCards">Total Red Cards</option>
+                      <option value = "TotalPoints">Total Points</option>
+                      <option value = "TotalFouls">Total Fouls</option>
+                      <option value = "TotalBookings">Total Bookings</option>
+                  </select>
+              </div>
               <div id="across_season">
               </div>
           </div>
@@ -38,7 +51,7 @@
           <div class = "col-xs-12">
               <h4>Graph of Data Within Season</h4>
               <div class="form-group">
-                  <br>
+                  <br />
                   <label for="attribute">Metric:</label>
                   <select class="form-control" id="attribute"  onchange="updatevars()">
                       <option value = "cummulative_TotalPoints">Total Points</option>
@@ -56,6 +69,11 @@
               </div>
               <div id="intra_season"></div>
           </div>
+          <div class = "col-xs-5">
+              <h4>End of Season Results</h4>
+              <div id="bar_chart"></div>
+
+          </div>
           <h4>Adjacency Matrix of Match Results within One Season</h4>
           <div class = "col-xs-7">
               <div id="matrix-area">
@@ -66,24 +84,19 @@
               </div>
           </div>
       </div>
-      <div id="linechart"></div>
   </div>
 
 
 
-
-
-
-
-  <script src="https://d3js.org/topojson.v1.min.js"></script>
+  <script src="js/topojson.js"></script>
   <script src="js/jquery.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/d3.min.js"></script>
   <script src="js/d3.tip.js"></script>
   <script src="js/queue.min.js"></script>
-  <!--<script src="js/jquery.tipsy.js"></script>-->
   <script src="js/linechart.js"></script>
-  <script src="js/line.js"></script>
+  <script src="js/barchart.js"></script>
+  <script src="js/Line.js"></script>
   <!--<script src="js/stackedarea.js"></script>-->
   <script src="js/matrix_main.js" charset="utf-8"></script>
   <script src="js/main.js"></script>
