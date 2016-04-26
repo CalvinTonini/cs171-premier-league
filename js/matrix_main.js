@@ -341,10 +341,34 @@ d3.csv("data/matchesDates.csv", function(d) {
     //console.log(nodes);
     var nodes_trunc = nodes;
 
-    for (i=0; i<nodes_trunc.length; i++)
-    {
-        nodes_trunc[i] = nodes_trunc[i].substring(0,3);
-    }
+    for (i=0; i<nodes_trunc.length; i++) {
+        if (nodes_trunc[i] == "Blackburn") {
+            nodes_trunc[i] = "Bbn";
+        }
+        else if (nodes_trunc[i] == "Man City") {
+            nodes_trunc[i] = "MC";
+        }
+        else if (nodes_trunc[i] == "Man United") {
+            nodes_trunc[i] = "MU";
+        }
+        else if (nodes_trunc[i] == "Sheffield United") {
+            nodes_trunc[i] = "SU";
+        }
+        else if (nodes_trunc[i] == "Sheffield Weds") {
+            nodes_trunc[i] = "SW";
+        }
+        else if (nodes_trunc[i] == "West Brom") {
+            nodes_trunc[i] = "WB";
+        }
+        else if (nodes_trunc[i] == "West Ham") {
+            nodes_trunc[i] = "WH";
+        }
+        else {
+            nodes_trunc[i] = nodes_trunc[i].substring(0, 3);
+        }
+
+    };
+
 
     cells.append("text")
         .attr("x", function(d, index) {
