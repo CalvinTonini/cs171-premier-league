@@ -104,6 +104,7 @@ function highlightTeam(team){
         "stroke-width": 5
     });
     bar_chart.svg.selectAll("#"+team).attr("fill","yellow");
+    svg_cells.selectAll("#"+team).attr("stroke","yellow").attr("stroke-width","3");
 
 }
 
@@ -116,6 +117,7 @@ function unhighlightTeam(team){
         "stroke-width": 1
     });
     bar_chart.svg.selectAll("#"+team).attr("fill", function(d) { return bar_chart.maincolor(d.Team)});
+    svg_cells.selectAll("#"+team).attr("stroke","grey");
 }
 
 function updateMap(){

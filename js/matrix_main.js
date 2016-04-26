@@ -19,7 +19,9 @@ tiptext.html(function(d) { return "<strong>Home:</strong> <span style='color:red
 
 var formatDate = d3.time.format("%B %m %Y");
 
-var svg = d3.select("#matrix-area").append("svg")
+var toggle = 0;
+
+var svg_cells = d3.select("#matrix-area").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .style("margin-left", -margin.left + "px")
@@ -36,7 +38,7 @@ svg_info.append("text")
     .attr("class", "tip");
 
 /* Invoke the tip in the context of your visualization */
-svg.call(tiptext);
+svg_cells.call(tiptext);
 //svg.call(tipcell);
 
 
@@ -170,17 +172,18 @@ d3.csv("data/matchesDates.csv", function(d) {
 
     var cell_width = 32;
     var cell_height = 25;
-    var rect = svg.selectAll("rect")
+    var rect = svg_cells.selectAll("rect")
         .data(data);
 // Enter (initialize the newly added elements)
 
-    var cells = svg.selectAll("g")
+    var cells = svg_cells.selectAll("g")
         .data(data).enter()
         .append("g");
 
 
     cells.append("rect")
         .attr("class", "rect")
+        .attr("id", function(d){return d.HomeTeam;})
         .attr("height", cell_height)
         .attr("width", 32)
         .attr("x", function(d, index) {
@@ -209,18 +212,18 @@ d3.csv("data/matchesDates.csv", function(d) {
 
 
 
-            return Math.floor((index/nodes.length))* cell_height })
+            return Math.floor((index/nodes.length))* (cell_height +1) })
         .attr("stroke", "grey")
         .attr("fill", function(d){
 
             if (d.FTR == "H") {
-                return "#ADD8E6";
+                return "#72BCD4";
             }
             else if (d.FTR == "A"){
-                return "#FF7F7F";
+                return "#FF9999";
             }
             else if (d.FTR == "D"){
-                return "#FFFF8B";
+                return "lightgrey";
             }
             else if (d.FTR == "Na"){
                 return "grey";
@@ -248,8 +251,10 @@ d3.csv("data/matchesDates.csv", function(d) {
 
 
 
-            return Math.floor((index/nodes.length))* cell_height })
+
+            return Math.floor((index/nodes.length))* (cell_height +1) })
         .attr("dy", "1.2em")
+        .attr("class", "txtscore")
         .text(function(d){if (d.FTR != "Na")
         {
             return d.FTHG + "-" +d.FTAG
@@ -257,6 +262,21 @@ d3.csv("data/matchesDates.csv", function(d) {
         .on('mouseover', tiptext.show)
         .on('mouseout', tiptext.hide)
         .on('click', function(d){
+
+
+            if (toggle == 0)
+            {
+                console.log(this);
+                d3.select(this).style("fill","yellow");
+                toggle = 1;
+
+            }
+            else
+            {
+                d3.selectAll(cells.txtscore).style("fill","black");
+                toggle = 0;
+            }
+
 
             d3.selectAll("text.info")
                 .remove();
@@ -276,7 +296,7 @@ d3.csv("data/matchesDates.csv", function(d) {
                 .attr("height", "210")
                 .attr("fill", "white")
                 .attr("stroke", "black")
-                .attr("stroke-width", "1");
+                .attr("stroke-width", "2");
 
             svg_info.append("text")
                 .attr("class", "info")
