@@ -19,14 +19,14 @@ var svg1 = d3.select("#map").append("svg")
 
 var aggregate, intraseason_chart;
 
-var parseDate = d3.time.format("%Y-%m-%d").parse;
+// var parseDate = d3.time.format("%Y-%m-%d").parse;
 
-var parseDate_intra = d3.time.format("%Y-%m-%d").parse;
+// var parseDate_intra = d3.time.format("%Y-%m-%d").parse;
 
 var toggle = false;
 var currentTeam = "Arsenal";
 
-var areachart, mapData;
+var mapData;
 
 var tip = d3.tip().attr('class', 'd3-tip').html(function(d) {
     return "<strong>"+d.properties.club+"</strong> <br/> <span style='color:red'>" + d.properties.name + "</span>";
@@ -35,7 +35,7 @@ tip.offset([-10, 0]);
 svg1.call(tip);
 
 queue()
-    .defer(d3.csv, "data/matches.csv")
+    .defer(d3.csv, "data/matchesDates.csv")
     .defer(d3.csv, "data/intraseason_data.csv")
     .defer(d3.csv,"data/season_aggregate_stats.csv")
     .defer(d3.json,"data/tsconfig.json")
@@ -70,12 +70,11 @@ queue()
 
 function createvis(){
 
-    interseason_chart = new lineChart("linechart", aggregate);
+    interseason_chart = new lineChart("across_season", aggregate);
 
     intraseason_chart = new LineChart("intra_season",intraseason);
 
     bar_chart = new BarChart("bar_chart",aggregate);
-
 
     updateMap();
 
@@ -85,6 +84,7 @@ function updatevars(){
 
     intraseason_chart.wrangleData();
     bar_chart.wrangleData();
+    interseason_chart.wrangleData();
 
 
 }

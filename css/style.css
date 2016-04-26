@@ -1,7 +1,7 @@
 
-body {
-    font: 10px sans-serif;
-}
+/*body {*/
+    /*font: 10px sans-serif;*/
+/*}*/
 
 .axis path,
 .axis line {
@@ -73,6 +73,37 @@ text {
     font-size: 10px;
     pointer-events: none;
 }
+
+.info{
+    font-size: 20.5px;
+}
+
+.score{
+    font-size: 50px;
+
+}
+
+
+
+.Aligner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Aligner-item {
+    max-width: 50%;
+}
+
+.Aligner-item--top {
+    align-self: flex-start;
+}
+
+.Aligner-item--bottom {
+    align-self: flex-end;
+}
+
+
 .d3-tip {
     line-height: 1;
     font-weight: bold;

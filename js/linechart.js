@@ -30,6 +30,21 @@ lineChart.prototype.initVis = function () {
         .range([0, vis.width]);
     vis.y = d3.scale.linear()
         .range([vis.height, 0]);
+    vis.maincolor = d3.scale.ordinal();
+    vis.maincolor.domain(['Arsenal', 'Aston Villa', 'Barnsley', 'Birmingham', 'Blackburn',
+        'Blackpool', 'Bolton', 'Bournemouth', 'Bradford', 'Burnley',
+        'Cardiff', 'Charlton', 'Chelsea', 'Coventry', 'Crystal Palace',
+        'Derby', 'Everton', 'Fulham', 'Hull', 'Ipswich', 'Leeds',
+        'Leicester', 'Liverpool', 'Man City', 'Man United',
+        'Middlesbrough', 'Newcastle', 'Norwich', "Nott'm Forest", 'Oldham',
+        'Portsmouth', 'QPR', 'Reading', 'Sheffield United',
+        'Sheffield Weds', 'Southampton', 'Stoke', 'Sunderland', 'Swansea',
+        'Swindon', 'Tottenham', 'Watford', 'West Brom', 'West Ham', 'Wigan',
+        'Wimbledon', 'Wolves']);
+    vis.maincolor.range(["#ef0107","#94bee5","#dd302c","#4c689f","#009ee0","#f68712","#263c7e","#000000","#fcb950","#8dd2f1","#005ea3",
+        "#d4021d","#034694","#74b2df","#b62030","black","#274488","black","#f5a12d","#de23c7","#e1db20","#0053a0","#d00027","#5cbfeb","#da020e",
+        "#d9000d","#231f20","#00a650","#e53233","#c1c1c1","#1e4494","#005cab","#dd1740","#ee2227","#377aaf","red","#e03a3e","red","black","#b48d00","#001c58","#000000",
+        "#091453","#6022db","#006838","#fcd213","#faa61a"]);
     vis.xAxis = d3.svg.axis()
         .scale(vis.x)
         .orient("bottom");
@@ -69,7 +84,8 @@ lineChart.prototype.wrangleData = function(){
 
 lineChart.prototype.updateVis = function () {
     var vis = this;
-    var selection = "rank";
+    var selection = document.getElementById("across_season_form");
+    selection = selection.options[selection.selectedIndex].value;
 
     vis.x.domain(d3.extent(vis.data, function (d) {
         return d["seasonDate"];
@@ -79,27 +95,31 @@ lineChart.prototype.updateVis = function () {
     }), d3.min(vis.data, function (d) {
         return d[selection];
     })]);
-    
-    var color = d3.scale.category20();
 
-    var line = d3.svg.line()
+    vis.line = d3.svg.line()
         .x(function (d) { return vis.x(d["seasonDate"]); })
-        .y(function (d) { return vis.y(d[selection]); })
-        .interpolate("monotone");
-    var teams = vis.svg.selectAll(".teams")
-        .data(vis.nest)
-        .enter().append("g")
-        .attr("class", "team");
-    teams.append("path")
+        .y(function (d) { return vis.y(d[selection]); });
+
+    var teams = vis.svg.selectAll(".line")
+        .data(vis.nest);
+
+
+    teams.transition().duration(1000).attr("d", function (d) {
+        return vis.line(d.values);
+    });
+
+    // d3.selectAll(".teams").remove();
+    teams.enter()
+        .append("path")
         .attr({
             class: "line",
             opacity: 0.4,
             d: function (d) {
-                return line(d.values);
+                return vis.line(d.values);
             }
         })
         .style("stroke", function(d) {
-            return color(d.key);
+            return vis.maincolor(d.key);
         })
         .on("mouseover", function (d) {
             d3.select(this).style("opacity", 1);
@@ -110,7 +130,10 @@ lineChart.prototype.updateVis = function () {
             d3.select(this).style("opacity", 0.4);
             d3.select(this).style("stroke-width", 1);
         });
-    
+
+    teams.exit().remove();
+
+
     vis.svg.select(".x-axis").call(vis.xAxis);
     vis.svg.select(".y-axis").call(vis.yAxis);
 };
