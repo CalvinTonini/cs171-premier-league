@@ -1,17 +1,23 @@
 /**
  * Created by Eamon on 4/17/16.
  */
-var margin = {top: 50, right: 60, bottom: 10, left: 50},
-    width = 550,
+var margin = {top: 20, right: 0, bottom: 10, left: 80},
+    width = 720,
     height = 550;
 
 /* Initialize tooltip */
-tipmatrix = d3.tip()
+tiptext = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0]);
 
-tipmatrix.html(function(d) { return "<strong>Home:</strong> <span style='color:red'>" + d.HomeTeam + "</span><br/><strong>Away:</strong> <span style='color:red'>" +d.AwayTeam+ "</span><br/><strong>Date:</strong> <span style='color:red'>" +d.Date+ "</span>"});
+//tipcell = d3.tip()
+//    .attr('class', 'd3-tip')
+//    .offset([-10, 0]);
 
+tiptext.html(function(d) { return "<strong>Home:</strong> <span style='color:red'>" + d.HomeTeam + "</span><br/><strong>Away:</strong> <span style='color:red'>" +d.AwayTeam+ "</span><br/><strong>Date:</strong> <span style='color:red'>" +formatDate(d.Date)+ "</span>"});
+//tipcell.html(function(d) { return "<strong>Home:</strong> <span style='color:red'>" + d.HomeTeam + "</span><br/><strong>Away:</strong> <span style='color:red'>" +d.AwayTeam+ "</span><br/><strong>Date:</strong> <span style='color:red'>" +d.Date+ "</span>"});
+
+var formatDate = d3.time.format("%B %m %Y");
 
 var svg = d3.select("#matrix-area").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -20,12 +26,21 @@ var svg = d3.select("#matrix-area").append("svg")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+var svg_info = d3.select("#matrix-info-area").append("svg")
+    .attr("width", 390)
+    .attr("height", 390)
+    .append("g")
+    .attr("transform", "translate(0, 50)");
+
+svg_info.append("text")
+    .attr("class", "tip");
+
 /* Invoke the tip in the context of your visualization */
-svg.call(tipmatrix);
+svg.call(tiptext);
+//svg.call(tipcell);
 
 
-var height_cell = width/22;
-var width_cell = height_cell;
+var tab = '\u00A0' + '\u00A0'+ '\u00A0'+ '\u00A0'+ '\u00A0'+ '\u00A0';
 
 var Season_selection = "2014-2015";
 
@@ -39,9 +54,11 @@ d3.csv("data/matchesDates.csv", function(d) {
         FTR: d.FTR,
         FTHG: +d.FTHG,
         FTAG: +d.FTAG,
-        Date: d.Date
+        Date: new Date (d.Date)
     };
 }, function(error, data) {
+
+    var vis = this;
 
     data = data.filter(function(d) { return d.Season == Season_selection});
 
@@ -149,7 +166,8 @@ d3.csv("data/matchesDates.csv", function(d) {
     //console.log(placeholder);
     //console.log(data);
 
-    var cell_size = height_cell;
+    var cell_width = 32;
+    var cell_height = 25;
     var rect = svg.selectAll("rect")
         .data(data);
 // Enter (initialize the newly added elements)
@@ -161,8 +179,8 @@ d3.csv("data/matchesDates.csv", function(d) {
 
     cells.append("rect")
         .attr("class", "rect")
-        .attr("height", height_cell)
-        .attr("width", width_cell)
+        .attr("height", cell_height)
+        .attr("width", 32)
         .attr("x", function(d, index) {
 
             function check_count(){
@@ -180,7 +198,7 @@ d3.csv("data/matchesDates.csv", function(d) {
 
 
             return (((index % nodes.length) //+ count
-            ) * cell_size) + 50 })
+                ) * cell_width) + 50 })
         .attr("y", function(d,index) {
             //console.log(index);
             //console.log(nodes.length);
@@ -189,35 +207,37 @@ d3.csv("data/matchesDates.csv", function(d) {
 
 
 
-            return Math.floor((index/nodes.length))* cell_size })
+            return Math.floor((index/nodes.length))* cell_height })
         .attr("stroke", "grey")
         .attr("fill", function(d){
 
-                if (d.FTR == "H") {
-                    return "#ADD8E6";
-                }
-                else if (d.FTR == "A"){
-                    return "#FF7F7F";
-                }
-                else if (d.FTR == "D"){
-                    return "#FFFF8B";
-                }
-                else if (d.FTR == "Na"){
-                    return "grey";
-                }
+            if (d.FTR == "H") {
+                return "#ADD8E6";
+            }
+            else if (d.FTR == "A"){
+                return "#FF7F7F";
+            }
+            else if (d.FTR == "D"){
+                return "#FFFF8B";
+            }
+            else if (d.FTR == "Na"){
+                return "grey";
+            }
         });
+        //.on('mouseover', tipcell.show)
+        //.on('mouseout', tipcell.hide);
 
 
     cells.append("text")
         .attr("x", function(d, index) {
 
 
-           // count = 0;
+            // count = 0;
             //team_count = (index % nodes.length)
 
             //count = count + 1;
             //check_count();
-            return (((index % nodes.length)) * cell_size) + 55 })
+            return (((index % nodes.length)) * cell_width) + 55 })
         .attr("y", function(d,index) {
             //console.log(index);
             //console.log(nodes.length);
@@ -226,14 +246,95 @@ d3.csv("data/matchesDates.csv", function(d) {
 
 
 
-            return Math.floor((index/nodes.length))* cell_size })
+            return Math.floor((index/nodes.length))* cell_height })
         .attr("dy", "1.2em")
         .text(function(d){if (d.FTR != "Na")
         {
             return d.FTHG + "-" +d.FTAG
         } })
-        .on('mouseover',console.log("HELLO"))
-        .on('mouseout', tipmatrix.hide);
+        .on('mouseover', tiptext.show)
+        .on('mouseout', tiptext.hide)
+        .on('click', function(d){
+
+            d3.selectAll("text.info")
+                .remove();
+
+            d3.selectAll("image.info")
+                .remove();
+
+            d3.selectAll("rect.box")
+                .remove();
+
+
+            svg_info.append("rect")
+                .attr("class", "box")
+                .attr("x", "5")
+                .attr("y", "120")
+                .attr("width", "380")
+                .attr("height", "210")
+                .attr("fill", "white")
+                .attr("stroke", "black")
+                .attr("stroke-width", "3");
+
+            svg_info.append("text")
+                .attr("class", "info")
+                .attr("x", "190")
+                .attr("y", "320")
+                .style("text-anchor","middle")
+                .text(formatDate(d.Date));
+
+
+            svg_info.append("image")
+                .attr("xlink:href", 'data/logos/' + d.HomeTeam  +'.png')
+                .attr("class", "info")
+                .attr("x", "20")
+                .attr("y", "150")
+                .attr("width", "130")
+                .attr("height", "130");
+
+            svg_info.append("image")
+                .attr("xlink:href", 'data/logos/' + d.AwayTeam  +'.png')
+                .attr("class", "info")
+                .attr("x", "250")
+                .attr("y", "150")
+                .attr("width", "130")
+                .attr("height", "130");
+
+
+
+            svg_info.append("text")
+                .attr("class", "info")
+                .attr("x", "85")
+                .attr("y", "145")
+                .style("text-anchor","middle")
+                .text(d.HomeTeam);
+
+
+            svg_info.append("text")
+                .attr("class", "info score")
+                .attr("x", "160")
+                .attr("y", "220")
+                .text(d.FTHG + "-" +d.FTAG);
+
+            svg_info.append("text")
+                .attr("class", "info")
+                .attr("x", "315")
+                .attr("y", "145")
+                .style("text-anchor","middle")
+                .text(d.AwayTeam);
+
+            //var imgs = svg.selectAll("image");
+
+
+
+
+            //var para = document.createElement("p");
+            //var node = document.createTextNode("This is new.");
+            //para.appendChild(node);
+            //var element = document.getElementById("matrix-info-area");
+            //element.appendChild(para);
+
+        });
 
     //console.log(nodes);
     var nodes_trunc = nodes;
@@ -243,16 +344,16 @@ d3.csv("data/matchesDates.csv", function(d) {
         nodes_trunc[i] = nodes_trunc[i].substring(0,3);
     }
 
-cells.append("text")
+    cells.append("text")
         .attr("x", function(d, index) {
 
 
-           // count = 0;
+            // count = 0;
             //team_count = (index % nodes.length)
 
             //count = count + 1;
             //check_count();
-            return (((index % nodes.length)) * cell_size) + 55 })
+            return (((index % nodes.length)) * cell_width) + 56 })
         .attr("y", function(d,index) {
             //console.log(index);
             //console.log(nodes.length);
@@ -261,13 +362,10 @@ cells.append("text")
 
 
 
-            return Math.floor((index/nodes.length))* cell_size })
+            return Math.floor((index/nodes.length))* cell_width })
         .attr("dy", "-0.2em")
-        .text(function(d, index){if (d.FTR != "Na")
-        {
-            return nodes_trunc[index];
-        } });
-        //.attr("transform", "rotate(10)");
+        .text(function(d, index){return nodes_trunc[index];});
+    //.attr("transform", "rotate(10)");
 
     //cells.append("text")
     //    .attr("x", function(d, index) {
@@ -302,7 +400,7 @@ cells.append("text")
 
 
 
-cells.append("text")
+    cells.append("text")
         .attr("x", 17)
         .attr("y", function(d,index) {
             //console.log(index);
@@ -312,13 +410,10 @@ cells.append("text")
 
 
 
-            return (((index % nodes.length)) * cell_size) })
+            return (((index % nodes.length)) * cell_height) })
         .attr("dy", "1.2em")
-        .text(function(d, index){if (d.FTR != "Na")
-        {
-            return nodes_trunc[index];
-        } });
-        //.attr("transform", "rotate(10)");
+        .text(function(d, index){return nodes_trunc[index];});
+    //.attr("transform", "rotate(10)");
 
     //cells.append("text")
     //    .attr("x", function(d, index) {
@@ -352,7 +447,3 @@ cells.append("text")
 
 
 });
-
-
-
-
