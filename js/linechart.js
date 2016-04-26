@@ -90,11 +90,18 @@ lineChart.prototype.updateVis = function () {
     vis.x.domain(d3.extent(vis.data, function (d) {
         return d["seasonDate"];
     }));
-    vis.y.domain([d3.max(vis.data, function (d) {
-        return d[selection];
-    }), d3.min(vis.data, function (d) {
-        return d[selection];
-    })]);
+    if (selection == "rank") {
+        vis.y.domain([d3.max(vis.data, function (d) {
+            return d[selection];
+        }), d3.min(vis.data, function (d) {
+            return d[selection];
+        })]);
+    }
+    else {
+        vis.y.domain(d3.extent(vis.data, function (d) {
+            return d[selection];
+        }));
+    }
 
     vis.line = d3.svg.line()
         .x(function (d) { return vis.x(d["seasonDate"]); })
