@@ -69,7 +69,8 @@ lineChart.prototype.wrangleData = function(){
 
 lineChart.prototype.updateVis = function () {
     var vis = this;
-    var selection = "rank";
+    var selection = document.getElementById("across_season_form");
+    selection = selection.options[selection.selectedIndex].value;
 
     vis.x.domain(d3.extent(vis.data, function (d) {
         return d["seasonDate"];
@@ -82,20 +83,27 @@ lineChart.prototype.updateVis = function () {
     
     var color = d3.scale.category20();
 
-    var line = d3.svg.line()
+    vis.line = d3.svg.line()
         .x(function (d) { return vis.x(d["seasonDate"]); })
         .y(function (d) { return vis.y(d[selection]); })
         .interpolate("monotone");
-    var teams = vis.svg.selectAll(".teams")
-        .data(vis.nest)
-        .enter().append("g")
-        .attr("class", "team");
-    teams.append("path")
+    var teams = vis.svg.selectAll(".team")
+        .data(vis.nest);
+    
+    teams.exit().remove();
+    
+    teams.attr("d", function (d) {
+        return vis.line(d.values);
+    });
+
+    // d3.selectAll(".teams").remove();
+    teams.enter()
+        .append("path")
         .attr({
             class: "line",
             opacity: 0.4,
             d: function (d) {
-                return line(d.values);
+                return vis.line(d.values);
             }
         })
         .style("stroke", function(d) {
