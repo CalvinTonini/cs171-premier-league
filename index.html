@@ -16,7 +16,7 @@
               <h4>Map</h4>
 
               <div id="map"></div>
-              <input type="range" id="myRange" min="1993" max="2016" list="tickmarks" onchange="updateMap()">
+              <input title="Year Selection" type="range" id="myRange" min="1993" max="2016" list="tickmarks" onchange="mapupDate()">
               <datalist id=tickmarks>
                   <option>1993</option>
                   <option>1997</option>
@@ -28,7 +28,7 @@
               </datalist>
           </div>
           <div class = "col-xs-8">
-              <h4> Data Across Seasons </h4>
+              <h4>Data Across Seasons</h4>
               <br />
               <div class="form-group">
                   <label for="across_season_form">Metric:</label>
