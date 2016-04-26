@@ -117,7 +117,7 @@ function unhighlightTeam(team){
         "stroke-width": 1
     });
     bar_chart.svg.selectAll("#"+team).attr("fill", function(d) { return bar_chart.maincolor(d.Team)});
-    svg_cells.selectAll("#"+team).attr("stroke","grey");
+    svg_cells.selectAll("#"+team).attr("stroke","grey").attr("stroke-width","1");
 }
 
 function updateMap(){
