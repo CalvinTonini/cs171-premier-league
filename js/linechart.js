@@ -85,14 +85,13 @@ lineChart.prototype.updateVis = function () {
 
     vis.line = d3.svg.line()
         .x(function (d) { return vis.x(d["seasonDate"]); })
-        .y(function (d) { return vis.y(d[selection]); })
-        .interpolate("monotone");
-    var teams = vis.svg.selectAll(".team")
+        .y(function (d) { return vis.y(d[selection]); });
+
+    var teams = vis.svg.selectAll(".line")
         .data(vis.nest);
-    
-    teams.exit().remove();
-    
-    teams.attr("d", function (d) {
+
+
+    teams.transition().duration(1000).attr("d", function (d) {
         return vis.line(d.values);
     });
 
@@ -118,7 +117,10 @@ lineChart.prototype.updateVis = function () {
             d3.select(this).style("opacity", 0.4);
             d3.select(this).style("stroke-width", 1);
         });
-    
+
+    teams.exit().remove();
+
+
     vis.svg.select(".x-axis").call(vis.xAxis);
     vis.svg.select(".y-axis").call(vis.yAxis);
 };
