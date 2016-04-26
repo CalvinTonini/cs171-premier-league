@@ -19,6 +19,7 @@ var svg1 = d3.select("#map").append("svg")
 
 var aggregate, intraseason_chart;
 
+
 // var parseDate = d3.time.format("%Y-%m-%d").parse;
 
 // var parseDate_intra = d3.time.format("%Y-%m-%d").parse;
@@ -40,6 +41,7 @@ queue()
     .defer(d3.csv,"data/season_aggregate_stats.csv")
     .defer(d3.json,"data/tsconfig.json")
     .await(function(error, matches, intra, agg, mapJson) {
+
 
         intraseason = intra;
         aggregate = agg;
@@ -65,6 +67,8 @@ queue()
                 }
             }
         }
+
+
         createvis();
     });
 
@@ -97,7 +101,9 @@ function mapupDate(){
 
 }
 
-function highlightTeam(team){
+
+function highlightTeam(unformatted_team){
+    var team = unformatted_team.replace(/ +/g, "")
     intraseason_chart.svg.selectAll("#"+team).style("stroke","yellow");
     interseason_chart.svg.selectAll("#"+team).style({
         opacity: 1,
@@ -108,7 +114,8 @@ function highlightTeam(team){
 
 }
 
-function unhighlightTeam(team){
+function unhighlightTeam(unformatted_team){
+    var team = unformatted_team.replace(/ +/g, "")
     intraseason_chart.svg.selectAll("#"+team).style("stroke", function (d) {
             return intraseason_chart.maincolor(d.key);
         });
@@ -124,7 +131,6 @@ function updateMap(){
 
     var dats = mapData;
     var selected = +document.getElementById("myRange").value;
-    console.log(selected);
 
     var subunits = topojson.feature(mapData, mapData.objects.subunits),
         places = {
@@ -204,4 +210,8 @@ function updateMap(){
     dots.exit().remove();
     subunit1.exit().remove();
     subunit2.exit().remove();
+
+    d3.select("#sliderlabel").text(selected);
+
+
 }

@@ -241,8 +241,8 @@ LineChart.prototype.updateVis = function(){
         })
         .style("stroke-width",3)
         .style("opacity",.6)
-        .attr("id",function(d){return(d.key)})
-    //
+        .attr("id",function(d){return(d.key.replace(/ +/g, ""))});
+
     vis.lines.on("mouseover", function(d) {
             highlightTeam(d.key);
         })
@@ -301,6 +301,10 @@ LineChart.prototype.updateVis = function(){
 
 
     vis.circlegroup2.exit().remove();
+
+    vis.svg.select(".x-axis").transition().duration(500).call(vis.xAxis);
+    vis.svg.select(".y-axis").transition().duration(500).call(vis.yAxis);
+
 
 
 
@@ -451,8 +455,7 @@ LineChart.prototype.updateVis = function(){
 
 
 
-    vis.svg.select(".x-axis").transition().duration(500).call(vis.xAxis);
-    vis.svg.select(".y-axis").transition().duration(500).call(vis.yAxis);
+
 
 
 

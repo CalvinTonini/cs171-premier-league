@@ -29,7 +29,10 @@ path.secondline {
     fill: none;
 }
 
-
+text#sliderlabel{
+    font-size:50px;
+    padding-left:85px;
+}
 .subunit.SCT { fill: #ddc; }
 .subunit.WLS { fill: #cdd; }
 .subunit.NIR { fill: #cdc; }

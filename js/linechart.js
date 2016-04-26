@@ -36,7 +36,7 @@ lineChart.prototype.initVis = function () {
         'Cardiff', 'Charlton', 'Chelsea', 'Coventry', 'Crystal Palace',
         'Derby', 'Everton', 'Fulham', 'Hull', 'Ipswich', 'Leeds',
         'Leicester', 'Liverpool', 'Man City', 'Man United',
-        'Middlesbrough', 'Newcastle', 'Norwich', "Nott'm Forest", 'Oldham',
+        'Middlesbrough', 'Newcastle', 'Norwich', "Nottingham Forest", 'Oldham',
         'Portsmouth', 'QPR', 'Reading', 'Sheffield United',
         'Sheffield Weds', 'Southampton', 'Stoke', 'Sunderland', 'Swansea',
         'Swindon', 'Tottenham', 'Watford', 'West Brom', 'West Ham', 'Wigan',
@@ -59,8 +59,9 @@ lineChart.prototype.initVis = function () {
     vis.svg.append("g")
         .attr("class", "y-axis axis");
 
-    vis.svg.append("text")
-        .classed("team-name", true);
+    vis.teamname = vis.svg.append("text").attr("transform", "translate(0,-10)");
+
+
 
     vis.wrangleData();
 };
@@ -84,12 +85,15 @@ lineChart.prototype.wrangleData = function(){
 
 lineChart.prototype.updateVis = function () {
     var vis = this;
+
     var selection = document.getElementById("across_season_form");
     selection = selection.options[selection.selectedIndex].value;
 
     vis.x.domain(d3.extent(vis.data, function (d) {
         return d["seasonDate"];
     }));
+
+
     if (selection == "rank") {
         vis.y.domain([d3.max(vis.data, function (d) {
             return d[selection];
@@ -124,17 +128,18 @@ lineChart.prototype.updateVis = function () {
                 return vis.line(d.values);
             },
             id: function (d) {
-                return d.key;
+                return d.key.replace(/ +/g, "");
             }
         })
         .style("stroke", function(d) {
             return vis.maincolor(d.key);
         })
         .on("mouseover", function (d) {
-            d3.select(".team-name").html(d["Team"]);
+            vis.teamname.text(d.key);
             highlightTeam(d.key);
         })
         .on("mouseout", function (d) {
+            vis.teamname.text("");
             unhighlightTeam(d.key);
         });
 

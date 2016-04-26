@@ -112,9 +112,6 @@ BarChart.prototype.wrangleData = function(){
 
     var vis = this;
 
-    console.log("newdata");
-
-    console.log(vis.data);
 
     var season = +document.getElementById("myRange").value;
 
@@ -133,11 +130,9 @@ BarChart.prototype.wrangleData = function(){
 
     vis.selected  = sel.options[sel.selectedIndex].value;
 
-    console.log(vis.selected)
 
     vis.selected = vis.selected.split("_")[1]
 
-    console.log(vis.selected)
 
     vis.filtered.sort(function(a, b) { return b[vis.selected] - a[vis.selected]; });
 
@@ -164,7 +159,6 @@ BarChart.prototype.updateVis = function() {
     }));
 
 
-    console.log(d3.max(vis.displayData, function (d) { return d[vis.selected] }));
 
 
     vis.x.domain([0, d3.max(vis.displayData, function (d) {
@@ -196,7 +190,8 @@ BarChart.prototype.updateVis = function() {
         })
         .attr("stroke-width","1.5px")
         .attr("opacity",.6)
-        .attr("id",function(d){return (d.Team)});
+        .attr("id",function(d){
+            return d.Team.replace(/ +/g, "")});
 
     vis.rect
         .on("mouseover", function(d) {

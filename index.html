@@ -14,21 +14,23 @@
       <div class = "row">
           <div class = "col-xs-4">
               <h4>Map</h4>
-
               <div id="map"></div>
-              <input title="Year Selection" type="range" id="myRange" min="1993" max="2016" list="tickmarks" onchange="mapupDate()">
+              <label for="myRange">Season:</label>
+              <input title="Year Selection" type="range" id="myRange" min="1993" max="2014" list="tickmarks" onchange="mapupDate()">
               <datalist id=tickmarks>
                   <option>1993</option>
-                  <option>1997</option>
-                  <option>2001</option>
+                  <option>1996</option>
+                  <option>1999</option>
+                  <option>2002</option>
                   <option>2005</option>
-                  <option>2009</option>
-                  <option>2013</option>
-                  <option>2016</option>
+                  <option>2008</option>
+                  <option>2011</option>
+                  <option>2014</option>
               </datalist>
+              <text id="sliderlabel"></text>
           </div>
           <div class = "col-xs-8">
-              <h4>Data Across Seasons</h4>
+              <h4>The History of the Premier League in One Graph </h4>
               <br />
               <div class="form-group">
                   <label for="across_season_form">Metric:</label>
@@ -49,10 +51,11 @@
       </div>
       <div class = "row">
           <div class = "col-xs-8">
-              <h4>Graph of Data Within Season</h4>
+              <h4> The Story of the Season </h4>
               <div class="form-group">
                   <br />
-                  <label for="attribute">Metric:</label>
+                  <label for="attribute">Metric: <text id = "slideryear"></text></label>
+                  <br/>
                   <select class="form-control" id="attribute"  onchange="updatevars()">
                       <option value = "cummulative_TotalPoints">Total Points</option>
                       <option value ="cummulative_GoalsFor">Total Goals Scored</option>
