@@ -68,11 +68,11 @@ path.secondline {
     fill: red;
 }
 
-text {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 10px;
-    pointer-events: none;
-}
+/*text {*/
+    /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+    /*font-size: 10px;*/
+   /*// pointer-events: none;*/
+/*}*/
 
 .info{
     font-size: 20.5px;
