@@ -28,7 +28,7 @@ var mapData;
 
 
 queue()
-    .defer(d3.csv, "data/matches.csv")
+    .defer(d3.csv, "data/matchesDates.csv")
     .defer(d3.csv, "data/intraseason_data.csv")
     .defer(d3.csv,"data/season_aggregate_stats.csv")
     .defer(d3.json,"data/tsconfig.json")
