@@ -103,7 +103,6 @@ lineChart.prototype.updateVis = function () {
     var teams = vis.svg.selectAll(".line")
         .data(vis.nest);
 
-
     teams.transition().duration(1000).attr("d", function (d) {
         return vis.line(d.values);
     });
@@ -116,6 +115,9 @@ lineChart.prototype.updateVis = function () {
             opacity: 0.4,
             d: function (d) {
                 return vis.line(d.values);
+            },
+            id: function (d) {
+                return d.key;
             }
         })
         .style("stroke", function(d) {
@@ -125,10 +127,12 @@ lineChart.prototype.updateVis = function () {
             d3.select(this).style("opacity", 1);
             d3.select(this).style("stroke-width", 5);
             d3.select(".team-name").html(d["Team"]);
+            highlightTeam(d.key);
         })
-        .on("mouseout", function () {
+        .on("mouseout", function (d) {
             d3.select(this).style("opacity", 0.4);
             d3.select(this).style("stroke-width", 1);
+            unhighlightTeam(d.key);
         });
 
     teams.exit().remove();
