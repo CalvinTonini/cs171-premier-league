@@ -17,7 +17,7 @@ var svg1 = d3.select("#map").append("svg")
     .attr("width", widthy)
     .attr("height", heighty);
 
-var aggregate, intraseason_chart;
+var aggregate, intraseason_chart, interseason_chart;
 
 // var parseDate = d3.time.format("%Y-%m-%d").parse;
 
@@ -28,11 +28,11 @@ var currentTeam = "Arsenal";
 
 var mapData;
 
-var tip = d3.tip().attr('class', 'd3-tip').html(function(d) {
+var tips = d3.tip().attr('class', 'd3-tip').html(function(d) {
     return "<strong>"+d.properties.club+"</strong> <br/> <span style='color:red'>" + d.properties.name + "</span>";
 });
-tip.offset([-10, 0]);
-svg1.call(tip);
+tips.offset([-10, 0]);
+svg1.call(tips);
 
 queue()
     .defer(d3.csv, "data/matchesDates.csv")
@@ -170,8 +170,8 @@ function updateMap(){
         .attr("cx", function(d){ return projection(d.geometry.coordinates)[0];})
         .attr("cy", function(d){ return projection(d.geometry.coordinates)[1];});
 
-    dots.on('mouseover',tip.show)
-        .on('mouseout',tip.hide)
+    dots.on('mouseover',tips.show)
+        .on('mouseout',tips.hide)
         .on('click',function(d) {
             toggle = !toggle;
             var testInput = d.properties.team;
@@ -183,6 +183,7 @@ function updateMap(){
                 toggle = false;
                 d3.select(this).style("fill","yellow");
                 highlightTeam(d.properties.team);
+                console.log("fuck")
             }
             else{
                 d3.select(this).style("fill","black");
