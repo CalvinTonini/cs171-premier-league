@@ -85,8 +85,8 @@ lineChart.prototype.updateVis = function () {
 
     vis.line = d3.svg.line()
         .x(function (d) { return vis.x(d["seasonDate"]); })
-        .y(function (d) { return vis.y(d[selection]); })
-        .interpolate("monotone");
+        .y(function (d) { return vis.y(d[selection]); });
+    
     var teams = vis.svg.selectAll(".team")
         .data(vis.nest);
     
