@@ -263,19 +263,19 @@ d3.csv("data/matchesDates.csv", function(d) {
         .on('mouseout', tiptext.hide)
         .on('click', function(d){
 
-
-            if (toggle == 0)
-            {
-                console.log(this);
-                d3.select(this).style("fill","yellow");
-                toggle = 1;
-
-            }
-            else
-            {
-                d3.selectAll(cells.txtscore).style("fill","black");
-                toggle = 0;
-            }
+            //
+            //if (toggle == 0)
+            //{
+            //    console.log(this);
+            //    d3.select(this).style("fill","yellow");
+            //    toggle = 1;
+            //
+            //}
+            //else
+            //{
+            //    d3.selectAll(cells.txtscore).style("fill","black");
+            //    toggle = 0;
+            //}
 
 
             d3.selectAll("text.info")
