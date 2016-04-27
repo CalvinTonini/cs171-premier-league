@@ -4,6 +4,7 @@
 BarChart = function(_parentElement, _data){
     this.parentElement = _parentElement;
     this.data = _data;
+    console.log(this.data);
     this.displayData = []; // see data wrangling
     this.initVis();
 }
@@ -32,7 +33,7 @@ BarChart.prototype.initVis = function() {
         'Cardiff', 'Charlton', 'Chelsea', 'Coventry', 'Crystal Palace',
         'Derby', 'Everton', 'Fulham', 'Hull', 'Ipswich', 'Leeds',
         'Leicester', 'Liverpool', 'Man City', 'Man United',
-        'Middlesbrough', 'Newcastle', 'Norwich', "Nott'm Forest", 'Oldham',
+        'Middlesbrough', 'Newcastle', 'Norwich', "Nottingham Forest", 'Oldham',
         'Portsmouth', 'QPR', 'Reading', 'Sheffield United',
         'Sheffield Weds', 'Southampton', 'Stoke', 'Sunderland', 'Swansea',
         'Swindon', 'Tottenham', 'Watford', 'West Brom', 'West Ham', 'Wigan',
@@ -49,7 +50,7 @@ BarChart.prototype.initVis = function() {
         'Cardiff', 'Charlton', 'Chelsea', 'Coventry', 'Crystal Palace',
         'Derby', 'Everton', 'Fulham', 'Hull', 'Ipswich', 'Leeds',
         'Leicester', 'Liverpool', 'Man City', 'Man United',
-        'Middlesbrough', 'Newcastle', 'Norwich', "Nott'm Forest", 'Oldham',
+        'Middlesbrough', 'Newcastle', 'Norwich', "Nottingham Forest", 'Oldham',
         'Portsmouth', 'QPR', 'Reading', 'Sheffield United',
         'Sheffield Weds', 'Southampton', 'Stoke', 'Sunderland', 'Swansea',
         'Swindon', 'Tottenham', 'Watford', 'West Brom', 'West Ham', 'Wigan',

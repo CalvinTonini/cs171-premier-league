@@ -15,7 +15,7 @@ LineChart.prototype.initVis = function() {
     var vis = this;
 
 
-    vis.parseDate = d3.time.format("%m/%d/%y").parse;
+    vis.parseDate = d3.time.format("%Y-%m-%d").parse;
 
 
     vis.data.forEach(function(d) {
@@ -156,8 +156,6 @@ LineChart.prototype.wrangleData = function(){
     vis.displayData = vis.nested;
 
     //console.log(vis.displayData);
-
-
     // Update the visualization
     vis.updateVis();
 }
@@ -209,6 +207,8 @@ LineChart.prototype.updateVis = function(){
     });
 
 
+
+
     vis.x.domain([vis.xmin, vis.xmax]);
 
     vis.line = d3.svg.line()
@@ -218,9 +218,6 @@ LineChart.prototype.updateVis = function(){
         .y(function (d) {
             return vis.y(d[vis.selected]);
         });
-
-
-
 
 
 
@@ -301,6 +298,8 @@ LineChart.prototype.updateVis = function(){
 
 
     vis.circlegroup2.exit().remove();
+
+
 
     vis.svg.select(".x-axis").transition().duration(500).call(vis.xAxis);
     vis.svg.select(".y-axis").transition().duration(500).call(vis.yAxis);

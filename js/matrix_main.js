@@ -1,6 +1,7 @@
 /**
  * Created by Eamon on 4/17/16.
  */
+
 var margin = {top: 20, right: 0, bottom: 10, left: 80},
     width = 720,
     height = 550;

@@ -20,10 +20,6 @@ var svg1 = d3.select("#map").append("svg")
 var aggregate, intraseason_chart;
 
 
-// var parseDate = d3.time.format("%Y-%m-%d").parse;
-
-// var parseDate_intra = d3.time.format("%Y-%m-%d").parse;
-
 var toggle = false;
 var currentTeam = "Arsenal";
 
@@ -36,16 +32,17 @@ tip.offset([-10, 0]);
 svg1.call(tip);
 
 queue()
+    .defer(d3.csv,"data/season_aggregate_stats.csv")
     .defer(d3.csv, "data/matchesDates.csv")
     .defer(d3.csv, "data/intraseason_data.csv")
-    .defer(d3.csv,"data/season_aggregate_stats.csv")
     .defer(d3.json,"data/tsconfig.json")
-    .await(function(error, matches, intra, agg, mapJson) {
+    .await(function(error, agg, matches, intra, mapJson) {
 
 
         intraseason = intra;
         aggregate = agg;
         mapData = mapJson;
+        matchData = matches;
 
 
         matches.forEach(function (d) {
