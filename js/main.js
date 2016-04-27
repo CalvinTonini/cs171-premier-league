@@ -31,6 +31,8 @@ var tip = d3.tip().attr('class', 'd3-tip').html(function(d) {
 tip.offset([-10, 0]);
 svg1.call(tip);
 
+
+
 queue()
     .defer(d3.csv,"data/season_aggregate_stats.csv")
     .defer(d3.csv, "data/matchesDates.csv")
@@ -114,13 +116,13 @@ function highlightTeam(unformatted_team){
 function unhighlightTeam(unformatted_team){
     var team = unformatted_team.replace(/ +/g, "")
     intraseason_chart.svg.selectAll("#"+team).style("stroke", function (d) {
-            return intraseason_chart.maincolor(d.key);
+            return maincolor(d.key);
         });
     interseason_chart.svg.selectAll("#"+team).style({
         opacity: 0.4,
         "stroke-width": 1
     });
-    bar_chart.svg.selectAll("#"+team).attr("fill", function(d) { return bar_chart.maincolor(d.Team)});
+    bar_chart.svg.selectAll("#"+team).attr("fill", function(d) { return maincolor(d.Team)});
     svg_cells.selectAll("#"+team).attr("stroke","grey").attr("stroke-width","1");
 }
 
