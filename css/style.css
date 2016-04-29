@@ -150,6 +150,14 @@ path.secondline {
     font-size: 16px;
 }
 
+.txtscore{
+    cursor: pointer;
+}
+
+.label{
+    font-size: 20.5px;
+}
+
 
 
 .Aligner {

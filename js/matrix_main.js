@@ -18,7 +18,7 @@ matrix.prototype.initVis = function() {
 
     var vis = this;
 
-    vis.margin = {top: 20, right: 0, bottom: 10, left: 80},
+    vis.margin = {top: 60, right: 0, bottom: 10, left: 80},
         vis.width = 720,
         vis.height = 550;
 
@@ -49,7 +49,7 @@ matrix.prototype.initVis = function() {
 
     vis.svg_info = d3.select("#matrix-info-area").append("svg")
         .attr("width", 400)
-        .attr("height", 800)
+        .attr("height", 580)
         .append("g")
         .attr("transform", "translate(0, 50)");
 
@@ -63,30 +63,35 @@ matrix.prototype.initVis = function() {
 
     var tab = '\u00A0' + '\u00A0' + '\u00A0' + '\u00A0' + '\u00A0' + '\u00A0';
 
-    var Season_selection = "2014-2015";
+    var slider = $("#slider").slider("option", "value");
 
 
+    var slider_2 = slider + 1;
 
-        //console.log(data);
-
-        //var vis = this;
-        //
-        //var parseDate = d3.time.format("%Y-%m-%d").parse;
+    var Season_selection = slider + "-" + slider_2;
+    console.log(Season_selection)
 
 
-        vis.data.forEach(function (d) {
+    //console.log(data);
 
-            for (var name in d) {
-                if (name != "Date" && name != "AwayTeam" && name != "FTR" && name != "Season" && name != "HomeTeam") {
-                    d[name] = +d[name]
-                }
+    //var vis = this;
+    //
+    //var parseDate = d3.time.format("%Y-%m-%d").parse;
+
+
+    vis.data.forEach(function (d) {
+
+        for (var name in d) {
+            if (name != "Date" && name != "AwayTeam" && name != "FTR" && name != "Season" && name != "HomeTeam") {
+                d[name] = +d[name]
             }
-            //d.Date = parseDate(d.Date)
-            d.Date = d3.time.format("%m/%e/%y").parse(d.Date)
+        }
+        //d.Date = parseDate(d.Date)
+        d.Date = d3.time.format("%m/%e/%y").parse(d.Date)
 
-        });
+    });
 
-
+    function update_matrix() {
         vis.data = vis.data.filter(function (d) {
             return d.Season == Season_selection
         });
@@ -187,7 +192,7 @@ matrix.prototype.initVis = function() {
 
         vis.data.splice(vis.data.length, 0, placeholder);
 
-    console.log(vis.data);
+        console.log(vis.data);
 
 
         var count = 0;
@@ -263,6 +268,45 @@ matrix.prototype.initVis = function() {
         //.on('mouseout', tipcell.hide);
 
 
+        vis.svg_cells.append("rect")
+            .attr("height", cell_height)
+            .attr("width", 32)
+            .attr("x","445")
+            .attr("y", "-45")
+            .attr("stroke", "grey")
+            .attr("fill", "lightgrey");
+
+        vis.svg_cells.append("text")
+            .attr("x","485")
+            .attr("y", "-28")
+            .text("Draw");
+
+        vis.svg_cells.append("rect")
+            .attr("height", cell_height)
+            .attr("width", 32)
+            .attr("x","120")
+            .attr("y", "-45")
+            .attr("stroke", "grey")
+            .attr("fill", "#72BCD4");
+
+        vis.svg_cells.append("text")
+            .attr("x","160")
+            .attr("y", "-28")
+            .text("Home Team Win");
+
+        vis.svg_cells.append("rect")
+            .attr("height", cell_height)
+            .attr("width", 32)
+            .attr("x","280")
+            .attr("y", "-45")
+            .attr("stroke", "grey")
+            .attr("fill","#FF9999");
+
+        vis.svg_cells.append("text")
+            .attr("x","320")
+            .attr("y", "-28")
+            .text("Home Team Lose");
+
         vis.cells.append("text")
             .attr("x", function (d, index) {
 
@@ -319,8 +363,6 @@ matrix.prototype.initVis = function() {
 
                 d3.selectAll("text.info_small")
                     .remove();
-
-
 
 
                 //vis.svg_info.append("rect")
@@ -502,6 +544,7 @@ matrix.prototype.initVis = function() {
                     .text(d.HR);
 
 
+
                 //var imgs = svg.selectAll("image");
 
 
@@ -513,21 +556,31 @@ matrix.prototype.initVis = function() {
 
             });
 
-    vis.cells.append("text")
-        .attr("x", -50)
-        .attr("y", function (d, index) {
-            //console.log(index);
-            //console.log(nodes.length);
-            //console.log(index % nodes.length);
+        vis.cells.append("text")
+            .attr("x", 0)
+            .attr("y", function (d, index) {
+                //console.log(index);
+                //console.log(nodes.length);
+                //console.log(index % nodes.length);
 
 
-            return (((index % nodes.length)) * (cell_height + 1) )
-        })
-        .attr("dy", "1.2em")
-        .style("text-anchor", "middle")
-        .text(function (d, index) {
-            return nodes[index];
-        });
+                return (((index % nodes.length)) * (cell_height + 1) )
+            })
+            .attr("dy", "1.2em")
+            .style("text-anchor", "middle")
+            .text(function (d, index) {
+                return nodes[index];
+            });
+
+        vis.svg_cells.append("text")
+            .attr("x", 18)
+            .attr("y", -25)
+            .attr("dy", ".1em")
+            .style("text-anchor", "middle")
+            .attr("class", "label")
+            .text("Home ╲ Away");
+
+
 
         //console.log(nodes);
         var nodes_trunc = nodes;
@@ -559,7 +612,6 @@ matrix.prototype.initVis = function() {
             }
 
         }
-
 
 
         vis.cells.append("text")
@@ -617,7 +669,6 @@ matrix.prototype.initVis = function() {
         //    .attr("transform", "rotate(90)");
 
 
-
         //.attr("transform", "rotate(10)");
 
         //cells.append("text")
@@ -650,4 +701,6 @@ matrix.prototype.initVis = function() {
         //    .attr("transform", "rotate(90)");
 
 
-}
+    }
+    update_matrix();
+};
