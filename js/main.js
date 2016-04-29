@@ -35,15 +35,16 @@ svg1.call(tip);
 
 queue()
     .defer(d3.csv,"data/season_aggregate_stats.csv")
-    //.defer(d3.csv, "data/matchesDates.csv")
+    .defer(d3.csv, "data/eamon.csv")
     .defer(d3.csv, "data/intraseason_data.csv")
     .defer(d3.json,"data/tsconfig.json")
-    .await(function(error, agg, intra, mapJson) {
+    .await(function(error, agg,matches, intra, mapJson) {
 
 
         intraseason = intra;
         aggregate = agg;
         mapData = mapJson;
+        matchData = matches;
         //matchData = matches;
 
 
@@ -79,6 +80,8 @@ function createvis(){
 
     bar_chart = new BarChart("bar_chart",aggregate);
 
+    season_matrix = new matrix("matrix-area",matchData);
+
     updateMap();
 
 }
@@ -102,7 +105,7 @@ function mapupDate(){
 
 
 function highlightTeam(unformatted_team){
-    var team = unformatted_team.replace(/ +/g, "")
+    var team = unformatted_team.replace(/ +/g, "");
     intraseason_chart.svg.selectAll("#"+team).transition().style("stroke","yellow").style("opacity",.6);
     interseason_chart.svg.selectAll("#"+team).transition().style({
         opacity: 1,
@@ -114,14 +117,11 @@ function highlightTeam(unformatted_team){
 }
 
 function unhighlightTeam(unformatted_team){
-    var team = unformatted_team.replace(/ +/g, "")
+    var team = unformatted_team.replace(/ +/g, "");
     intraseason_chart.svg.selectAll("#"+team).transition().style("stroke", function (d) {
             return maincolor(d.key);
         });
-    interseason_chart.svg.selectAll("#"+team).transition().style({
-        opacity: 0.4,
-        "stroke-width": 1
-    });
+    interseason_chart.svg.selectAll("#"+team).transition().style("opacity",".4").style("stroke-width","2px");
     bar_chart.svg.selectAll("#"+team).transition().attr("fill", function(d) { return maincolor(d.Team)}).style("opacity",.6);
     //svg_cells.selectAll("#"+team).attr("stroke","grey").attr("stroke-width","1");
 }

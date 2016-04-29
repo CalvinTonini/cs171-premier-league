@@ -44,6 +44,33 @@
     /*display: none;*/
 /*}*/
 
+/*#myRange{*/
+    /*width: 400px;*/
+/*}*/
+
+/*#sliderlabel{*/
+    /*padding-left:50px;*/
+    /*color:#777;*/
+    /*padding-right:20px;*/
+/*}*/
+
+/*.slider .handle {*/
+    /*fill: #fff;*/
+    /*stroke: #000;*/
+    /*stroke-opacity: .5;*/
+    /*stroke-width: 1.25px;*/
+    /*cursor: crosshair;*/
+/*}*/
+
+#chooseseason{
+    padding-left:50px;
+    color:#777;
+    padding-right:20px;
+}
+
+div.nav.navbar-nav{
+    padding-top:15px;
+}
 
 path.line {
     fill: none;
@@ -61,10 +88,7 @@ path.secondline {
 }
 
 
-text#sliderlabel{
-    font-size:50px;
-    padding-left:125px;
-}
+
 .subunit.SCT { fill: #ddc; }
 .subunit.WLS { fill: #cdd; }
 .subunit.NIR { fill: #cdc; }

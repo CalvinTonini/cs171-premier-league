@@ -16,9 +16,9 @@ BarChart.prototype.initVis = function() {
 
     vis.margin = {top: 20, right: 0, bottom: 30, left: 125};
 
-    vis.width = 420 - vis.margin.left - vis.margin.right;
+    vis.width = 400 - vis.margin.left - vis.margin.right;
 
-    vis.height = 500 - vis.margin.top - vis.margin.bottom;
+    vis.height = 400 - vis.margin.top - vis.margin.bottom;
 
 
     vis.y = d3.scale.ordinal()

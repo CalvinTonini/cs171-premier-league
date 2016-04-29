@@ -34,7 +34,7 @@ LineChart.prototype.initVis = function() {
 
     vis.width = 800 - vis.margin.left - vis.margin.right;
 
-    vis.height = 500 - vis.margin.top - vis.margin.bottom;
+    vis.height = 400 - vis.margin.top - vis.margin.bottom;
 
 
     vis.x = d3.time.scale()
