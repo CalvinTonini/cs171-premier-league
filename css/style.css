@@ -3,16 +3,47 @@
     /*font: 10px sans-serif;*/
 /*}*/
 
+/*.axis path,*/
+
+/*.axis line {*/
+    /*fill: none;*/
+    /*stroke: #000;*/
+    /*shape-rendering: crispEdges;*/
+/*}*/
+
+/*.x.axis path {*/
+    /*display: none;*/
+/*}*/
+
 .axis path,
 .axis line {
     fill: none;
     stroke: #000;
-    shape-rendering: crispEdges;
+    /*shape-rendering: crispEdges;*/
 }
 
 .x.axis path {
     display: none;
 }
+
+
+
+/*.axis {*/
+    /*shape-rendering: crispEdges;*/
+/*}*/
+
+/*.x.axis line {*/
+    /*stroke: #fff;*/
+/*}*/
+
+/*.x.axis .minor {*/
+    /*stroke-opacity: .5;*/
+/*}*/
+
+/*.x.axis path {*/
+    /*display: none;*/
+/*}*/
+
 
 path.line {
     fill: none;
@@ -30,6 +61,10 @@ path.secondline {
 }
 
 
+text#sliderlabel{
+    font-size:50px;
+    padding-left:125px;
+}
 .subunit.SCT { fill: #ddc; }
 .subunit.WLS { fill: #cdd; }
 .subunit.NIR { fill: #cdc; }
@@ -71,7 +106,7 @@ path.secondline {
 /*text {*/
     /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
     /*font-size: 10px;*/
-    /*pointer-events: none;*/
+   /*// pointer-events: none;*/
 /*}*/
 
 .info{

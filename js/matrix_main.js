@@ -1,6 +1,7 @@
 /**
  * Created by Eamon on 4/17/16.
  */
+
 var margin = {top: 20, right: 0, bottom: 10, left: 80},
     width = 720,
     height = 550;
@@ -19,7 +20,9 @@ tiptext.html(function(d) { return "<strong>Home:</strong> <span style='color:red
 
 var formatDate = d3.time.format("%B %m %Y");
 
-var svg = d3.select("#matrix-area").append("svg")
+var toggle = 0;
+
+var svg_cells = d3.select("#matrix-area").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .style("margin-left", -margin.left + "px")
@@ -36,7 +39,7 @@ svg_info.append("text")
     .attr("class", "tip");
 
 /* Invoke the tip in the context of your visualization */
-svg.call(tiptext);
+svg_cells.call(tiptext);
 //svg.call(tipcell);
 
 
@@ -45,24 +48,30 @@ var tab = '\u00A0' + '\u00A0'+ '\u00A0'+ '\u00A0'+ '\u00A0'+ '\u00A0';
 var Season_selection = "2014-2015";
 
 
-d3.csv("data/matchesDates.csv", function(d) {
+d3.csv("data/eamon.csv", function(error, data) {
 
-    return {
-        Season: d.Season,
-        HomeTeam: d.HomeTeam,
-        AwayTeam: d.AwayTeam,
-        FTR: d.FTR,
-        FTHG: +d.FTHG,
-        FTAG: +d.FTAG,
-        Date: new Date (d.Date)
-    };
-}, function(error, data) {
+
+    console.log(data);
 
     var vis = this;
 
+    var   parseDate = d3.time.format("%Y-%m-%d").parse;
+
+
+    data.forEach(function(d) {
+
+        for (var name in d){
+            if(name!="Date" && name != "AwayTeam" && name != "FTR" && name!="Season" && name != "HomeTeam"){
+                d[name] = +d[name]
+            }
+        }
+        d.Date = parseDate(d.Date)
+
+    });
 
 
     data = data.filter(function(d) { return d.Season == Season_selection});
+
 
     //console.log(data)
 
@@ -170,17 +179,18 @@ d3.csv("data/matchesDates.csv", function(d) {
 
     var cell_width = 32;
     var cell_height = 25;
-    var rect = svg.selectAll("rect")
+    var rect = svg_cells.selectAll("rect")
         .data(data);
 // Enter (initialize the newly added elements)
 
-    var cells = svg.selectAll("g")
+    var cells = svg_cells.selectAll("g")
         .data(data).enter()
         .append("g");
 
 
     cells.append("rect")
         .attr("class", "rect")
+        .attr("id", function(d){return d.HomeTeam;})
         .attr("height", cell_height)
         .attr("width", 32)
         .attr("x", function(d, index) {
@@ -209,18 +219,18 @@ d3.csv("data/matchesDates.csv", function(d) {
 
 
 
-            return Math.floor((index/nodes.length))* cell_height })
+            return Math.floor((index/nodes.length))* (cell_height +1) })
         .attr("stroke", "grey")
         .attr("fill", function(d){
 
             if (d.FTR == "H") {
-                return "#ADD8E6";
+                return "#72BCD4";
             }
             else if (d.FTR == "A"){
-                return "#FF7F7F";
+                return "#FF9999";
             }
             else if (d.FTR == "D"){
-                return "#FFFF8B";
+                return "lightgrey";
             }
             else if (d.FTR == "Na"){
                 return "grey";
@@ -248,8 +258,10 @@ d3.csv("data/matchesDates.csv", function(d) {
 
 
 
-            return Math.floor((index/nodes.length))* cell_height })
+
+            return Math.floor((index/nodes.length))* (cell_height +1) })
         .attr("dy", "1.2em")
+        .attr("class", "txtscore")
         .text(function(d){if (d.FTR != "Na")
         {
             return d.FTHG + "-" +d.FTAG
@@ -257,6 +269,21 @@ d3.csv("data/matchesDates.csv", function(d) {
         .on('mouseover', tiptext.show)
         .on('mouseout', tiptext.hide)
         .on('click', function(d){
+
+            //
+            //if (toggle == 0)
+            //{
+            //    console.log(this);
+            //    d3.select(this).style("fill","yellow");
+            //    toggle = 1;
+            //
+            //}
+            //else
+            //{
+            //    d3.selectAll(cells.txtscore).style("fill","black");
+            //    toggle = 0;
+            //}
+
 
             d3.selectAll("text.info")
                 .remove();
@@ -276,7 +303,7 @@ d3.csv("data/matchesDates.csv", function(d) {
                 .attr("height", "210")
                 .attr("fill", "white")
                 .attr("stroke", "black")
-                .attr("stroke-width", "1");
+                .attr("stroke-width", "2");
 
             svg_info.append("text")
                 .attr("class", "info")
@@ -341,10 +368,34 @@ d3.csv("data/matchesDates.csv", function(d) {
     //console.log(nodes);
     var nodes_trunc = nodes;
 
-    for (i=0; i<nodes_trunc.length; i++)
-    {
-        nodes_trunc[i] = nodes_trunc[i].substring(0,3);
-    }
+    for (i=0; i<nodes_trunc.length; i++) {
+        if (nodes_trunc[i] == "Blackburn") {
+            nodes_trunc[i] = "Bbn";
+        }
+        else if (nodes_trunc[i] == "Man City") {
+            nodes_trunc[i] = "MC";
+        }
+        else if (nodes_trunc[i] == "Man United") {
+            nodes_trunc[i] = "MU";
+        }
+        else if (nodes_trunc[i] == "Sheffield United") {
+            nodes_trunc[i] = "SU";
+        }
+        else if (nodes_trunc[i] == "Sheffield Weds") {
+            nodes_trunc[i] = "SW";
+        }
+        else if (nodes_trunc[i] == "West Brom") {
+            nodes_trunc[i] = "WB";
+        }
+        else if (nodes_trunc[i] == "West Ham") {
+            nodes_trunc[i] = "WH";
+        }
+        else {
+            nodes_trunc[i] = nodes_trunc[i].substring(0, 3);
+        }
+
+    };
+
 
     cells.append("text")
         .attr("x", function(d, index) {

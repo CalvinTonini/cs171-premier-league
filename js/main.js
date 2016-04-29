@@ -19,9 +19,6 @@ var svg1 = d3.select("#map").append("svg")
 
 var aggregate, intraseason_chart, interseason_chart;
 
-// var parseDate = d3.time.format("%Y-%m-%d").parse;
-
-// var parseDate_intra = d3.time.format("%Y-%m-%d").parse;
 
 var toggle = false;
 var currentTeam = "Arsenal";
@@ -34,24 +31,28 @@ var tips = d3.tip().attr('class', 'd3-tip').html(function(d) {
 tips.offset([-10, 0]);
 svg1.call(tips);
 
+
+
 queue()
-    .defer(d3.csv, "data/matchesDates.csv")
-    .defer(d3.csv, "data/intraseason_data.csv")
     .defer(d3.csv,"data/season_aggregate_stats.csv")
+    //.defer(d3.csv, "data/matchesDates.csv")
+    .defer(d3.csv, "data/intraseason_data.csv")
     .defer(d3.json,"data/tsconfig.json")
-    .await(function(error, matches, intra, agg, mapJson) {
+    .await(function(error, agg, intra, mapJson) {
+
 
         intraseason = intra;
         aggregate = agg;
         mapData = mapJson;
+        //matchData = matches;
 
 
-        matches.forEach(function (d) {
-            d[""] = +d[""];
-            d.FTAG = +d.FTAG;
-            d.FTHG = +d.FTHG;
-            d.Date = d3.time.format("%m/%d/%Y").parse(d.Date);
-        });
+        //matches.forEach(function (d) {
+        //    d[""] = +d[""];
+        //    d.FTAG = +d.FTAG;
+        //    d.FTHG = +d.FTHG;
+        //    d.Date = d3.time.format("%m/%d/%Y").parse(d.Date);
+        //});
 
         aggregate.forEach(function (d) {
             stringsToNumber(d);
@@ -65,6 +66,8 @@ queue()
                 }
             }
         }
+
+
         createvis();
     });
 
@@ -97,24 +100,36 @@ function mapupDate(){
 
 }
 
-function highlightTeam(team){
-    intraseason_chart.svg.selectAll("#"+team).style("stroke","yellow");
-    bar_chart.svg.selectAll("#"+team).attr("fill","yellow");
+
+function highlightTeam(unformatted_team){
+    var team = unformatted_team.replace(/ +/g, "")
+    intraseason_chart.svg.selectAll("#"+team).transition().style("stroke","yellow").style("opacity",.6);
+    interseason_chart.svg.selectAll("#"+team).transition().style({
+        opacity: 1,
+        "stroke-width": 5
+    });
+    bar_chart.svg.selectAll("#"+team).transition().attr("fill","yellow");
+    //svg_cells.selectAll("#"+team).attr("stroke","yellow").attr("stroke-width","3");
 
 }
 
-function unhighlightTeam(team){
-    intraseason_chart.svg.selectAll("#"+team).style("stroke", function (d) {
-            return intraseason_chart.maincolor(d.key);
+function unhighlightTeam(unformatted_team){
+    var team = unformatted_team.replace(/ +/g, "")
+    intraseason_chart.svg.selectAll("#"+team).transition().style("stroke", function (d) {
+            return maincolor(d.key);
         });
-    bar_chart.svg.selectAll("#"+team).attr("fill", function(d) { return bar_chart.maincolor(d.Team)});
+    interseason_chart.svg.selectAll("#"+team).transition().style({
+        opacity: 0.4,
+        "stroke-width": 1
+    });
+    bar_chart.svg.selectAll("#"+team).transition().attr("fill", function(d) { return maincolor(d.Team)}).style("opacity",.6);
+    //svg_cells.selectAll("#"+team).attr("stroke","grey").attr("stroke-width","1");
 }
 
 function updateMap(){
 
     var dats = mapData;
     var selected = +document.getElementById("myRange").value;
-    console.log(selected);
 
     var subunits = topojson.feature(mapData, mapData.objects.subunits),
         places = {
@@ -195,4 +210,8 @@ function updateMap(){
     dots.exit().remove();
     subunit1.exit().remove();
     subunit2.exit().remove();
+
+    d3.select("#sliderlabel").text(selected);
+
+
 }
