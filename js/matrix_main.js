@@ -513,6 +513,22 @@ matrix.prototype.initVis = function() {
 
             });
 
+    vis.cells.append("text")
+        .attr("x", -50)
+        .attr("y", function (d, index) {
+            //console.log(index);
+            //console.log(nodes.length);
+            //console.log(index % nodes.length);
+
+
+            return (((index % nodes.length)) * (cell_height + 1) )
+        })
+        .attr("dy", "1.2em")
+        .style("text-anchor", "middle")
+        .text(function (d, index) {
+            return nodes[index];
+        });
+
         //console.log(nodes);
         var nodes_trunc = nodes;
 
@@ -567,7 +583,7 @@ matrix.prototype.initVis = function() {
             })
             .attr("dy", "-0.2em")
             .text(function (d, index) {
-                return nodes_trunc[index];
+                return nodes[index];
             });
         //.attr("transform", "rotate(10)");
 
@@ -601,20 +617,7 @@ matrix.prototype.initVis = function() {
         //    .attr("transform", "rotate(90)");
 
 
-        vis.cells.append("text")
-            .attr("x", 17)
-            .attr("y", function (d, index) {
-                //console.log(index);
-                //console.log(nodes.length);
-                //console.log(index % nodes.length);
 
-
-                return (((index % nodes.length)) * (cell_height + 1) )
-            })
-            .attr("dy", "1.2em")
-            .text(function (d, index) {
-                return nodes_trunc[index];
-            });
         //.attr("transform", "rotate(10)");
 
         //cells.append("text")
