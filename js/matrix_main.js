@@ -235,10 +235,7 @@ d3.csv("data/eamon.csv", function(error, data) {
             else if (d.FTR == "Na"){
                 return "grey";
             }
-        })
-        .attr("id",function(d){
-            console.log(d)
-        })
+        });
         //.on('mouseover', tipcell.show)
         //.on('mouseout', tipcell.hide);
 
