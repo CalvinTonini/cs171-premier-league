@@ -103,27 +103,27 @@ function mapupDate(){
 
 function highlightTeam(unformatted_team){
     var team = unformatted_team.replace(/ +/g, "")
-    intraseason_chart.svg.selectAll("#"+team).style("stroke","yellow");
+    intraseason_chart.svg.selectAll("#"+team).transition().style("stroke","yellow");
     interseason_chart.svg.selectAll("#"+team).style({
         opacity: 1,
         "stroke-width": 5
     });
-    bar_chart.svg.selectAll("#"+team).attr("fill","yellow");
-    svg_cells.selectAll("#"+team).attr("stroke","yellow").attr("stroke-width","3");
+    bar_chart.svg.selectAll("#"+team).transition().attr("fill","yellow");
+    //svg_cells.selectAll("#"+team).attr("stroke","yellow").attr("stroke-width","3");
 
 }
 
 function unhighlightTeam(unformatted_team){
     var team = unformatted_team.replace(/ +/g, "")
-    intraseason_chart.svg.selectAll("#"+team).style("stroke", function (d) {
+    intraseason_chart.svg.selectAll("#"+team).transition().style("stroke", function (d) {
             return maincolor(d.key);
         });
     interseason_chart.svg.selectAll("#"+team).style({
         opacity: 0.4,
         "stroke-width": 1
     });
-    bar_chart.svg.selectAll("#"+team).attr("fill", function(d) { return maincolor(d.Team)});
-    svg_cells.selectAll("#"+team).attr("stroke","grey").attr("stroke-width","1");
+    bar_chart.svg.selectAll("#"+team).transition().attr("fill", function(d) { return maincolor(d.Team)});
+    //svg_cells.selectAll("#"+team).attr("stroke","grey").attr("stroke-width","1");
 }
 
 function updateMap(){

@@ -14,15 +14,15 @@ BarChart.prototype.initVis = function() {
 
     var vis = this;
 
-    vis.margin = {top: 10, right: 0, bottom: 50, left: 100};
+    vis.margin = {top: 20, right: 0, bottom: 30, left: 100};
 
-    vis.width = 500 - vis.margin.left - vis.margin.right;
+    vis.width = 300 - vis.margin.left - vis.margin.right;
 
-    vis.height = 600 - vis.margin.top - vis.margin.bottom;
+    vis.height = 500 - vis.margin.top - vis.margin.bottom;
 
 
     vis.y = d3.scale.ordinal()
-        .rangeRoundBands([0, vis.height], .2);
+        .rangeRoundBands([0, vis.height], .1);
 
     vis.x = d3.scale.linear()
         .range([0, vis.width]);

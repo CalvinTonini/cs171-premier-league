@@ -3,16 +3,47 @@
     /*font: 10px sans-serif;*/
 /*}*/
 
+/*.axis path,*/
+
+/*.axis line {*/
+    /*fill: none;*/
+    /*stroke: #000;*/
+    /*shape-rendering: crispEdges;*/
+/*}*/
+
+/*.x.axis path {*/
+    /*display: none;*/
+/*}*/
+
 .axis path,
 .axis line {
     fill: none;
     stroke: #000;
-    shape-rendering: crispEdges;
+    /*shape-rendering: crispEdges;*/
 }
 
 .x.axis path {
     display: none;
 }
+
+
+
+/*.axis {*/
+    /*shape-rendering: crispEdges;*/
+/*}*/
+
+/*.x.axis line {*/
+    /*stroke: #fff;*/
+/*}*/
+
+/*.x.axis .minor {*/
+    /*stroke-opacity: .5;*/
+/*}*/
+
+/*.x.axis path {*/
+    /*display: none;*/
+/*}*/
+
 
 path.line {
     fill: none;
@@ -28,6 +59,7 @@ path.firstline {
 path.secondline {
     fill: none;
 }
+
 
 text#sliderlabel{
     font-size:50px;

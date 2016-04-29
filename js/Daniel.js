@@ -190,17 +190,15 @@ LineChart.prototype.updateVis = function(){
         })
         .style("stroke-width",3)
         .style("opacity",.6)
-        .attr("id",function(d){return(d.key.replace(/ +/g, ""))});
+        .attr("id",function(d){
+            return(d.key.replace(/\s+/g, ''))
+        });
 
     vis.lines.on("mouseover", function(d) {
             highlightTeam(d.key);
         })
         .on("mouseout", function(d, i) {
-            d3.select(this)
-                .style("opacity",.6)
-                .style("stroke",maincolor(d.key))
             unhighlightTeam(d.key)
-
         });
 
 
@@ -224,7 +222,6 @@ LineChart.prototype.updateVis = function(){
         })
         .attr("r", 3);
 
-
     vis.circlegroup2.enter().append("g").attr("class","circlegroup").selectAll("circle").data(function(d){ return(d.values)}).enter()
         .append("circle")
         .attr("class","circle")
@@ -240,9 +237,7 @@ LineChart.prototype.updateVis = function(){
         .attr("cy", function(d) {
             return vis.y(d[vis.selected])
         })
-        .attr("r", 3)
-        .attr("opacity",.6);
-
+        .attr("r", 3);
 
 
 

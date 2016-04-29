@@ -2,6 +2,10 @@
  * Created by cni on 2016-04-14.
  */
 
+
+
+var years =  [1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014];
+
 lineChart = function(_parentElement, _data) {
     this.parentElement = _parentElement;
     this.data = _data;
@@ -33,7 +37,6 @@ lineChart.prototype.initVis = function () {
 
     vis.xAxis = d3.svg.axis()
         .scale(vis.x)
-        .ticks(25)
         .orient("bottom");
 
     vis.yAxis = d3.svg.axis()
@@ -42,7 +45,7 @@ lineChart.prototype.initVis = function () {
 
     vis.svg.append("g")
         .attr("class", "x-axis axis")
-        .attr("transform", "translate(0," + vis.height + ")");
+        .attr("transform", "translate(0," + (vis.height) + ")");
 
     vis.svg.append("g")
         .attr("class", "y-axis axis");
@@ -55,12 +58,17 @@ lineChart.prototype.initVis = function () {
 };
 
 lineChart.prototype.wrangleData = function(){
+
     var vis = this;
+
+    vis.parseDate = d3.time.format("%Y").parse;
+
 
     // In the first step no data wrangling/filtering needed
     vis.data.forEach(function (d) {
-        d["seasonDate"] = d3.time.format("%Y-%Y").parse(d["Season"]);
+        d["seasonDate"] = vis.parseDate(d["Season"].split("-")[0]);
     });
+
     vis.nest = d3.nest()
         .key(function (d) {
             return d["Team"];
@@ -80,6 +88,9 @@ lineChart.prototype.updateVis = function () {
     vis.x.domain(d3.extent(vis.data, function (d) {
         return d["seasonDate"];
     }));
+
+    console.log(d3.extent(vis.data, function (d) {
+        return d["seasonDate"]}));
 
 
     if (selection == "rank") {

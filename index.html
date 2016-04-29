@@ -60,26 +60,29 @@
           </div>
       </div>
       <div class = "row">
+          <div class = "col-xs-12"></div>
+          <div class="form-group">
+              <br />
+              <label for="attribute">Metric: <text id = "slideryear"></text></label>
+              <br/>
+              <select class="form-control" id="attribute"  onchange="updatevars()">
+                  <option value = "cummulative_TotalPoints">Total Points</option>
+                  <option value ="cummulative_GoalsFor">Total Goals Scored</option>
+                  <option value = "cummulative_GoalsAllowed">Total Goals Allowed</option>
+                  <option value = "cummulative_GoalDifferential">Total Goal Differential</option>
+                  <option value = "cummulative_TotalFouls">Total Fouls</option>
+              </select>
+              <!--<label for="season"> Season:</label>-->
+              <!--<select class="form-control" id="season"  onchange="updateChoropleth()">-->
+              <!--<option value = "cummulative_TotalPoints">Total Points</option>-->
+              <!--<option value ="cummulatie_GoalsFor">Total Goals Scored</option>-->
+              <!--<option value = "cummulative_TotalFouls">Total Fouls</option>-->
+              <!--</select>-->
+          </div>
+      </div>
+      <div class = "row">
           <div class = "col-xs-8">
               <h4> The Story of the Season </h4>
-              <div class="form-group">
-                  <br />
-                  <label for="attribute">Metric: <text id = "slideryear"></text></label>
-                  <br/>
-                  <select class="form-control" id="attribute"  onchange="updatevars()">
-                      <option value = "cummulative_TotalPoints">Total Points</option>
-                      <option value ="cummulative_GoalsFor">Total Goals Scored</option>
-                      <option value = "cummulative_GoalsAllowed">Total Goals Allowed</option>
-                      <option value = "cummulative_GoalDifferential">Total Goal Differential</option>
-                      <option value = "cummulative_TotalFouls">Total Fouls</option>
-                  </select>
-                  <!--<label for="season"> Season:</label>-->
-                  <!--<select class="form-control" id="season"  onchange="updateChoropleth()">-->
-                      <!--<option value = "cummulative_TotalPoints">Total Points</option>-->
-                      <!--<option value ="cummulatie_GoalsFor">Total Goals Scored</option>-->
-                      <!--<option value = "cummulative_TotalFouls">Total Fouls</option>-->
-                  <!--</select>-->
-              </div>
               <div id="intra_season"></div>
           </div>
           <div class = "col-xs-4">
