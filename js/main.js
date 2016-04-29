@@ -75,9 +75,9 @@ function createvis(){
 
     interseason_chart = new lineChart("across_season", aggregate);
 
-    //intraseason_chart = new LineChart("intra_season",intraseason);
+    intraseason_chart = new LineChart("intra_season",intraseason);
 
-    //bar_chart = new BarChart("bar_chart",aggregate);
+    bar_chart = new BarChart("bar_chart",aggregate);
 
     season_matrix = new matrix("matrix-area",matchData);
 
