@@ -32,20 +32,20 @@ matrix.prototype.initVis = function() {
 //    .offset([-10, 0]);
 
     vis.tiptext.html(function (d) {
-        return "<strong>Home:</strong> <span style='color:red'>" + d.HomeTeam + "</span><br/><strong>Away:</strong> <span style='color:red'>" + d.AwayTeam + "</span><br/><strong>Date:</strong> <span style='color:red'>" + formatDate(d.Date) + "</span>"
+        return "<strong>Home:</strong> <span style='color:red'>" + d.HomeTeam + "</span><br/><strong>Away:</strong> <span style='color:red'>" + d.AwayTeam + "</span><br/><strong>Date:</strong> <span style='color:red'>" + vis.formatDate(d.Date) + "</span>"
     });
 //tipcell.html(function(d) { return "<strong>Home:</strong> <span style='color:red'>" + d.HomeTeam + "</span><br/><strong>Away:</strong> <span style='color:red'>" +d.AwayTeam+ "</span><br/><strong>Date:</strong> <span style='color:red'>" +d.Date+ "</span>"});
 
-    vis.formatDate = d3.time.format("%B %d %Y");
+    vis.formatDate = d3.time.format("%B, %e %Y");
 
     //var toggle = 0;
 
     vis.svg_cells = d3.select("#matrix-area").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .style("margin-left", -margin.left + "px")
+        .attr("width", vis.width + vis.margin.left + vis.margin.right)
+        .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
+        .style("margin-left", -vis.margin.left + "px")
         .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
     vis.svg_info = d3.select("#matrix-info-area").append("svg")
         .attr("width", 390)
@@ -57,7 +57,7 @@ matrix.prototype.initVis = function() {
         .attr("class", "tip");
 
     /* Invoke the tip in the context of your visualization */
-    vis.svg_cells.call(tiptext);
+    vis.svg_cells.call(vis.tiptext);
 //svg.call(tipcell);
 
 
@@ -66,10 +66,8 @@ matrix.prototype.initVis = function() {
     var Season_selection = "2014-2015";
 
 
-    d3.csv("data/eamon.csv", function (error, data) {
 
-
-        console.log(data);
+        //console.log(data);
 
         //var vis = this;
         //
@@ -89,20 +87,20 @@ matrix.prototype.initVis = function() {
         });
 
 
-        vis.data = data.filter(function (d) {
+        vis.data = vis.data.filter(function (d) {
             return d.Season == Season_selection
         });
 
-        console.log(data);
+        console.log(vis.data);
 
 
         //console.log(data)
 
         var nodes = [];
 
-        for (i = 0; i < data.length; i++) {
-            if (nodes.indexOf(data[i].HomeTeam) == -1) {
-                nodes.push(data[i].HomeTeam);
+        for (i = 0; i < vis.data.length; i++) {
+            if (nodes.indexOf(vis.data[i].HomeTeam) == -1) {
+                nodes.push(vis.data[i].HomeTeam);
             }
         }
 
@@ -166,13 +164,13 @@ matrix.prototype.initVis = function() {
         //data.push(placeholder);
 
 
-        for (i = 0; i < data.length; i++) {
+        for (i = 0; i < vis.data.length; i++) {
             placeholder = {
-                AwayTeam: data[i].HomeTeam,
+                AwayTeam: vis.data[i].HomeTeam,
                 FTAG: 0,
                 FTHG: 0,
                 FTR: "Na",
-                HomeTeam: data[i].HomeTeam,
+                HomeTeam: vis.data[i].HomeTeam,
                 Season: Season_selection
             };
 
@@ -187,7 +185,9 @@ matrix.prototype.initVis = function() {
 
         }
 
-        vis.data.splice(data.length, 0, placeholder);
+        vis.data.splice(vis.data.length, 0, placeholder);
+
+    console.log(vis.data);
 
 
         var count = 0;
@@ -201,11 +201,11 @@ matrix.prototype.initVis = function() {
         var cell_width = 32;
         var cell_height = 25;
         vis.rect = vis.svg_cells.selectAll("rect")
-            .data(data);
+            .data(vis.data);
 // Enter (initialize the newly added elements)
 
         vis.cells = vis.svg_cells.selectAll("g")
-            .data(data).enter()
+            .data(vis.data).enter()
             .append("g");
 
 
@@ -289,8 +289,8 @@ matrix.prototype.initVis = function() {
                     return d.FTHG + "-" + d.FTAG
                 }
             })
-            .on('mouseover', tiptext.show)
-            .on('mouseout', tiptext.hide)
+            .on('mouseover', vis.tiptext.show)
+            .on('mouseout', vis.tiptext.hide)
             .on('click', function (d) {
 
                 //
@@ -308,17 +308,17 @@ matrix.prototype.initVis = function() {
                 //}
 
 
-                vis.d3.selectAll("text.info")
+                d3.selectAll("text.info")
                     .remove();
 
-                vis.d3.selectAll("image.info")
+                d3.selectAll("image.info")
                     .remove();
 
                 d3.selectAll("rect.box")
                     .remove();
 
 
-                svg_info.append("rect")
+                vis.svg_info.append("rect")
                     .attr("class", "box")
                     .attr("x", "5")
                     .attr("y", "120")
@@ -328,15 +328,15 @@ matrix.prototype.initVis = function() {
                     .attr("stroke", "black")
                     .attr("stroke-width", "2");
 
-                svg_info.append("text")
+                vis.svg_info.append("text")
                     .attr("class", "info")
                     .attr("x", "190")
                     .attr("y", "320")
                     .style("text-anchor", "middle")
-                    .text(formatDate(d.Date));
+                    .text(vis.formatDate(d.Date));
 
 
-                svg_info.append("image")
+                vis.svg_info.append("image")
                     .attr("xlink:href", 'data/logos/' + d.HomeTeam + '.png')
                     .attr("class", "info")
                     .attr("x", "20")
@@ -344,7 +344,7 @@ matrix.prototype.initVis = function() {
                     .attr("width", "130")
                     .attr("height", "130");
 
-                svg_info.append("image")
+                vis.svg_info.append("image")
                     .attr("xlink:href", 'data/logos/' + d.AwayTeam + '.png')
                     .attr("class", "info")
                     .attr("x", "250")
@@ -353,7 +353,7 @@ matrix.prototype.initVis = function() {
                     .attr("height", "130");
 
 
-                svg_info.append("text")
+                vis.svg_info.append("text")
                     .attr("class", "info")
                     .attr("x", "85")
                     .attr("y", "145")
@@ -361,13 +361,13 @@ matrix.prototype.initVis = function() {
                     .text(d.HomeTeam);
 
 
-                svg_info.append("text")
+                vis.svg_info.append("text")
                     .attr("class", "info score")
                     .attr("x", "160")
                     .attr("y", "220")
                     .text(d.FTHG + "-" + d.FTAG);
 
-                svg_info.append("text")
+                vis.svg_info.append("text")
                     .attr("class", "info")
                     .attr("x", "315")
                     .attr("y", "145")
@@ -415,7 +415,7 @@ matrix.prototype.initVis = function() {
             }
 
         }
-        ;
+
 
 
         vis.cells.append("text")
@@ -518,7 +518,5 @@ matrix.prototype.initVis = function() {
         //    } })
         //    .attr("transform", "rotate(90)");
 
-
-    });
 
 }
