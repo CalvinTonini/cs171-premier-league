@@ -68,7 +68,6 @@ queue()
             }
         }
 
-
         createvis();
     });
 
@@ -92,10 +91,9 @@ function updatevars(){
     bar_chart.wrangleData();
     interseason_chart.wrangleData();
 
-
 }
 
-function mapupDate(){
+function sliderUpdate(){
 
     updateMap();
     intraseason_chart.wrangleData();
@@ -105,6 +103,7 @@ function mapupDate(){
 
 
 function highlightTeam(unformatted_team){
+
     var team = unformatted_team.replace(/ +/g, "");
     intraseason_chart.svg.selectAll("#"+team).transition().style("stroke","yellow").style("opacity",.6);
     interseason_chart.svg.selectAll("#"+team).transition().style({
@@ -113,10 +112,10 @@ function highlightTeam(unformatted_team){
     });
     bar_chart.svg.selectAll("#"+team).transition().attr("fill","yellow");
     //svg_cells.selectAll("#"+team).attr("stroke","yellow").attr("stroke-width","3");
-
 }
 
 function unhighlightTeam(unformatted_team){
+
     var team = unformatted_team.replace(/ +/g, "");
     intraseason_chart.svg.selectAll("#"+team).transition().style("stroke", function (d) {
             return maincolor(d.key);
@@ -129,7 +128,13 @@ function unhighlightTeam(unformatted_team){
 function updateMap(){
 
     var dats = mapData;
-    var selected = +document.getElementById("myRange").value;
+
+
+    var selected = $( "#slider" ).slider( "option", "value" );
+        //console.log(value);
+
+
+    //var selected = +document.getElementById("myRange").value;
 
     var subunits = topojson.feature(mapData, mapData.objects.subunits),
         places = {

@@ -74,14 +74,18 @@ BarChart.prototype.wrangleData = function(){
     var vis = this;
 
 
-    var season = +document.getElementById("myRange").value;
+
+    vis.season = $( "#slider" ).slider( "option", "value" );
+        //console.log(value);
+
+    //var season = +document.getElementById("myRange").value;
 
 
-    season = season.toString() + "-" + (season+1).toString()
+    vis.season = vis.season.toString() + "-" + (vis.season+1).toString()
 
 
     function check(value) {
-        return value.Season ==  season;
+        return value.Season ==  vis.season;
     }
 
     vis.filtered = vis.data.filter(check);
