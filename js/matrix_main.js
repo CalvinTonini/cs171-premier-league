@@ -48,8 +48,8 @@ matrix.prototype.initVis = function() {
         .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
     vis.svg_info = d3.select("#matrix-info-area").append("svg")
-        .attr("width", 390)
-        .attr("height", 390)
+        .attr("width", 400)
+        .attr("height", 800)
         .append("g")
         .attr("transform", "translate(0, 50)");
 
@@ -314,24 +314,29 @@ matrix.prototype.initVis = function() {
                 d3.selectAll("image.info")
                     .remove();
 
-                d3.selectAll("rect.box")
+                //d3.selectAll("rect.box")
+                //    .remove();
+
+                d3.selectAll("text.info_small")
                     .remove();
 
 
-                vis.svg_info.append("rect")
-                    .attr("class", "box")
-                    .attr("x", "5")
-                    .attr("y", "120")
-                    .attr("width", "380")
-                    .attr("height", "210")
-                    .attr("fill", "white")
-                    .attr("stroke", "black")
-                    .attr("stroke-width", "2");
+
+
+                //vis.svg_info.append("rect")
+                //    .attr("class", "box")
+                //    .attr("x", "5")
+                //    .attr("y", "20")
+                //    .attr("width", "390")
+                //    .attr("height", "320")
+                //    .attr("fill", "white")
+                //    .attr("stroke", "black")
+                //    .attr("stroke-width", "2");
 
                 vis.svg_info.append("text")
                     .attr("class", "info")
                     .attr("x", "190")
-                    .attr("y", "320")
+                    .attr("y", "220")
                     .style("text-anchor", "middle")
                     .text(vis.formatDate(d.Date));
 
@@ -340,7 +345,7 @@ matrix.prototype.initVis = function() {
                     .attr("xlink:href", 'data/logos/' + d.HomeTeam + '.png')
                     .attr("class", "info")
                     .attr("x", "20")
-                    .attr("y", "150")
+                    .attr("y", "50")
                     .attr("width", "130")
                     .attr("height", "130");
 
@@ -348,7 +353,7 @@ matrix.prototype.initVis = function() {
                     .attr("xlink:href", 'data/logos/' + d.AwayTeam + '.png')
                     .attr("class", "info")
                     .attr("x", "250")
-                    .attr("y", "150")
+                    .attr("y", "50")
                     .attr("width", "130")
                     .attr("height", "130");
 
@@ -356,7 +361,7 @@ matrix.prototype.initVis = function() {
                 vis.svg_info.append("text")
                     .attr("class", "info")
                     .attr("x", "85")
-                    .attr("y", "145")
+                    .attr("y", "45")
                     .style("text-anchor", "middle")
                     .text(d.HomeTeam);
 
@@ -364,15 +369,138 @@ matrix.prototype.initVis = function() {
                 vis.svg_info.append("text")
                     .attr("class", "info score")
                     .attr("x", "160")
-                    .attr("y", "220")
+                    .attr("y", "120")
                     .text(d.FTHG + "-" + d.FTAG);
 
                 vis.svg_info.append("text")
                     .attr("class", "info")
                     .attr("x", "315")
-                    .attr("y", "145")
+                    .attr("y", "45")
                     .style("text-anchor", "middle")
                     .text(d.AwayTeam);
+
+
+                vis.svg_info.append("text")
+                    .attr("class", "info_small")
+                    .attr("x", "315")
+                    .attr("y", "260")
+                    .style("text-anchor", "middle")
+                    .style("font-weight", "bold")
+                    .text("Shots: ");
+
+                vis.svg_info.append("text")
+                    .attr("class", "info_small")
+                    .attr("x", "350")
+                    .attr("y", "260")
+                    .style("text-anchor", "middle")
+                    .text(d.AS);
+
+
+                vis.svg_info.append("text")
+                    .attr("class", "info_small")
+                    .attr("x", "80")
+                    .attr("y", "260")
+                    .style("text-anchor", "middle")
+                    .style("font-weight", "bold")
+                    .text("Shots: ");
+
+                vis.svg_info.append("text")
+                    .attr("class", "info_small")
+                    .attr("x", "115")
+                    .attr("y", "260")
+                    .style("text-anchor", "middle")
+                    .text(d.HS);
+
+                vis.svg_info.append("text")
+                    .attr("class", "info_small")
+                    .attr("x", "315")
+                    .attr("y", "280")
+                    .style("text-anchor", "middle")
+                    .style("font-weight", "bold")
+                    .text("Shots on Target: ");
+
+                vis.svg_info.append("text")
+                    .attr("class", "info_small")
+                    .attr("x", "385")
+                    .attr("y", "280")
+                    .style("text-anchor", "middle")
+                    .text(d.AST);
+
+                vis.svg_info.append("text")
+                    .attr("class", "info_small")
+                    .attr("x", "85")
+                    .attr("y", "280")
+                    .style("text-anchor", "middle")
+                    .style("font-weight", "bold")
+                    .text("Shots on Target: ");
+
+                vis.svg_info.append("text")
+                    .attr("class", "info_small")
+                    .attr("x", "155")
+                    .attr("y", "280")
+                    .style("text-anchor", "middle")
+                    .text(d.HST);
+
+                vis.svg_info.append("text")
+                    .attr("class", "info_small")
+                    .attr("x", "315")
+                    .attr("y", "300")
+                    .style("text-anchor", "middle")
+                    .style("font-weight", "bold")
+                    .text("Yellow Cards: ");
+
+                vis.svg_info.append("text")
+                    .attr("class", "info_small")
+                    .attr("x", "375")
+                    .attr("y", "300")
+                    .style("text-anchor", "middle")
+                    .text(d.AY);
+
+                vis.svg_info.append("text")
+                    .attr("class", "info_small")
+                    .attr("x", "85")
+                    .attr("y", "300")
+                    .style("text-anchor", "middle")
+                    .style("font-weight", "bold")
+                    .text("Yellow Cards: ");
+
+                vis.svg_info.append("text")
+                    .attr("class", "info_small")
+                    .attr("x", "145")
+                    .attr("y", "300")
+                    .style("text-anchor", "middle")
+                    .text(d.HY);
+
+                vis.svg_info.append("text")
+                    .attr("class", "info_small")
+                    .attr("x", "315")
+                    .attr("y", "320")
+                    .style("text-anchor", "middle")
+                    .style("font-weight", "bold")
+                    .text("Red Cards: ");
+
+                vis.svg_info.append("text")
+                    .attr("class", "info_small")
+                    .attr("x", "365")
+                    .attr("y", "320")
+                    .style("text-anchor", "middle")
+                    .text(d.AR);
+
+                vis.svg_info.append("text")
+                    .attr("class", "info_small")
+                    .attr("x", "85")
+                    .attr("y", "320")
+                    .style("text-anchor", "middle")
+                    .style("font-weight", "bold")
+                    .text("Red Cards: ");
+
+                vis.svg_info.append("text")
+                    .attr("class", "info_small")
+                    .attr("x", "135")
+                    .attr("y", "320")
+                    .style("text-anchor", "middle")
+                    .text(d.HR);
+
 
                 //var imgs = svg.selectAll("image");
 

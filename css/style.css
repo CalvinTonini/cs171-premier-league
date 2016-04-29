@@ -139,7 +139,10 @@ path.secondline {
 
 .score{
     font-size: 50px;
+}
 
+.info_small{
+    font-size: 16px;
 }
 
 
