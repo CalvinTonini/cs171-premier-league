@@ -48,24 +48,30 @@ var tab = '\u00A0' + '\u00A0'+ '\u00A0'+ '\u00A0'+ '\u00A0'+ '\u00A0';
 var Season_selection = "2014-2015";
 
 
-d3.csv("data/matchesDates.csv", function(d) {
+d3.csv("data/eamon.csv", function(error, data) {
 
-    return {
-        Season: d.Season,
-        HomeTeam: d.HomeTeam,
-        AwayTeam: d.AwayTeam,
-        FTR: d.FTR,
-        FTHG: +d.FTHG,
-        FTAG: +d.FTAG,
-        Date: new Date (d.Date)
-    };
-}, function(error, data) {
+
+    console.log(data);
 
     var vis = this;
 
+    var   parseDate = d3.time.format("%Y-%m-%d").parse;
+
+
+    data.forEach(function(d) {
+
+        for (var name in d){
+            if(name!="Date" && name != "AwayTeam" && name != "FTR" && name!="Season" && name != "HomeTeam"){
+                d[name] = +d[name]
+            }
+        }
+        d.Date = parseDate(d.Date)
+
+    });
 
 
     data = data.filter(function(d) { return d.Season == Season_selection});
+
 
     //console.log(data)
 
@@ -229,7 +235,10 @@ d3.csv("data/matchesDates.csv", function(d) {
             else if (d.FTR == "Na"){
                 return "grey";
             }
-        });
+        })
+        .attr("id",function(d){
+            console.log(d)
+        })
         //.on('mouseover', tipcell.show)
         //.on('mouseout', tipcell.hide);
 

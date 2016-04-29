@@ -35,24 +35,24 @@ svg1.call(tip);
 
 queue()
     .defer(d3.csv,"data/season_aggregate_stats.csv")
-    .defer(d3.csv, "data/matchesDates.csv")
+    //.defer(d3.csv, "data/matchesDates.csv")
     .defer(d3.csv, "data/intraseason_data.csv")
     .defer(d3.json,"data/tsconfig.json")
-    .await(function(error, agg, matches, intra, mapJson) {
+    .await(function(error, agg, intra, mapJson) {
 
 
         intraseason = intra;
         aggregate = agg;
         mapData = mapJson;
-        matchData = matches;
+        //matchData = matches;
 
 
-        matches.forEach(function (d) {
-            d[""] = +d[""];
-            d.FTAG = +d.FTAG;
-            d.FTHG = +d.FTHG;
-            d.Date = d3.time.format("%m/%d/%Y").parse(d.Date);
-        });
+        //matches.forEach(function (d) {
+        //    d[""] = +d[""];
+        //    d.FTAG = +d.FTAG;
+        //    d.FTHG = +d.FTHG;
+        //    d.Date = d3.time.format("%m/%d/%Y").parse(d.Date);
+        //});
 
         aggregate.forEach(function (d) {
             stringsToNumber(d);
@@ -103,8 +103,8 @@ function mapupDate(){
 
 function highlightTeam(unformatted_team){
     var team = unformatted_team.replace(/ +/g, "")
-    intraseason_chart.svg.selectAll("#"+team).transition().style("stroke","yellow");
-    interseason_chart.svg.selectAll("#"+team).style({
+    intraseason_chart.svg.selectAll("#"+team).transition().style("stroke","yellow").style("opacity",.6);
+    interseason_chart.svg.selectAll("#"+team).transition().style({
         opacity: 1,
         "stroke-width": 5
     });
@@ -118,11 +118,11 @@ function unhighlightTeam(unformatted_team){
     intraseason_chart.svg.selectAll("#"+team).transition().style("stroke", function (d) {
             return maincolor(d.key);
         });
-    interseason_chart.svg.selectAll("#"+team).style({
+    interseason_chart.svg.selectAll("#"+team).transition().style({
         opacity: 0.4,
         "stroke-width": 1
     });
-    bar_chart.svg.selectAll("#"+team).transition().attr("fill", function(d) { return maincolor(d.Team)});
+    bar_chart.svg.selectAll("#"+team).transition().attr("fill", function(d) { return maincolor(d.Team)}).style("opacity",.6);
     //svg_cells.selectAll("#"+team).attr("stroke","grey").attr("stroke-width","1");
 }
 

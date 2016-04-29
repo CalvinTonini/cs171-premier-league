@@ -14,26 +14,20 @@ BarChart.prototype.initVis = function() {
 
     var vis = this;
 
-    vis.margin = {top: 20, right: 0, bottom: 30, left: 100};
+    vis.margin = {top: 20, right: 0, bottom: 30, left: 125};
 
-    vis.width = 300 - vis.margin.left - vis.margin.right;
+    vis.width = 420 - vis.margin.left - vis.margin.right;
 
     vis.height = 500 - vis.margin.top - vis.margin.bottom;
 
 
     vis.y = d3.scale.ordinal()
-        .rangeRoundBands([0, vis.height], .1);
+        .rangeRoundBands([0, vis.height], .2);
 
     vis.x = d3.scale.linear()
         .range([0, vis.width]);
 
-    vis.xAxis = d3.svg.axis()
-        .scale(vis.x)
-        .orient("bottom");
 
-    vis.yAxis = d3.svg.axis()
-        .scale(vis.y)
-        .orient("left");
 
     //.interpolate("step-before")
 
@@ -83,7 +77,7 @@ BarChart.prototype.wrangleData = function(){
     var season = +document.getElementById("myRange").value;
 
 
-    var season = season.toString() + "-" + (season+1).toString()
+    season = season.toString() + "-" + (season+1).toString()
 
 
     function check(value) {
@@ -108,6 +102,7 @@ BarChart.prototype.wrangleData = function(){
     //    .sortKeys(d3.ascending)
     //    .entries(vis.filtered);
     // In the first step no data wrangling/filtering needed
+
     vis.displayData = vis.filtered;
 
 
@@ -126,11 +121,11 @@ BarChart.prototype.updateVis = function() {
     }));
 
 
-
-
     vis.x.domain([0, d3.max(vis.displayData, function (d) {
         return d[vis.selected]
     })]);
+
+    //var sortItems = function(a, b) { return b[vis.selected] - a[vis.selected]; }
 
     if(vis.selected =="GoalDifferential"){
         vis.x.domain([d3.min(vis.displayData, function (d) { return d[vis.selected] }), d3.max(vis.displayData, function (d) {
@@ -138,8 +133,16 @@ BarChart.prototype.updateVis = function() {
         })]);
     }
 
-    vis.rect = vis.svg.selectAll("rect").data(vis.displayData);         // Enter (initialize the newly added elements)
-    vis.rect.enter().append("rect").attr("class", "bar")
+    vis.xAxis = d3.svg.axis()
+        .scale(vis.x)
+        .orient("bottom");
+
+    vis.yAxis = d3.svg.axis()
+        .scale(vis.y)
+        .orient("left");
+
+    vis.rect = vis.svg.selectAll("rect").data(vis.displayData);
+
     vis.rect.transition().duration(1500)
         .attr("y", function (d) {
             return vis.y(d.Team);
@@ -160,6 +163,29 @@ BarChart.prototype.updateVis = function() {
         .attr("id",function(d){
             return d.Team.replace(/ +/g, "")});
 
+
+    // Enter (initialize the newly added elements)
+    vis.rect.enter().append("rect").attr("class", "bar")
+        .attr("y", function (d) {
+            return vis.y(d.Team);
+        })
+        .attr("x", 2)
+        .attr("height", vis.y.rangeBand())
+        .attr("width", function (d) {
+            return vis.x(d[vis.selected]);
+        })
+        .attr("fill",function(d){
+            return maincolor(d.Team)
+        })
+        .attr("stroke",function(d){
+            return strokecolor(d.Team)
+        })
+        .attr("stroke-width","1.5px")
+        .attr("opacity",.6)
+        .attr("id",function(d){
+            return d.Team.replace(/ +/g, "")});
+
+
     vis.rect
         .on("mouseover", function(d) {
             highlightTeam(d.Team);
@@ -168,10 +194,11 @@ BarChart.prototype.updateVis = function() {
         .on("mouseout", function(d, i) {
             d3.select(this).attr("opacity",1)
                 .attr("fill", function() {
-                return maincolor(d.Team)
-            });
+                    return maincolor(d.Team)
+                });
             unhighlightTeam(d.Team);
         });
+
 
     vis.rect.exit().transition().remove();
 

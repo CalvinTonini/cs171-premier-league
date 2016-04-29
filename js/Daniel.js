@@ -30,7 +30,7 @@ LineChart.prototype.initVis = function() {
     });
 
 
-    vis.margin = {top: 20, right: 50, bottom: 30, left: 20};
+    vis.margin = {top: 20, right: 10, bottom: 30, left: 30};
 
     vis.width = 800 - vis.margin.left - vis.margin.right;
 
@@ -44,13 +44,7 @@ LineChart.prototype.initVis = function() {
         .range([vis.height, 0]);
 
 
-    vis.xAxis = d3.svg.axis()
-        .scale(vis.x)
-        .orient("bottom");
 
-    vis.yAxis = d3.svg.axis()
-        .scale(vis.y)
-        .orient("left");
 
 
     vis.svg = d3.select("#"+vis.parentElement).append("svg")
@@ -159,9 +153,16 @@ LineChart.prototype.updateVis = function(){
     });
 
 
-
-
     vis.x.domain([vis.xmin, vis.xmax]);
+
+    vis.xAxis = d3.svg.axis()
+        .scale(vis.x)
+        .orient("bottom");
+
+    vis.yAxis = d3.svg.axis()
+        .scale(vis.y)
+        .orient("left");
+
 
     vis.line = d3.svg.line()
         .x(function (d) {
@@ -179,8 +180,12 @@ LineChart.prototype.updateVis = function(){
         .attr("d",function (d) { return vis.line(d.values);})
         .style("stroke", function (d) {
             return maincolor(d.key);
-        });
-
+        })
+        .attr("id",function(d){
+            return(d.key.replace(/\s+/g, ''))
+        })
+        .style("opacity",.6)
+        .style("stroke-width",3);
 
     vis.lines.enter().append("path").attr("class","firstline").transition().duration(500)
         .attr("d", function (d) {
@@ -200,7 +205,6 @@ LineChart.prototype.updateVis = function(){
         .on("mouseout", function(d, i) {
             unhighlightTeam(d.key)
         });
-
 
     vis.lines.exit().transition().remove();
 
@@ -222,6 +226,7 @@ LineChart.prototype.updateVis = function(){
         })
         .attr("r", 3);
 
+
     vis.circlegroup2.enter().append("g").attr("class","circlegroup").selectAll("circle").data(function(d){ return(d.values)}).enter()
         .append("circle")
         .attr("class","circle")
@@ -238,6 +243,14 @@ LineChart.prototype.updateVis = function(){
             return vis.y(d[vis.selected])
         })
         .attr("r", 3);
+
+
+        vis.circlegroup2.on("mouseover", function(d) {
+            highlightTeam(d.key);
+        })
+        .on("mouseout", function(d, i) {
+            unhighlightTeam(d.key)
+        });
 
 
 
