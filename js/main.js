@@ -97,7 +97,7 @@ function updatevars(){
     intraseason_chart.wrangleData();
     bar_chart.wrangleData();
     interseason_chart.wrangleData();
-
+    
 }
 
 function sliderUpdate(){
@@ -115,10 +115,10 @@ function highlightTeam(unformatted_team){
 
     var team = unformatted_team.replace(/ +/g, "");
     intraseason_chart.svg.selectAll("#"+team).transition().style("stroke","yellow").style("opacity",.6);
-    interseason_chart.svg.selectAll("#"+team).transition().style({
-        opacity: 1,
-        "stroke-width": 5
-    });
+    // interseason_chart.svg.selectAll("#"+team).transition().style({
+    //    opacity: 1,
+    //    "stroke-width": 5
+    //});
     bar_chart.svg.selectAll("#"+team).transition().attr("fill","yellow");
     //svg_cells.selectAll("#"+team).attr("stroke","yellow").attr("stroke-width","3");
 }
@@ -129,7 +129,7 @@ function unhighlightTeam(unformatted_team){
     intraseason_chart.svg.selectAll("#"+team).transition().style("stroke", function (d) {
             return maincolor(d.key);
         });
-    interseason_chart.svg.selectAll("#"+team).transition().style("opacity",".4").style("stroke-width","2px");
+    // interseason_chart.svg.selectAll("#"+team).transition().style("opacity",".4").style("stroke-width","2px");
     bar_chart.svg.selectAll("#"+team).transition().attr("fill", function(d) { return maincolor(d.Team)}).style("opacity",.6);
     //svg_cells.selectAll("#"+team).attr("stroke","grey").attr("stroke-width","1");
 }

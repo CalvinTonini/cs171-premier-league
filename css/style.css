@@ -109,7 +109,6 @@ path.secondline {
 }
 
 
-
 .subunit.SCT { fill: #ddc; }
 .subunit.WLS { fill: #cdd; }
 .subunit.NIR { fill: #cdc; }
@@ -161,7 +160,6 @@ path.secondline {
 
 .score{
     font-size: 50px;
-}
 
 .info_small{
     font-size: 16px;
@@ -242,4 +240,10 @@ path.secondline {
     box-shadow: 0px 0px 2px 0px #a6a6a6;
     opacity: 0.9;
     position: absolute;
+}
+
+.legend {
+    font-size: 16px;
+    font-weight: bold;
+    text-anchor: middle;
 }

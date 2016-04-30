@@ -17,12 +17,12 @@ lineChart.prototype.initVis = function () {
     vis.margin = {
         top: 40,
         right: 40,
-        bottom: 40,
+        bottom: 500,
         left: 40
     };
 
     vis.width = 1200 - vis.margin.left - vis.margin.right;
-    vis.height = 450 - vis.margin.top - vis.margin.bottom;
+    vis.height = 1000 - vis.margin.top - vis.margin.bottom;
 
     vis.svg = d3.select("#" + vis.parentElement).append("svg")
         .attr("width", vis.width + vis.margin.left + vis.margin.right)
@@ -38,14 +38,13 @@ lineChart.prototype.initVis = function () {
     vis.xAxis = d3.svg.axis()
         .scale(vis.x)
         .orient("bottom");
-
     vis.yAxis = d3.svg.axis()
         .scale(vis.y)
         .orient("left");
 
     vis.svg.append("g")
         .attr("class", "x-axis axis")
-        .attr("transform", "translate(0," + (vis.height) + ")");
+        .attr("transform", "translate(0," + vis.height + ")");
 
     vis.svg.append("g")
         .attr("class", "y-axis axis");
@@ -57,16 +56,15 @@ lineChart.prototype.initVis = function () {
     vis.wrangleData();
 };
 
-lineChart.prototype.wrangleData = function(){
-
+lineChart.prototype.wrangleData = function() {
     var vis = this;
 
-    vis.parseDate = d3.time.format("%Y").parse;
-
-
+    var parseDate = d3.time.format("%Y").parse;
+    
     // In the first step no data wrangling/filtering needed
     vis.data.forEach(function (d) {
-        d["seasonDate"] = vis.parseDate(d["Season"].split("-")[0]);
+        d["seasonDate"] = parseDate(d["Season"].split("-")[0]);
+        d.active = true;
     });
 
     vis.nest = d3.nest()
@@ -75,24 +73,39 @@ lineChart.prototype.wrangleData = function(){
         })
         .entries(vis.data);
 
+    // make legend
+    var legendSpace = width / (vis.nest.length / 2);
+    vis.nest.forEach(function (d, i) {
+        vis.svg.append("text")
+            .attr("x", (legendSpace / 2))
+            .attr("y", height + (margin.bottom) + 10 * i)
+            .attr("class", "legend")
+            .style("fill", function () {
+                return vis.maincolor(d.key);
+            })
+            .on("click", function () {
+                var active = d.active ? false : true;
+                var newOpacity = active ? 0 : 1;
+                vis.svg.selectAll("#"+d.key)
+                    .transition().duration(100)
+                    .style("opacity", newOpacity);
+                d.active = active;
+                console.log("hit");
+            })
+            .text(d.key);
+    });
     // Update the visualization
     vis.updateVis();
 };
 
 lineChart.prototype.updateVis = function () {
     var vis = this;
-
     var selection = document.getElementById("across_season_form");
     selection = selection.options[selection.selectedIndex].value;
 
     vis.x.domain(d3.extent(vis.data, function (d) {
         return d["seasonDate"];
     }));
-
-    console.log(d3.extent(vis.data, function (d) {
-        return d["seasonDate"]}));
-
-
     if (selection == "rank") {
         vis.y.domain([d3.max(vis.data, function (d) {
             return d[selection];
@@ -136,16 +149,17 @@ lineChart.prototype.updateVis = function () {
         })
         .style("stroke-width","2px")
         .on("mouseover", function (d) {
+            d3.select(this).style("opacity", 1);
+            d3.select(this).style("stroke-width", 5);
             vis.teamname.text(d.key);
-            highlightTeam(d.key);
         })
-        .on("mouseout", function (d) {
-            vis.teamname.text("");
-            unhighlightTeam(d.key);
+        .on("mouseout", function () {
+            d3.select(this).style("opacity", 0.4);
+            d3.select(this).style("stroke-width", 1);
+            vis.teamname.text(d.key);
         });
 
     teams.exit().remove();
-
 
     vis.svg.select(".x-axis").call(vis.xAxis);
     vis.svg.select(".y-axis").call(vis.yAxis);
