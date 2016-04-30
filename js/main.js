@@ -99,10 +99,6 @@ function mapupDate(){
 
 function highlightTeam(team){
     intraseason_chart.svg.selectAll("#"+team).style("stroke","yellow");
-    interseason_chart.svg.selectAll("#"+team).style({
-        opacity: 1,
-        "stroke-width": 5
-    });
     bar_chart.svg.selectAll("#"+team).attr("fill","yellow");
     svg_cells.selectAll("#"+team).attr("stroke","yellow").attr("stroke-width","3");
 
@@ -112,10 +108,6 @@ function unhighlightTeam(team){
     intraseason_chart.svg.selectAll("#"+team).style("stroke", function (d) {
             return intraseason_chart.maincolor(d.key);
         });
-    interseason_chart.svg.selectAll("#"+team).style({
-        opacity: 0.4,
-        "stroke-width": 1
-    });
     bar_chart.svg.selectAll("#"+team).attr("fill", function(d) { return bar_chart.maincolor(d.Team)});
     svg_cells.selectAll("#"+team).attr("stroke","grey").attr("stroke-width","1");
 }

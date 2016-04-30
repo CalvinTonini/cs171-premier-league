@@ -13,12 +13,12 @@ lineChart.prototype.initVis = function () {
     vis.margin = {
         top: 40,
         right: 40,
-        bottom: 60,
+        bottom: 500,
         left: 60
     };
 
     vis.width = 700 - vis.margin.left - vis.margin.right;
-    vis.height = 600 - vis.margin.top - vis.margin.bottom;
+    vis.height = 1000 - vis.margin.top - vis.margin.bottom;
 
     vis.svg = d3.select("#" + vis.parentElement).append("svg")
         .attr("width", vis.width + vis.margin.left + vis.margin.right)
@@ -71,6 +71,7 @@ lineChart.prototype.wrangleData = function(){
     // In the first step no data wrangling/filtering needed
     vis.data.forEach(function (d) {
         d["seasonDate"] = d3.time.format("%Y-%Y").parse(d["Season"]);
+        d.active = true;
     });
     vis.nest = d3.nest()
         .key(function (d) {
@@ -78,6 +79,27 @@ lineChart.prototype.wrangleData = function(){
         })
         .entries(vis.data);
 
+    // make legend
+    var legendSpace = width / (vis.nest.length / 2);
+    vis.nest.forEach(function (d, i) {
+        vis.svg.append("text")
+            .attr("x", (legendSpace / 2))
+            .attr("y", height + (margin.bottom) + 10 * i)
+            .attr("class", "legend")
+            .style("fill", function () {
+                return vis.maincolor(d.key);
+            })
+            .on("click", function () {
+                var active = d.active ? false : true;
+                var newOpacity = active ? 0 : 1;
+                vis.svg.selectAll("#"+d.key)
+                    .transition().duration(100)
+                    .style("opacity", newOpacity);
+                d.active = active;
+                console.log("hit");
+            })
+            .text(d.key);
+    });
     // Update the visualization
     vis.updateVis();
 };
@@ -90,6 +112,7 @@ lineChart.prototype.updateVis = function () {
     vis.x.domain(d3.extent(vis.data, function (d) {
         return d["seasonDate"];
     }));
+
     if (selection == "rank") {
         vis.y.domain([d3.max(vis.data, function (d) {
             return d[selection];
@@ -131,15 +154,16 @@ lineChart.prototype.updateVis = function () {
             return vis.maincolor(d.key);
         })
         .on("mouseover", function (d) {
+            d3.select(this).style("opacity", 1);
+            d3.select(this).style("stroke-width", 5);
             d3.select(".team-name").html(d["Team"]);
-            highlightTeam(d.key);
         })
-        .on("mouseout", function (d) {
-            unhighlightTeam(d.key);
+        .on("mouseout", function () {
+            d3.select(this).style("opacity", 0.4);
+            d3.select(this).style("stroke-width", 1);
         });
 
     teams.exit().remove();
-
 
     vis.svg.select(".x-axis").call(vis.xAxis);
     vis.svg.select(".y-axis").call(vis.yAxis);
