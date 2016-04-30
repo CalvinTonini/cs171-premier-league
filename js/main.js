@@ -172,18 +172,33 @@ function updateMap(){
         .text(function(d) { return d.properties.name; });
 
     var dots = svg1.selectAll("circle")
-        .data(places.features);
+        .data(places.features,function(d){ return d.properties.name;});
 
-    dots.enter()
-        .append("circle");
-
-    dots.transition()
-        .duration(800)
-        .attr("class","place")
-        .attr("fill","black")
-        .attr("r",4)
+    dots.attr("class","update")
+        .transition()
+        .duration(2000)
         .attr("cx", function(d){ return projection(d.geometry.coordinates)[0];})
         .attr("cy", function(d){ return projection(d.geometry.coordinates)[1];});
+
+    //dots.transition()
+    //    .duration(800)
+    //    .attr("class","place")
+    //    .attr("fill","black")
+    //    .attr("r",4)
+    //    .attr("cx", function(d){ return projection(d.geometry.coordinates)[0];})
+    //    .attr("cy", function(d){ return projection(d.geometry.coordinates)[1];});
+
+    dots.enter()
+        .append("circle")
+        .attr("class","enter")
+        .attr("class","place")
+        .attr("fill","black")
+        .attr("r",0)
+        .attr("cx", function(d){ return projection(d.geometry.coordinates)[0];})
+        .attr("cy", function(d){ return projection(d.geometry.coordinates)[1];})
+        .transition()
+        .duration(2000)
+        .attr("r",4);
 
     dots.on('mouseover',tips.show)
         .on('mouseout',tips.hide)
@@ -207,7 +222,13 @@ function updateMap(){
 
         });
 
-    dots.exit().remove();
+    dots.exit()
+        .transition()
+        .duration(2000)
+        .attr("r", 0)
+        .remove();
+
+
     subunit1.exit().remove();
     subunit2.exit().remove();
 

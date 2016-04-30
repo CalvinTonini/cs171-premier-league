@@ -63,6 +63,7 @@
           "properties":{
             "name":"Oakwell",
             "club": "Barnsley",
+            "team": "Barnsley",
             "seasons": [1998],
             "relegated": [1998]
           }

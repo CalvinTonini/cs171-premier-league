@@ -99,8 +99,9 @@ text#sliderlabel{
     fill: #444;
 }
 
-.place:hover{
-    fill: red;
+.place:hover,.update:hover{
+    stroke-width: 2;
+    stroke: yellow;
 }
 
 /*text {*/
@@ -166,4 +167,9 @@ text#sliderlabel{
     margin: -1px 0 0 0;
     top: 100%;
     left: 0;
+}
+
+
+.enter{
+    fill:"white";
 }
