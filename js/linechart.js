@@ -74,14 +74,14 @@ lineChart.prototype.wrangleData = function() {
         .entries(vis.data);
 
     // make legend
-    var legendSpace = width / (vis.nest.length / 2);
+    var legendSpace = vis.width / (vis.nest.length / 2);
     vis.nest.forEach(function (d, i) {
         vis.svg.append("text")
             .attr("x", (legendSpace / 2))
-            .attr("y", height + (margin.bottom) + 10 * i)
+            .attr("y", vis.height + 10 * i)
             .attr("class", "legend")
             .style("fill", function () {
-                return vis.maincolor(d.key);
+                return maincolor(d.key);
             })
             .on("click", function () {
                 var active = d.active ? false : true;
@@ -153,7 +153,7 @@ lineChart.prototype.updateVis = function () {
             d3.select(this).style("stroke-width", 5);
             vis.teamname.text(d.key);
         })
-        .on("mouseout", function () {
+        .on("mouseout", function (d) {
             d3.select(this).style("opacity", 0.4);
             d3.select(this).style("stroke-width", 1);
             vis.teamname.text(d.key);
