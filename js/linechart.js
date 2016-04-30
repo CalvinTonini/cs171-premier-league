@@ -107,6 +107,7 @@ lineChart.prototype.updateVis = function () {
     }
 
     vis.line = d3.svg.line()
+        .defined(function(d) { return d[selection]; })
         .x(function (d) { return vis.x(d["seasonDate"]); })
         .y(function (d) { return vis.y(d[selection]); });
 
