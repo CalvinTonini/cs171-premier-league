@@ -86,7 +86,7 @@ function createvis(){
 
     bar_chart = new BarChart("bar_chart",aggregate);
 
-    //season_matrix = new matrix("matrix-area",matchData);
+    season_matrix = new matrix("matrix-area",matchData);
 
     updateMap();
 
@@ -105,6 +105,8 @@ function sliderUpdate(){
     console.log("asdf");
 
     updateMap();
+    //matrix("matrix-area",matchData);
+    matrix.prototype.initVis(matchData);
     intraseason_chart.wrangleData();
     bar_chart.wrangleData();
 

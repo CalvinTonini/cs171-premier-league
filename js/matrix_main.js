@@ -4,6 +4,19 @@
 
 
 
+//$(function() {
+//
+//    $( "#slider" ).slider({
+//        min: 1993,
+//        max: 2014,
+//        step:1,
+//        value: 2000,
+//        change: function (event, ui) { update_matrix();}
+//    });
+//
+//});
+
+
 
 
 // Object constructor function
@@ -14,89 +27,96 @@ matrix = function(_parentElement, _data){
     this.initVis();
 };
 
-matrix.prototype.initVis = function() {
+matrix.prototype.initVis = function(data) {
 
-    var vis = this;
+    document.querySelector( '#matrix-area' ).innerHTML = '';
+    document.querySelector( '#matrix-info-area' ).innerHTML = '';
 
 
-    vis.data.forEach(function (d) {
+    d3.csv("data/eamon.csv", function(data) {
+        var vis = this;
 
-        for (var name in d) {
-            if (name != "Date" && name != "AwayTeam" && name != "FTR" && name != "Season" && name != "HomeTeam") {
-                d[name] = +d[name]
-            }
-        }
-        //d.Date = parseDate(d.Date)
-        d.Date = d3.time.format("%m/%e/%y").parse(d.Date)
 
-    });
+        vis.margin = {top: 60, right: 0, bottom: 10, left: 80},
+            vis.width = 720,
+            vis.height = 550;
 
-    vis.margin = {top: 60, right: 0, bottom: 10, left: 80},
-        vis.width = 720,
-        vis.height = 550;
-
-    /* Initialize tooltip */
-    vis.tiptext = d3.tip()
-        .attr('class', 'd3-tip')
-        .offset([-10, 0]);
+        /* Initialize tooltip */
+        vis.tiptext = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0]);
 
 //tipcell = d3.tip()
 //    .attr('class', 'd3-tip')
 //    .offset([-10, 0]);
 
-    vis.tiptext.html(function (d) {
-        return "<strong>Home:</strong> <span style='color:red'>" + d.HomeTeam + "</span><br/><strong>Away:</strong> <span style='color:red'>" + d.AwayTeam + "</span><br/><strong>Date:</strong> <span style='color:red'>" + vis.formatDate(d.Date) + "</span>"
-    });
+        vis.tiptext.html(function (d) {
+            return "<strong>Home:</strong> <span style='color:red'>" + d.HomeTeam + "</span><br/><strong>Away:</strong> <span style='color:red'>" + d.AwayTeam + "</span><br/><strong>Date:</strong> <span style='color:red'>" + vis.formatDate(d.Date) + "</span>"
+        });
 //tipcell.html(function(d) { return "<strong>Home:</strong> <span style='color:red'>" + d.HomeTeam + "</span><br/><strong>Away:</strong> <span style='color:red'>" +d.AwayTeam+ "</span><br/><strong>Date:</strong> <span style='color:red'>" +d.Date+ "</span>"});
 
-    vis.formatDate = d3.time.format("%B, %e %Y");
+        vis.formatDate = d3.time.format("%B, %e %Y");
 
-    //var toggle = 0;
+        //var toggle = 0;
 
-    vis.svg_cells = d3.select("#matrix-area").append("svg")
-        .attr("width", vis.width + vis.margin.left + vis.margin.right)
-        .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
-        .style("margin-left", -vis.margin.left + "px")
-        .append("g")
-        .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
+        vis.svg_cells = d3.select("#matrix-area").append("svg")
+            .attr("width", vis.width + vis.margin.left + vis.margin.right)
+            .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
+            .style("margin-left", -vis.margin.left + "px")
+            .append("g")
+            .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
-    vis.svg_info = d3.select("#matrix-info-area").append("svg")
-        .attr("width", 400)
-        .attr("height", 580)
-        .append("g")
-        .attr("transform", "translate(0, 50)");
+        vis.svg_cells.selectAll("*").remove();
 
-    vis.svg_info.append("text")
-        .attr("class", "tip");
 
-    /* Invoke the tip in the context of your visualization */
-    vis.svg_cells.call(vis.tiptext);
+        vis.svg_info = d3.select("#matrix-info-area").append("svg")
+            .attr("width", 400)
+            .attr("height", 580)
+            .append("g")
+            .attr("transform", "translate(0, 50)");
+
+        vis.svg_info.append("text")
+            .attr("class", "tip");
+
+        /* Invoke the tip in the context of your visualization */
+        vis.svg_cells.call(vis.tiptext);
 //svg.call(tipcell);
 
 
-    var tab = '\u00A0' + '\u00A0' + '\u00A0' + '\u00A0' + '\u00A0' + '\u00A0';
+        //  var tab = '\u00A0' + '\u00A0' + '\u00A0' + '\u00A0' + '\u00A0' + '\u00A0';
 
-    var slider = $("#slider").labeledslider("option", "value");
-
-
-    var slider_2 = slider + 1;
-
-    var Season_selection = slider + "-" + slider_2;
-
-    console.log(Season_selection);
+        var slider = $("#slider").labeledslider("option", "value");
 
 
-    //console.log(data);
+        var slider_2 = slider + 1;
 
-    //var vis = this;
-    //
-    //var parseDate = d3.time.format("%Y-%m-%d").parse;
-
+        var Season_selection = slider + "-" + slider_2;
+        console.log(Season_selection)
 
 
-    function update_matrix() {
+        //console.log(data);
 
-        vis.data = vis.data.filter(function (d) {
+        //var vis = this;
+        //
+        //var parseDate = d3.time.format("%Y-%m-%d").parse;
+
+
+        data.forEach(function (d) {
+
+            for (var name in d) {
+                if (name != "Date" && name != "AwayTeam" && name != "FTR" && name != "Season" && name != "HomeTeam") {
+                    d[name] = +d[name]
+                }
+            }
+            //d.Date = parseDate(d.Date)
+            d.Date = d3.time.format("%m/%e/%y").parse(d.Date)
+
+        });
+
+
+        console.log()
+
+        vis.data = data.filter(function (d) {
             return d.Season == Season_selection
         });
 
@@ -275,41 +295,41 @@ matrix.prototype.initVis = function() {
         vis.svg_cells.append("rect")
             .attr("height", cell_height)
             .attr("width", 32)
-            .attr("x","445")
+            .attr("x", "445")
             .attr("y", "-45")
             .attr("stroke", "grey")
             .attr("fill", "lightgrey");
 
         vis.svg_cells.append("text")
-            .attr("x","485")
+            .attr("x", "485")
             .attr("y", "-28")
             .text("Draw");
 
         vis.svg_cells.append("rect")
             .attr("height", cell_height)
             .attr("width", 32)
-            .attr("x","120")
+            .attr("x", "120")
             .attr("y", "-45")
             .attr("stroke", "grey")
             .attr("fill", "#72BCD4");
 
         vis.svg_cells.append("text")
-            .attr("x","160")
+            .attr("x", "160")
             .attr("y", "-28")
             .text("Home Team Win");
 
         vis.svg_cells.append("rect")
             .attr("height", cell_height)
             .attr("width", 32)
-            .attr("x","280")
+            .attr("x", "280")
             .attr("y", "-45")
             .attr("stroke", "grey")
-            .attr("fill","#FF9999");
+            .attr("fill", "#FF9999");
 
         vis.svg_cells.append("text")
-            .attr("x","320")
+            .attr("x", "320")
             .attr("y", "-28")
-            .text("Home Team Lose");
+            .text("Home Team Loss");
 
         vis.cells.append("text")
             .attr("x", function (d, index) {
@@ -548,7 +568,6 @@ matrix.prototype.initVis = function() {
                     .text(d.HR);
 
 
-
                 //var imgs = svg.selectAll("image");
 
 
@@ -583,7 +602,6 @@ matrix.prototype.initVis = function() {
             .style("text-anchor", "middle")
             .attr("class", "label")
             .text("Home ╲ Away");
-
 
 
         //console.log(nodes);
@@ -641,6 +659,9 @@ matrix.prototype.initVis = function() {
             .text(function (d, index) {
                 return nodes[index];
             });
+
+        //vis.svg_cells.exit().remove();
+        //vis.svg_info.exit().remove();
         //.attr("transform", "rotate(10)");
 
         //cells.append("text")
@@ -705,6 +726,7 @@ matrix.prototype.initVis = function() {
         //    .attr("transform", "rotate(90)");
 
 
-    }
-    update_matrix();
+
+    });
 };
+
