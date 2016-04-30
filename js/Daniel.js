@@ -17,6 +17,7 @@ LineChart.prototype.initVis = function() {
 
     vis.parseDate = d3.time.format("%Y-%m-%d").parse;
 
+    console.log(vis.data);
 
     vis.data.forEach(function(d) {
 
@@ -233,7 +234,10 @@ LineChart.prototype.updateVis = function(){
         .attr("cy", function(d) {
             return vis.y(d[vis.selected])
         })
-        .attr("r", 3);
+        .attr("r", 3)
+        .attr("id",function(d){
+            return(d.key.replace(/\s+/g, ''))
+        });
 
 
     vis.circlegroup2.enter().append("g").attr("class","circlegroup").selectAll("circle").data(function(d){ return(d.values)}).enter()
