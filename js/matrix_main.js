@@ -372,7 +372,7 @@ matrix.prototype.initVis = function(data) {
                 //else
                 //{
                 //    d3.selectAll(cells.txtscore).style("fill","black");
-                //    toggle = 0;
+                //    toggle = 0; .
                 //}
 
 
