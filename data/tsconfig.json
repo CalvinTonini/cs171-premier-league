@@ -398,7 +398,7 @@
           "properties":{
             "name":"City Ground",
             "club": "Nottingham Forest",
-            "team": "Nott'm Forest",
+            "team": "Nottingham Forest",
             "seasons": [1993,1995,1996,1997,1999],
             "relegated": [1993,1997,1999]
           }

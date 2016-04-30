@@ -13,23 +13,30 @@ var path = d3.geo.path()
     .projection(projection)
     .pointRadius(2);
 
+var zoom = d3.behavior.zoom()
+    .scaleExtent([1,8])
+    .on("zoom", zoomed);
+
 var svg1 = d3.select("#map").append("svg")
     .attr("width", widthy)
     .attr("height", heighty);
 
+var g = svg1.append("g");
+
 var aggregate, intraseason_chart, interseason_chart;
 
+var currentColor = "black";
 
-var toggle = false;
-var currentTeam = "Arsenal";
 
 var mapData;
 
-var tips = d3.tip().attr('class', 'd3-tip').html(function(d) {
-    return "<strong>"+d.properties.club+"</strong> <br/> <span style='color:red'>" + d.properties.name + "</span>";
-});
-tips.offset([-10, 0]);
-svg1.call(tips);
+var tips = d3.select("#map").append("div").attr("class","tooltip hidden");
+
+//var tips = d3.tip().attr('class', 'd3-tip').html(function(d) {
+//    return "<strong>"+d.properties.club+"</strong> <br/> <span style='color:red'>" + d.properties.name + "</span>";
+//});
+//tips.offset([-10, 0]);
+//svg1.call(tips);
 
 
 
@@ -147,7 +154,7 @@ function updateMap(){
         };
 
 
-    var subunit1 = svg1.selectAll(".subunit")
+    var subunit1 = g.selectAll(".subunit")
         .data(subunits.features);
 
     subunit1
@@ -167,7 +174,7 @@ function updateMap(){
     //    .attr("d", path)
     //    .attr("class", "subunit-boundary IRL");
 
-    var subunit2 = svg1.selectAll(".subunit-label")
+    var subunit2 = g.selectAll(".subunit-label")
         .data(subunits.features);
 
     subunit2
@@ -179,7 +186,7 @@ function updateMap(){
         .attr("dy", ".35em")
         .text(function(d) { return d.properties.name; });
 
-    var dots = svg1.selectAll("circle")
+    var dots = g.selectAll("circle")
         .data(places.features,function(d){ return d.properties.name;});
 
     dots.attr("class","update")
@@ -196,8 +203,7 @@ function updateMap(){
     //    .attr("cx", function(d){ return projection(d.geometry.coordinates)[0];})
     //    .attr("cy", function(d){ return projection(d.geometry.coordinates)[1];});
 
-    dots.enter()
-        .append("circle")
+    dots.enter().append("circle")
         .attr("class","enter")
         .attr("class","place")
         .attr("fill","black")
@@ -208,27 +214,52 @@ function updateMap(){
         .duration(2000)
         .attr("r",4);
 
-    dots.on('mouseover',tips.show)
-        .on('mouseout',tips.hide)
+    dots.on("mousemove", function(d,i) {
+            var mouse = d3.mouse(svg1.node()).map( function(d) { return parseInt(d); } );
+            tips
+                .classed("hidden", false)
+                .attr("style", "left:"+(mouse[0])+"px;top:"+(mouse[1])+"px")
+                .html(d.properties.club)
+        })
+        .on("mouseout",  function(d,i) {
+            tips.classed("hidden", true)
+        })
         .on('click',function(d) {
-            toggle = !toggle;
-            var testInput = d.properties.team;
+            currentColor = currentColor == "black" ? "yellow" : "black";
             d3.selectAll("circle").style("fill","black");
             places.features.forEach(function(d){
-               unhighlightTeam(d.properties.team);
+                unhighlightTeam(d.properties.team);
             });
-            if(toggle || (testInput != currentTeam)){
-                toggle = false;
-                d3.select(this).style("fill","yellow");
-                highlightTeam(d.properties.team);
-                console.log("fuck")
+            if(currentColor == "yellow"){
+                d3.select(this).style("fill", currentColor);
+                highlightTeam(d.properties.team)
             }
             else{
-                d3.select(this).style("fill","black");
-                unhighlightTeam(d.properties.team);
+                unhighlightTeam(d.properties.team)
             }
-
         });
+
+    //dots.on('mouseover',tips.show)
+    //    .on('mouseout',tips.hide)
+    //    .on('click',function(d) {
+    //        toggle = !toggle;
+    //        var testInput = d.properties.team;
+    //        d3.selectAll("circle").style("fill","black");
+    //        places.features.forEach(function(d){
+    //           unhighlightTeam(d.properties.team);
+    //        });
+    //        if(toggle || (testInput != currentTeam)){
+    //            toggle = false;
+    //            d3.select(this).style("fill","yellow");
+    //            highlightTeam(d.properties.team);
+    //            console.log("fuck")
+    //        }
+    //        else{
+    //            d3.select(this).style("fill","black");
+    //            unhighlightTeam(d.properties.team);
+    //        }
+    //
+    //    });
 
     dots.exit()
         .transition()
@@ -245,3 +276,25 @@ function updateMap(){
 
 }
 
+function zoomed() {
+    var t = d3.event.translate;
+    var s = d3.event.scale;
+    var h = heighty / 3;
+    var w = widthy / 4;
+
+    t[0] = Math.min(widthy / 2 * (s - 1) + w * s, Math.max(widthy / 2 * (1 - s) - w * s, t[0]));
+    t[1] = Math.min(heighty / 2 * (s - 1) + h * s, Math.max(heighty / 2 * (1 - s) - h * s, t[1]));
+
+    zoom.translate(t);
+    g.style("stroke-width", 1 / s).attr("transform", "translate(" + t + ")scale(" + s + ")");
+
+    g.selectAll("circle")
+        .attr("r", function() {
+            var self = d3.select(this);
+            var r = 4 / d3.event.scale;
+            self.style("stroke-width", r < 4 ? (r < 2 ? 0.5 : 1) : 2);
+            return r;
+        });
+}
+
+svg1.call(zoom);
