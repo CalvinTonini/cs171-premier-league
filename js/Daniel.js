@@ -34,7 +34,7 @@ LineChart.prototype.initVis = function() {
 
     vis.width = 800 - vis.margin.left - vis.margin.right;
 
-    vis.height = 500 - vis.margin.top - vis.margin.bottom;
+    vis.height = 400 - vis.margin.top - vis.margin.bottom;
 
 
     vis.x = d3.time.scale()
@@ -81,14 +81,23 @@ LineChart.prototype.wrangleData = function(){
 
     var vis = this;
 
-    var season = +document.getElementById("myRange").value;
 
 
-    var season = season.toString() + "-" + (season+1).toString()
+
+
+    vis.season = $( "#slider" ).labeledslider( "option", "value" );
+        //console.log(value);
+
+
+
+    //var season = +document.getElementById("myRange").value;
+
+
+    vis.season = vis.season.toString() + "-" + (vis.season+1).toString()
 
 
     function check(value) {
-        return value.Season ==  season;
+        return value.Season ==  vis.season;
     }
 
     vis.filtered = vis.data.filter(check);

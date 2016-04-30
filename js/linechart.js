@@ -22,7 +22,7 @@ lineChart.prototype.initVis = function () {
     };
 
     vis.width = 1200 - vis.margin.left - vis.margin.right;
-    vis.height = 500 - vis.margin.top - vis.margin.bottom;
+    vis.height = 450 - vis.margin.top - vis.margin.bottom;
 
     vis.svg = d3.select("#" + vis.parentElement).append("svg")
         .attr("width", vis.width + vis.margin.left + vis.margin.right)
@@ -107,6 +107,7 @@ lineChart.prototype.updateVis = function () {
     }
 
     vis.line = d3.svg.line()
+        .defined(function(d) { return d[selection]; })
         .x(function (d) { return vis.x(d["seasonDate"]); })
         .y(function (d) { return vis.y(d[selection]); });
 
@@ -133,6 +134,7 @@ lineChart.prototype.updateVis = function () {
         .style("stroke", function(d) {
             return maincolor(d.key);
         })
+        .style("stroke-width","2px")
         .on("mouseover", function (d) {
             vis.teamname.text(d.key);
             highlightTeam(d.key);

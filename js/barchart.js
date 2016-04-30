@@ -16,9 +16,9 @@ BarChart.prototype.initVis = function() {
 
     vis.margin = {top: 20, right: 0, bottom: 30, left: 125};
 
-    vis.width = 420 - vis.margin.left - vis.margin.right;
+    vis.width = 400 - vis.margin.left - vis.margin.right;
 
-    vis.height = 500 - vis.margin.top - vis.margin.bottom;
+    vis.height = 400 - vis.margin.top - vis.margin.bottom;
 
 
     vis.y = d3.scale.ordinal()
@@ -74,14 +74,18 @@ BarChart.prototype.wrangleData = function(){
     var vis = this;
 
 
-    var season = +document.getElementById("myRange").value;
+
+    vis.season = $( "#slider" ).labeledslider( "option", "value" );
+        //console.log(value);
+
+    //var season = +document.getElementById("myRange").value;
 
 
-    season = season.toString() + "-" + (season+1).toString()
+    vis.season = vis.season.toString() + "-" + (vis.season+1).toString()
 
 
     function check(value) {
-        return value.Season ==  season;
+        return value.Season ==  vis.season;
     }
 
     vis.filtered = vis.data.filter(check);

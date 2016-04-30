@@ -1,4 +1,13 @@
 
+/*.ui-slider-tick-mark{*/
+    /*display:inline-block;*/
+    /*width:2px;*/
+    /*background:black;*/
+    /*height:16px;*/
+    /*position:absolute;*/
+    /*top:-4px;*/
+/*}*/
+
 /*body {*/
     /*font: 10px sans-serif;*/
 /*}*/
@@ -26,7 +35,9 @@
     display: none;
 }
 
-
+#slider{
+    font-size:10px;
+}
 
 /*.axis {*/
     /*shape-rendering: crispEdges;*/
@@ -44,6 +55,43 @@
     /*display: none;*/
 /*}*/
 
+/*#myRange{*/
+    /*width: 400px;*/
+/*}*/
+
+/*#sliderlabel{*/
+    /*padding-left:50px;*/
+    /*color:#777;*/
+    /*padding-right:20px;*/
+/*}*/
+
+/*.slider .handle {*/
+    /*fill: #fff;*/
+    /*stroke: #000;*/
+    /*stroke-opacity: .5;*/
+    /*stroke-width: 1.25px;*/
+    /*cursor: crosshair;*/
+/*}*/
+
+/*.sliderticks{*/
+    /*font-size:10px;*/
+/*}*/
+
+
+#slider{
+    width:600px;
+    position:fixed;
+}
+
+#chooseseason{
+    padding-left:50px;
+    color:#777;
+    padding-right:20px;
+}
+
+div.nav.navbar-nav{
+    padding-top:15px;
+}
 
 path.line {
     fill: none;
@@ -61,10 +109,7 @@ path.secondline {
 }
 
 
-text#sliderlabel{
-    font-size:50px;
-    padding-left:125px;
-}
+
 .subunit.SCT { fill: #ddc; }
 .subunit.WLS { fill: #cdd; }
 .subunit.NIR { fill: #cdc; }
@@ -116,7 +161,18 @@ text#sliderlabel{
 
 .score{
     font-size: 50px;
+}
 
+.info_small{
+    font-size: 16px;
+}
+
+.txtscore{
+    cursor: pointer;
+}
+
+.label{
+    font-size: 20.5px;
 }
 
 
