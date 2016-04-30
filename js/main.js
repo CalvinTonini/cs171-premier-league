@@ -103,6 +103,8 @@ function updatevars(){
 function sliderUpdate(){
 
     updateMap();
+    //matrix("matrix-area",matchData);
+    matrix.prototype.initVis(matchData);
     intraseason_chart.wrangleData();
     bar_chart.wrangleData();
 
