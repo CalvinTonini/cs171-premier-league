@@ -102,8 +102,6 @@ function updatevars(){
 
 function sliderUpdate(){
 
-    console.log("asdf");
-
     updateMap();
     //matrix("matrix-area",matchData);
     matrix.prototype.initVis(matchData);
