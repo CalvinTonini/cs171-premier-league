@@ -91,7 +91,7 @@ matrix.prototype.initVis = function(data) {
         var slider_2 = slider + 1;
 
         var Season_selection = slider + "-" + slider_2;
-        console.log(Season_selection)
+        //console.log(Season_selection)
 
 
         //console.log(data);
@@ -103,6 +103,7 @@ matrix.prototype.initVis = function(data) {
 
         data.forEach(function (d) {
 
+            var unique = 1;
             for (var name in d) {
                 if (name != "Date" && name != "AwayTeam" && name != "FTR" && name != "Season" && name != "HomeTeam") {
                     d[name] = +d[name]
@@ -111,16 +112,15 @@ matrix.prototype.initVis = function(data) {
             //d.Date = parseDate(d.Date)
             d.Date = d3.time.format("%m/%e/%y").parse(d.Date)
 
+
         });
 
-
-        console.log()
 
         vis.data = data.filter(function (d) {
             return d.Season == Season_selection
         });
 
-        console.log(vis.data);
+       // console.log(vis.data);
 
 
         //console.log(data)
@@ -216,7 +216,7 @@ matrix.prototype.initVis = function(data) {
 
         vis.data.splice(vis.data.length, 0, placeholder);
 
-        console.log(vis.data);
+        //console.log(vis.data);
 
 
         var count = 0;
@@ -241,7 +241,7 @@ matrix.prototype.initVis = function(data) {
         vis.cells.append("rect")
             .attr("class", "rect")
             .attr("id", function (d) {
-                return d.HomeTeam;
+                return d.unique_id;
             })
             .attr("height", cell_height)
             .attr("width", 32)
@@ -372,7 +372,7 @@ matrix.prototype.initVis = function(data) {
                 //else
                 //{
                 //    d3.selectAll(cells.txtscore).style("fill","black");
-                //    toggle = 0;
+                //    toggle = 0; .
                 //}
 
 
