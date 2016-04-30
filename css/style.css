@@ -1,4 +1,13 @@
 
+/*.ui-slider-tick-mark{*/
+    /*display:inline-block;*/
+    /*width:2px;*/
+    /*background:black;*/
+    /*height:16px;*/
+    /*position:absolute;*/
+    /*top:-4px;*/
+/*}*/
+
 /*body {*/
     /*font: 10px sans-serif;*/
 /*}*/
@@ -26,7 +35,9 @@
     display: none;
 }
 
-
+#slider{
+    font-size:10px;
+}
 
 /*.axis {*/
     /*shape-rendering: crispEdges;*/
@@ -62,8 +73,13 @@
     /*cursor: crosshair;*/
 /*}*/
 
+/*.sliderticks{*/
+    /*font-size:10px;*/
+/*}*/
+
+
 #slider{
-    width:200px;
+    width:600px;
     position:fixed;
 }
 

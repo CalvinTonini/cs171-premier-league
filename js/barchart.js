@@ -75,7 +75,7 @@ BarChart.prototype.wrangleData = function(){
 
 
 
-    vis.season = $( "#slider" ).slider( "option", "value" );
+    vis.season = $( "#slider" ).labeledslider( "option", "value" );
         //console.log(value);
 
     //var season = +document.getElementById("myRange").value;

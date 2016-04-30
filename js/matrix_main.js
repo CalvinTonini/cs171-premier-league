@@ -63,7 +63,7 @@ matrix.prototype.initVis = function() {
 
     var tab = '\u00A0' + '\u00A0' + '\u00A0' + '\u00A0' + '\u00A0' + '\u00A0';
 
-    var slider = $("#slider").slider("option", "value");
+    var slider = $("#slider").labeledslider("option", "value");
 
 
     var slider_2 = slider + 1;

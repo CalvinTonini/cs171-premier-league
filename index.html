@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href = "css/jquery.css">
+    <link rel="stylesheet" href = "css/ext-jquery-ui.css">
     <link rel="stylesheet" href="css/style.css">
 
 
@@ -118,11 +119,9 @@
           </div>
       </div>
       <div class = "row">
-          <div class = "col-xs-12"></div>
+          <div class = "col-xs-12">
           <div class="form-group">
-              <br />
-              <label for="attribute">Metric: <text id = "slideryear"></text></label>
-              <br/>
+              <label for="attribute">Metric:</label>
               <select class="form-control" id="attribute"  onchange="updatevars()">
                   <option value = "cummulative_TotalPoints">Total Points</option>
                   <option value ="cummulative_GoalsFor">Total Goals Scored</option>
@@ -136,6 +135,7 @@
               <!--<option value ="cummulatie_GoalsFor">Total Goals Scored</option>-->
               <!--<option value = "cummulative_TotalFouls">Total Fouls</option>-->
               <!--</select>-->
+          </div>
           </div>
       </div>
       <div class = "row">
@@ -154,6 +154,7 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery1.js"></script>
     <script src="js/jqueryui.js"></script>
+    <script src="js/ext-jquery-ui.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/d3.min.js"></script>
     <script src="js/d3.tip.js"></script>

@@ -79,7 +79,7 @@ function createvis(){
 
     bar_chart = new BarChart("bar_chart",aggregate);
 
-    season_matrix = new matrix("matrix-area",matchData);
+    //season_matrix = new matrix("matrix-area",matchData);
 
     updateMap();
 
@@ -94,6 +94,8 @@ function updatevars(){
 }
 
 function sliderUpdate(){
+
+    console.log("asdf");
 
     updateMap();
     intraseason_chart.wrangleData();
@@ -130,8 +132,9 @@ function updateMap(){
     var dats = mapData;
 
 
-    var selected = $( "#slider" ).slider( "option", "value" );
-        //console.log(value);
+    var selected = $( "#slider" ).labeledslider( "option", "value" );
+
+    console.log(selected);
 
 
     //var selected = +document.getElementById("myRange").value;
