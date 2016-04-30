@@ -241,7 +241,7 @@ matrix.prototype.initVis = function(data) {
         vis.cells.append("rect")
             .attr("class", "rect")
             .attr("id", function (d) {
-                return d.unique_id;
+                return "game"+ d.unique_id.toString();
             })
             .attr("height", cell_height)
             .attr("width", 32)
@@ -352,6 +352,9 @@ matrix.prototype.initVis = function(data) {
             })
             .attr("dy", "1.2em")
             .attr("class", "txtscore")
+            .attr("id", function (d) {
+                return "game" + d.unique_id.toString();
+            })
             .text(function (d) {
                 if (d.FTR != "Na") {
                     return d.FTHG + "-" + d.FTAG
@@ -360,6 +363,7 @@ matrix.prototype.initVis = function(data) {
             .on('mouseover', vis.tiptext.show)
             .on('mouseout', vis.tiptext.hide)
             .on('click', function (d) {
+                console.log(d.unique_id);
 
                 //
                 //if (toggle == 0)
