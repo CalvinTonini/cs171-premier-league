@@ -14,10 +14,10 @@ LineChart.prototype.initVis = function() {
 
     var vis = this;
 
+    //console.log(vis.data);
 
     vis.parseDate = d3.time.format("%Y-%m-%d").parse;
 
-    console.log(vis.data);
 
     vis.data.forEach(function(d) {
 
@@ -236,7 +236,7 @@ LineChart.prototype.updateVis = function(){
         })
         .attr("r", 3)
         .attr("id",function(d){
-            return(d.key.replace(/\s+/g, ''))
+            return(d.unique_id)
         });
 
 
@@ -255,7 +255,10 @@ LineChart.prototype.updateVis = function(){
         .attr("cy", function(d) {
             return vis.y(d[vis.selected])
         })
-        .attr("r", 3);
+        .attr("r", 3)
+        .attr("id",function(d){
+            return("game"+d.unique_id.toString())
+        });
 
 
         vis.circlegroup2.on("mouseover", function(d) {
@@ -263,6 +266,12 @@ LineChart.prototype.updateVis = function(){
         })
         .on("mouseout", function(d, i) {
             unhighlightTeam(d.key)
+        });
+
+
+        vis.circlegroup2.selectAll("circle")
+            .on("click",function(d,i){
+            highlightGame(d.unique_id.toString())
         });
 
 
