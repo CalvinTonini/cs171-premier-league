@@ -81,23 +81,22 @@ lineChart.prototype.wrangleData = function() {
             return 'data/logos/' + d.key + '.png';
         })
         .attr("class", "resultstext")
+        .attr("id", function (d) {
+            return d.key.replace(/ +/g, "") + "inter";
+        })
         .attr("width", 100)
         .attr("height", 100)
+        .attr("opacity", 0.8)
         .on("click", function (d) {
             var active = d.active ? false : true;
             var newOpacity = active ? 0 : 1;
-            if (!d.hover) {
-                vis.svg.selectAll("#" + d.key.replace(/ +/g, ""))
-                    .transition().duration(100)
-                    .style("opacity", newOpacity);
-            }
             d.active = active;
             d3.select(this).transition().duration(100).style("opacity", function () {
                 if (newOpacity == 0) {
                     return 0.4;
                 }
                 else {
-                    return newOpacity;
+                    return 0.8;
                 }
             })
         })
@@ -156,7 +155,6 @@ lineChart.prototype.updateVis = function () {
         return vis.line(d.values);
     });
 
-    // d3.selectAll(".teams").remove();
     teams.enter()
         .append("path")
         .attr({
@@ -176,11 +174,13 @@ lineChart.prototype.updateVis = function () {
         .on("mouseover", function (d) {
             d3.select(this).style("opacity", 1);
             d3.select(this).style("stroke-width", 5);
+            d3.select("#" + d.key.replace(/ +/g, "") + "inter").style("opacity", 1);
             vis.teamname.text(d.key);
         })
         .on("mouseout", function (d) {
             d3.select(this).style("opacity", 0.4);
             d3.select(this).style("stroke-width", 1);
+            d3.select("#" + d.key.replace(/ +/g, "") + "inter").style("opacity", 0.8);
             vis.teamname.text(d.key);
         });
 
