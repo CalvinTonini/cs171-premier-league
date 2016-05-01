@@ -6,29 +6,29 @@ var projection = d3.geo.albers()
     .center([2.5, 54.0])
     .rotate([4.4, 0])
     .parallels([50, 60])
-    .scale(600 * 10)
-    .translate([widthy / 2, heighty / 2]);
+    .scale(750 * 10)
+    .translate([widthy / 2, heighty / 3]);
 
 var path = d3.geo.path()
     .projection(projection)
     .pointRadius(2);
 
-var zoom = d3.behavior.zoom()
-    .scaleExtent([1,5])
-    .on("zoom", zoomed);
+//var zoom = d3.behavior.zoom()
+//    .scaleExtent([1,5])
+//    .on("zoom", zoomed);
 
 var svg1 = d3.select("#map").append("svg")
     .attr("width", widthy)
-    .attr("height", heighty);
+    .attr("height", heighty)
+    .attr("id","seas");
 
 var g = svg1.append("g");
 
 var aggregate, intraseason_chart, interseason_chart;
 
-var currentColor = "black";
+var toggle = true;
 
-
-var mapData,logosData;
+var mapData,logosData,logoSelect;
 
 var tips = d3.select("#map").append("div").attr("class","tooltip hidden");
 
@@ -194,7 +194,9 @@ function updateMap(){
 
     subunit1
         .attr("class", function(d) { return "subunit " + d.id; })
-        .attr("d", path);
+        .attr("d", path)
+        .on("click",clicked)
+        .on("dblclick",dblclicked);
 
     //svg1.append("path")
     //    .datum(topojson.mesh(mapData, mapData.objects.subunits, function(a, b) { return a !== b && a.id !== "IRL"; }))
@@ -237,6 +239,10 @@ function updateMap(){
     //    .transition()
     //    .duration(2000)
     //    .attr("r",4);
+    d3.selectAll("image").classed({"logoZoom" : false, "enter" : true });
+    d3.selectAll("image").style("opacity",1).attr("height",dimensionFunction).attr("width",dimensionFunction);
+
+
     var logos = g.selectAll("image")
         .data(places.features,function(d){ return d.properties.name});
 
@@ -252,19 +258,78 @@ function updateMap(){
         .attr("x",function(d){ return projection(d.geometry.coordinates)[0];})
         .attr("y",function(d){ return projection(d.geometry.coordinates)[1];})
         .transition()
-        .duration(800)
-        .attr("height", 25 / zoom.scale())
-        .attr("width", 25 / zoom.scale());
+        .duration(750)
+        .attr("height", dimensionFunction)
+        .attr("width", dimensionFunction);
 
     logos.on("mousemove", function(d,i) {
             var mouse = d3.mouse(svg1.node()).map( function(d) { return parseInt(d); } );
             tips
                 .classed("hidden", false)
                 .attr("style", "left:"+(mouse[0])+"px;top:"+(mouse[1])+"px")
-                .html(d.properties.club)
+                .html(d.properties.name + " of " + d.properties.club + " Football Club");
         })
         .on("mouseout",  function(d,i) {
-            tips.classed("hidden", true)
+            tips.classed("hidden", true);
+        })
+        .on("click", function(d){
+
+            // Erase all selections opacities, start off fresh with opacity 1, regular sized logos
+            d3.selectAll("image").classed({"logoZoom" : false, "enter" : true });
+            d3.selectAll("image")
+                .transition()
+                .style("opacity",1)
+                .attr("height",dimensionFunction)
+                .attr("width",dimensionFunction);
+            places.features.forEach(function(d){
+                unhighlightTeam(d.properties.team);
+            });
+
+            // Turn off the single-click centering on logos when zoomed, on when not zoomed
+            if(toggle){
+                var x = d3.mouse(this)[0],
+                    y = d3.mouse(this)[1],
+                    k;
+
+                if (!toggle) { k = 4;}
+                else { k = 1;}
+
+                g.transition()
+                    .duration(750)
+                    .attr("transform", "translate(" + ((widthy / 2) + 2.5) + "," +
+                        ((heighty / 3) + 200) + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
+            }
+
+            // Onclick actions, make sure to "select"/"deselect" same logo, easily select others
+            if(d && logoSelect !== d){
+                d3.select(this).classed("enter",false);
+                d3.select(this).classed("logoZoom", true);
+                d3.selectAll(".enter")
+                    .transition()
+                    .duration(750)
+                    .style("opacity",0.3)
+                    .attr("width",dimensionFunction)
+                    .attr("height",dimensionFunction);
+                d3.select(this)
+                    .transition()
+                    .duration(750)
+                    .style("opacity",1)
+                    .attr("width",logoHover)
+                    .attr("height",logoHover);
+                highlightTeam(d.properties.team);
+                logoSelect = d;
+            }
+            else{
+                d3.select(this).classed({"enter" : true, "logoZoom" : false});
+                d3.selectAll(".enter")
+                    .transition()
+                    .duration(750)
+                    .style("opacity",1)
+                    .attr("width",dimensionFunction)
+                    .attr("height",dimensionFunction);
+                unhighlightTeam(d.properties.team);
+                logoSelect = null;
+            }
         });
 
     //dots.on("mousemove", function(d,i) {
@@ -298,7 +363,7 @@ function updateMap(){
     //    .attr("r", 0)
     //    .remove();
 
-    logos.exit().transition().duration(1000).attr("height",0).attr("width",0).remove();
+    logos.exit().transition().duration(800).attr("height",0).attr("width",0).remove();
     subunit1.exit().remove();
     subunit2.exit().remove();
 
@@ -307,40 +372,102 @@ function updateMap(){
 
 }
 
-function zoomed() {
-    var t = d3.event.translate;
-    var s = d3.event.scale;
-    var h = heighty / 3;
-    var w = widthy / 4;
+//function zoomed() {
+//    var t = d3.event.translate;
+//    var s = d3.event.scale;
+//    var h = heighty / 3;
+//    var w = widthy / 4;
+//
+//    t[0] = Math.min(widthy / 2 * (s - 1) + w * s, Math.max(widthy / 2 * (1 - s) - w * s, t[0]));
+//    t[1] = Math.min(heighty / 2 * (s - 1) + h * s, Math.max(heighty / 2 * (1 - s) - h * s, t[1]));
+//
+//    zoom.translate(t);
+//    g.style("stroke-width", 1 / s).attr("transform", "translate(" + t + ")scale(" + s + ")");
+//
+//    //g.selectAll("circle")
+//    //    .attr("r", function() {
+//    //        var self = d3.select(this);
+//    //        var r = 4 / d3.event.scale;
+//    //        self.style("stroke-width", r < 4 ? (r < 2 ? 0.5 : 1) : 2);
+//    //        return r;
+//    //    });
+//    g.selectAll("image")
+//        .attr("height", function(){
+//            //var self = d3.select(this);
+//            var h = 25 / d3.event.scale;
+//            //h = (h < 8  ? 5 : h)
+//            //(h < 20 ? (w < 10 ? (h < 5 ? 5 : 10) : 15) : 25) : 30);
+//            return h;
+//        })
+//        .attr("width", function() {
+//            //var self = d3.select(this);
+//            var w = 25 / d3.event.scale;
+//            //w = (w < 8 ? 5 : w)
+//            //(w < 20 ? (w < 10 ? (w < 5 ? 5 : 10) : 15) : 25) : 30);
+//            return w;
+//        });
+//}
 
-    t[0] = Math.min(widthy / 2 * (s - 1) + w * s, Math.max(widthy / 2 * (1 - s) - w * s, t[0]));
-    t[1] = Math.min(heighty / 2 * (s - 1) + h * s, Math.max(heighty / 2 * (1 - s) - h * s, t[1]));
+//svg1.call(zoom);
 
-    zoom.translate(t);
-    g.style("stroke-width", 1 / s).attr("transform", "translate(" + t + ")scale(" + s + ")");
-
-    //g.selectAll("circle")
-    //    .attr("r", function() {
-    //        var self = d3.select(this);
-    //        var r = 4 / d3.event.scale;
-    //        self.style("stroke-width", r < 4 ? (r < 2 ? 0.5 : 1) : 2);
-    //        return r;
-    //    });
-    g.selectAll("image")
-        .attr("height", function(){
-            //var self = d3.select(this);
-            var h = 25 / d3.event.scale;
-            //h = (h < 8  ? 5 : h)
-            //(h < 20 ? (w < 10 ? (h < 5 ? 5 : 10) : 15) : 25) : 30);
-            return h;
-        })
-        .attr("width", function() {
-            //var self = d3.select(this);
-            var w = 25 / d3.event.scale;
-            //w = (w < 8 ? 5 : w)
-            //(w < 20 ? (w < 10 ? (w < 5 ? 5 : 10) : 15) : 25) : 30);
-            return w;
-        });
+function dimensionFunction(){
+    if(toggle){ return 30;}
+    else{ return 15;}
 }
 
-svg1.call(zoom);
+function logoHover(){
+    console.log(toggle)
+    if(toggle){ return 40;}
+    else{ return 25;}
+}
+
+function clicked() {
+    var x = d3.mouse(this)[0],
+        y = d3.mouse(this)[1],
+        k;
+
+    if (!toggle) { k = 4;}
+    else { k = 1;}
+
+    g.transition()
+        .duration(750)
+        .attr("transform", "translate(" + ((widthy / 2) + 3.5) + "," +
+            ((heighty  / 3) + 200) + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
+}
+
+function dblclicked() {
+    var x, y, k;
+
+    if (toggle) {
+        x = d3.mouse(this)[0];
+        y = d3.mouse(this)[1];
+        k = 4;
+        d3.selectAll(".enter")
+            .transition()
+            .duration(750)
+            .attr("height", 15)
+            .attr("width",  15);
+        d3.select(".logoZoom")
+            .attr("width",25)
+            .attr("height",25);
+        toggle = !toggle;
+    } else {
+        x = widthy / 2;
+        y = heighty / 3;
+        k = 1;
+        d3.selectAll(".enter")
+            .transition()
+            .duration(750)
+            .attr("height", 30)
+            .attr("width",  30);
+        d3.select(".logoZoom")
+            .attr("width",40)
+            .attr("height",40);
+        toggle = !toggle;
+    }
+
+    g.transition()
+        .duration(750)
+        .attr("transform", "translate(" + widthy / 2 + ","
+            + heighty / 3 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
+}
