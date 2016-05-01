@@ -74,27 +74,26 @@ lineChart.prototype.wrangleData = function() {
         .entries(vis.data);
 
     // make legend
-    var legendSpace = vis.width / (vis.nest.length / 2);
-    vis.nest.forEach(function (d, i) {
-        d3.selectAll(".toggles")
-            .append("svg")
-            .attr("width", 100)
-            .attr("height", 100)
-            .append("image")
-            .attr("xlink:href", 'data/logos/' + d.key + '.png')
-            .attr("width", "100")
-            .attr("height", "100")
-            .on("click", function () {
-                var active = d.active ? false : true;
-                var newOpacity = active ? 0 : 1;
-                vis.svg.selectAll("#"+d.key)
-                    .transition().duration(100)
-                    .style("opacity", newOpacity);
-                d.active = active;
-                console.log("hit");
-            });
-    });
-
+    d3.selectAll(".toggles")
+        .data(vis.nest).enter()
+        .append("svg")
+        .attr("width", 100)
+        .attr("height", 100)
+        .append("image")
+        .attr("xlink:href", function (d) {
+            return 'data/logos/' + d.key + '.png';
+        })
+        .attr("width", 100)
+        .attr("height", 100)
+        .on("click", function (d) {
+            var active = d.active ? false : true;
+            var newOpacity = active ? 0 : 1;
+            vis.svg.selectAll("#"+d.key)
+                .transition().duration(100)
+                .style("opacity", newOpacity);
+            d.active = active;
+            console.log("hit");
+        });
     // Update the visualization
     vis.updateVis();
 };
