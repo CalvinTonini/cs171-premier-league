@@ -14,7 +14,7 @@ var path = d3.geo.path()
     .pointRadius(2);
 
 var zoom = d3.behavior.zoom()
-    .scaleExtent([1,8])
+    .scaleExtent([1,5])
     .on("zoom", zoomed);
 
 var svg1 = d3.select("#map").append("svg")
@@ -28,7 +28,7 @@ var aggregate, intraseason_chart, interseason_chart;
 var currentColor = "black";
 
 
-var mapData;
+var mapData,logosData;
 
 var tips = d3.select("#map").append("div").attr("class","tooltip hidden");
 
@@ -45,13 +45,15 @@ queue()
     .defer(d3.csv, "data/eamon.csv")
     .defer(d3.csv, "data/intraseason_data.csv")
     .defer(d3.json,"data/tsconfig.json")
-    .await(function(error, agg,matches, intra, mapJson) {
+    .defer(d3.json,"data/logos.json")
+    .await(function(error, agg,matches, intra, mapJson, logosJson) {
 
 
         intraseason = intra;
         aggregate = agg;
         mapData = mapJson;
         matchData = matches;
+        logosData = logosJson;
         //matchData = matches;
 
 
@@ -137,6 +139,7 @@ function unhighlightTeam(unformatted_team){
 function updateMap(){
 
     var dats = mapData;
+    var dat1 = logosData;
 
 
     var selected = $( "#slider" ).labeledslider( "option", "value" );
@@ -146,10 +149,10 @@ function updateMap(){
 
     //var selected = +document.getElementById("myRange").value;
 
-    var subunits = topojson.feature(mapData, mapData.objects.subunits),
+    var subunits = topojson.feature(logosData, logosData.objects.subunits),
         places = {
             type: "FeatureCollection",
-            features: topojson.feature(dats, dats.objects.places).features
+            features: topojson.feature(dat1, dat1.objects.places).features
                 .filter(function(d){ return d.properties.seasons.includes(selected+1); })
         };
 
@@ -186,35 +189,45 @@ function updateMap(){
         .attr("dy", ".35em")
         .text(function(d) { return d.properties.name; });
 
-    var dots = g.selectAll("circle")
-        .data(places.features,function(d){ return d.properties.name;});
-
-    dots.attr("class","update")
-        .transition()
-        .duration(2000)
-        .attr("cx", function(d){ return projection(d.geometry.coordinates)[0];})
-        .attr("cy", function(d){ return projection(d.geometry.coordinates)[1];});
-
-    //dots.transition()
-    //    .duration(800)
-    //    .attr("class","place")
-    //    .attr("fill","black")
-    //    .attr("r",4)
+    //var dots = g.selectAll("circle")
+    //    .data(places.features,function(d){ return d.properties.name;});
+    //
+    //dots.attr("class","update")
+    //    .transition()
+    //    .duration(2000)
     //    .attr("cx", function(d){ return projection(d.geometry.coordinates)[0];})
     //    .attr("cy", function(d){ return projection(d.geometry.coordinates)[1];});
 
-    dots.enter().append("circle")
-        .attr("class","enter")
-        .attr("class","place")
-        .attr("fill","black")
-        .attr("r",0)
-        .attr("cx", function(d){ return projection(d.geometry.coordinates)[0];})
-        .attr("cy", function(d){ return projection(d.geometry.coordinates)[1];})
-        .transition()
-        .duration(2000)
-        .attr("r",4);
+    //dots.enter().append("circle")
+    //    .attr("class","enter")
+    //    .attr("class","place")
+    //    .attr("fill","black")
+    //    .attr("r",0)
+    //    .attr("cx", function(d){ return projection(d.geometry.coordinates)[0];})
+    //    .attr("cy", function(d){ return projection(d.geometry.coordinates)[1];})
+    //    .transition()
+    //    .duration(2000)
+    //    .attr("r",4);
+    var logos = g.selectAll("image")
+        .data(places.features,function(d){ return d.properties.name});
 
-    dots.on("mousemove", function(d,i) {
+    logos.attr("x",function(d){ return projection(d.geometry.coordinates)[0];})
+        .attr("y",function(d){ return projection(d.geometry.coordinates)[1];});
+
+    logos.enter().append("image")
+        .attr("class","enter")
+        .attr("id", function(d){ return d.properties.team;})
+        .attr("xlink:href", function(d){ return 'data/logos/' + d.properties.team + '.png';})
+        .attr("width","0")
+        .attr("height","0")
+        .attr("x",function(d){ return projection(d.geometry.coordinates)[0];})
+        .attr("y",function(d){ return projection(d.geometry.coordinates)[1];})
+        .transition()
+        .duration(800)
+        .attr("height", 25 / zoom.scale())
+        .attr("width", 25 / zoom.scale());
+
+    logos.on("mousemove", function(d,i) {
             var mouse = d3.mouse(svg1.node()).map( function(d) { return parseInt(d); } );
             tips
                 .classed("hidden", false)
@@ -223,51 +236,40 @@ function updateMap(){
         })
         .on("mouseout",  function(d,i) {
             tips.classed("hidden", true)
-        })
-        .on('click',function(d) {
-            currentColor = currentColor == "black" ? "yellow" : "black";
-            d3.selectAll("circle").style("fill","black");
-            places.features.forEach(function(d){
-                unhighlightTeam(d.properties.team);
-            });
-            if(currentColor == "yellow"){
-                d3.select(this).style("fill", currentColor);
-                highlightTeam(d.properties.team)
-            }
-            else{
-                unhighlightTeam(d.properties.team)
-            }
         });
 
-    //dots.on('mouseover',tips.show)
-    //    .on('mouseout',tips.hide)
+    //dots.on("mousemove", function(d,i) {
+    //        var mouse = d3.mouse(svg1.node()).map( function(d) { return parseInt(d); } );
+    //        tips
+    //            .classed("hidden", false)
+    //            .attr("style", "left:"+(mouse[0])+"px;top:"+(mouse[1])+"px")
+    //            .html(d.properties.club)
+    //    })
+    //    .on("mouseout",  function(d,i) {
+    //        tips.classed("hidden", true)
+    //    })
     //    .on('click',function(d) {
-    //        toggle = !toggle;
-    //        var testInput = d.properties.team;
+    //        currentColor = currentColor == "black" ? "yellow" : "black";
     //        d3.selectAll("circle").style("fill","black");
     //        places.features.forEach(function(d){
-    //           unhighlightTeam(d.properties.team);
+    //            unhighlightTeam(d.properties.team);
     //        });
-    //        if(toggle || (testInput != currentTeam)){
-    //            toggle = false;
-    //            d3.select(this).style("fill","yellow");
-    //            highlightTeam(d.properties.team);
-    //            console.log("fuck")
+    //        if(currentColor == "yellow"){
+    //            d3.select(this).style("fill", currentColor);
+    //            highlightTeam(d.properties.team)
     //        }
     //        else{
-    //            d3.select(this).style("fill","black");
-    //            unhighlightTeam(d.properties.team);
+    //            unhighlightTeam(d.properties.team)
     //        }
-    //
     //    });
 
-    dots.exit()
-        .transition()
-        .duration(2000)
-        .attr("r", 0)
-        .remove();
+    //dots.exit()
+    //    .transition()
+    //    .duration(2000)
+    //    .attr("r", 0)
+    //    .remove();
 
-
+    logos.exit().transition().duration(1000).attr("height",0).attr("width",0).remove();
     subunit1.exit().remove();
     subunit2.exit().remove();
 
@@ -288,12 +290,27 @@ function zoomed() {
     zoom.translate(t);
     g.style("stroke-width", 1 / s).attr("transform", "translate(" + t + ")scale(" + s + ")");
 
-    g.selectAll("circle")
-        .attr("r", function() {
-            var self = d3.select(this);
-            var r = 4 / d3.event.scale;
-            self.style("stroke-width", r < 4 ? (r < 2 ? 0.5 : 1) : 2);
-            return r;
+    //g.selectAll("circle")
+    //    .attr("r", function() {
+    //        var self = d3.select(this);
+    //        var r = 4 / d3.event.scale;
+    //        self.style("stroke-width", r < 4 ? (r < 2 ? 0.5 : 1) : 2);
+    //        return r;
+    //    });
+    g.selectAll("image")
+        .attr("height", function(){
+            //var self = d3.select(this);
+            var h = 25 / d3.event.scale;
+            //h = (h < 8  ? 5 : h)
+            //(h < 20 ? (w < 10 ? (h < 5 ? 5 : 10) : 15) : 25) : 30);
+            return h;
+        })
+        .attr("width", function() {
+            //var self = d3.select(this);
+            var w = 25 / d3.event.scale;
+            //w = (w < 8 ? 5 : w)
+            //(w < 20 ? (w < 10 ? (w < 5 ? 5 : 10) : 15) : 25) : 30);
+            return w;
         });
 }
 
