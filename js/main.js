@@ -98,7 +98,7 @@ function updatevars(){
 
     intraseason_chart.wrangleData();
     bar_chart.wrangleData();
-    interseason_chart.wrangleData();
+    interseason_chart.updateVis();
     
 }
 

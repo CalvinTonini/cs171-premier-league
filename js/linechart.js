@@ -4,7 +4,7 @@
 
 
 
-var years =  [1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014];
+// var years =  [1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014];
 
 lineChart = function(_parentElement, _data) {
     this.parentElement = _parentElement;
@@ -17,12 +17,12 @@ lineChart.prototype.initVis = function () {
     vis.margin = {
         top: 40,
         right: 40,
-        bottom: 500,
+        bottom: 40,
         left: 40
     };
 
     vis.width = 1200 - vis.margin.left - vis.margin.right;
-    vis.height = 1000 - vis.margin.top - vis.margin.bottom;
+    vis.height = 600 - vis.margin.top - vis.margin.bottom;
 
     vis.svg = d3.select("#" + vis.parentElement).append("svg")
         .attr("width", vis.width + vis.margin.left + vis.margin.right)
@@ -76,13 +76,14 @@ lineChart.prototype.wrangleData = function() {
     // make legend
     var legendSpace = vis.width / (vis.nest.length / 2);
     vis.nest.forEach(function (d, i) {
-        vis.svg.append("text")
-            .attr("x", (legendSpace / 2))
-            .attr("y", vis.height + 10 * i)
-            .attr("class", "legend")
-            .style("fill", function () {
-                return maincolor(d.key);
-            })
+        d3.selectAll(".toggles")
+            .append("svg")
+            .attr("width", 100)
+            .attr("height", 100)
+            .append("image")
+            .attr("xlink:href", 'data/logos/' + d.key + '.png')
+            .attr("width", "100")
+            .attr("height", "100")
             .on("click", function () {
                 var active = d.active ? false : true;
                 var newOpacity = active ? 0 : 1;
@@ -91,9 +92,9 @@ lineChart.prototype.wrangleData = function() {
                     .style("opacity", newOpacity);
                 d.active = active;
                 console.log("hit");
-            })
-            .text(d.key);
+            });
     });
+
     // Update the visualization
     vis.updateVis();
 };
