@@ -90,45 +90,45 @@ matrix_object.prototype.initVis = function() {
     vis.svg_cells.append("rect")
         .attr("height", vis.cell_height)
         .attr("width", 32)
-        .attr("x", "445")
+        .attr("x", "465")
         .attr("y", "-45")
         .attr("stroke", "grey")
         .attr("fill", "lightgrey");
 
     vis.svg_cells.append("text")
-        .attr("x", "485")
+        .attr("x", "505")
         .attr("y", "-28")
         .text("Draw");
 
     vis.svg_cells.append("rect")
         .attr("height", vis.cell_height)
         .attr("width", 32)
-        .attr("x", "120")
+        .attr("x", "140")
         .attr("y", "-45")
         .attr("stroke", "grey")
         .attr("fill", "#72BCD4");
 
     vis.svg_cells.append("text")
-        .attr("x", "160")
+        .attr("x", "180")
         .attr("y", "-28")
         .text("Home Team Win");
 
     vis.svg_cells.append("rect")
         .attr("height", vis.cell_height)
         .attr("width", 32)
-        .attr("x", "280")
+        .attr("x", "300")
         .attr("y", "-45")
         .attr("stroke", "grey")
         .attr("fill", "#FF9999");
 
     vis.svg_cells.append("text")
-        .attr("x", "320")
+        .attr("x", "340")
         .attr("y", "-28")
         .text("Home Team Loss");
 
 
     vis.svg_cells.append("text")
-        .attr("x", 18)
+        .attr("x", 38)
         .attr("y", -25)
         .attr("dy", ".1em")
         .style("text-anchor", "middle")
@@ -429,12 +429,28 @@ matrix_object.prototype.updateVis= function() {
         .attr("x", function (d, index) {
 
             return (((index % vis.nodes.length) //+ count
-                ) * cell_width) + 50
+                ) * cell_width) + 70
         }).attr("y", function (d, index) {
 
             return Math.floor((index / vis.nodes.length)) * (cell_height + 1)
         })
         .attr("stroke", "grey")
+        .attr("id", function (d) {
+
+            if (d.FTR == "H") {
+                return "game"+ d.unique_id.toString() + "blue";
+            }
+            else if (d.FTR == "A") {
+                return "game"+ d.unique_id.toString() + "red";
+            }
+            else if (d.FTR == "D") {
+                return "game"+ d.unique_id.toString() + "lightgrey";
+            }
+            else if (d.FTR == "Na") {
+                return "game"+ d.unique_id.toString() + "grey";
+            }
+        })
+
         .attr("fill", function (d) {
 
             if (d.FTR == "H") {
@@ -473,7 +489,7 @@ matrix_object.prototype.updateVis= function() {
         .attr("x", function (d, index) {
 
             return (((index % vis.nodes.length) //+ count
-                ) * cell_width) + 50
+                ) * cell_width) + 70
         }).attr("y", function (d, index) {
 
             return Math.floor((index / vis.nodes.length)) * (cell_height + 1)
@@ -505,7 +521,7 @@ matrix_object.prototype.updateVis= function() {
     vis.gametext.transition().duration(500)
         .attr("x", function (d, index) {
 
-            return (((index % vis.nodes.length)) * cell_width) + 55
+            return (((index % vis.nodes.length)) * cell_width) + 75
         })
         .attr("y", function (d, index) {
 
@@ -527,7 +543,7 @@ matrix_object.prototype.updateVis= function() {
         .attr("class","resultstext")
         .attr("x", function (d, index) {
 
-            return (((index % vis.nodes.length)) * cell_width) + 55
+            return (((index % vis.nodes.length)) * cell_width) + 75
         })
         .attr("y", function (d, index) {
 
@@ -892,7 +908,7 @@ matrix_object.prototype.updateVis= function() {
     vis.abbreviated.transition()
         .attr("x", function (d, index) {
 
-        return (((index % vis.nodes.length)) * cell_width) + 56
+        return (((index % vis.nodes.length)) * cell_width) + 76
         })
     .   attr("y", function (d, index) {
 
@@ -906,7 +922,7 @@ matrix_object.prototype.updateVis= function() {
     vis.abbreviated.enter().append("text").attr("class","abbreviated")
         .attr("x", function (d, index) {
 
-            return (((index % vis.nodes.length)) * cell_width) + 56
+            return (((index % vis.nodes.length)) * cell_width) + 76
         })
         .attr("y", function (d, index) {
 
