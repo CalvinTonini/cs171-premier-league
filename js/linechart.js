@@ -49,8 +49,6 @@ lineChart.prototype.initVis = function () {
 
     vis.teamname = vis.svg.append("text").attr("transform", "translate(0,-10)");
 
-
-
     vis.wrangleData();
 };
 
@@ -91,6 +89,14 @@ lineChart.prototype.wrangleData = function() {
                 .style("opacity", newOpacity);
             d.active = active;
             console.log("hit");
+            d3.select(this).transition().duration(100).style("opacity", function () {
+                if (newOpacity == 0) {
+                    return 0.4;
+                }
+                else {
+                    return newOpacity;
+                }
+            })
         });
 
     // Update the visualization
