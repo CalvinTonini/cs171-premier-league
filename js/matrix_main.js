@@ -36,6 +36,8 @@ matrix.prototype.initVis = function(data) {
     d3.csv("data/eamon.csv", function(data) {
         var vis = this;
 
+        //console.log(data);
+
 
         vis.margin = {top: 60, right: 0, bottom: 10, left: 80},
             vis.width = 720,
@@ -115,21 +117,22 @@ matrix.prototype.initVis = function(data) {
 
         });
 
+console.log(data);
 
-        vis.data = data.filter(function (d) {
+        data = data.filter(function (d) {
             return d.Season == Season_selection
         });
 
-       // console.log(vis.data);
+       console.log(data);
 
 
         //console.log(data)
 
         var nodes = [];
 
-        for (i = 0; i < vis.data.length; i++) {
-            if (nodes.indexOf(vis.data[i].HomeTeam) == -1) {
-                nodes.push(vis.data[i].HomeTeam);
+        for (i = 0; i < data.length; i++) {
+            if (nodes.indexOf(data[i].HomeTeam) == -1) {
+                nodes.push(data[i].HomeTeam);
             }
         }
 
@@ -193,19 +196,20 @@ matrix.prototype.initVis = function(data) {
         //data.push(placeholder);
 
 
-        for (i = 0; i < vis.data.length; i++) {
+        for (i = 0; i < data.length; i++) {
             placeholder = {
-                AwayTeam: vis.data[i].HomeTeam,
+                AwayTeam: data[i].HomeTeam,
                 FTAG: 0,
                 FTHG: 0,
                 FTR: "Na",
-                HomeTeam: vis.data[i].HomeTeam,
-                Season: Season_selection
+                HomeTeam: data[i].HomeTeam,
+                Season: Season_selection,
+                unique_id: data[i].unique_id
             };
 
             //console.log(placeholder);
             if (i == 0 || (i % 21 == 0)) {
-                vis.data.splice(i, 0, placeholder);
+                data.splice(i, 0, placeholder);
 
                 //console.log(placeholder);
                 //console.log(data);
@@ -214,9 +218,8 @@ matrix.prototype.initVis = function(data) {
 
         }
 
-        vis.data.splice(vis.data.length, 0, placeholder);
+        data.splice(data.length, 0, placeholder);
 
-        //console.log(vis.data);
 
 
         var count = 0;
@@ -230,17 +233,18 @@ matrix.prototype.initVis = function(data) {
         var cell_width = 32;
         var cell_height = 25;
         vis.rect = vis.svg_cells.selectAll("rect")
-            .data(vis.data);
+            .data(data);
 // Enter (initialize the newly added elements)
 
         vis.cells = vis.svg_cells.selectAll("g")
-            .data(vis.data).enter()
+            .data(data).enter()
             .append("g");
 
 
         vis.cells.append("rect")
             .attr("class", "rect")
             .attr("id", function (d) {
+
                 return "game"+ d.unique_id.toString();
             })
             .attr("height", cell_height)
