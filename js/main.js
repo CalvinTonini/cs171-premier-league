@@ -1,12 +1,12 @@
 
-var widthy = 380,
-    heighty = 500;
+var widthy = 600,
+    heighty = 800;
 
 var projection = d3.geo.albers()
     .center([2.5, 54.0])
     .rotate([4.4, 0])
     .parallels([50, 60])
-    .scale(600 * 5)
+    .scale(600 * 10)
     .translate([widthy / 2, heighty / 2]);
 
 var path = d3.geo.path()
@@ -88,7 +88,7 @@ function createvis(){
 
     bar_chart = new BarChart("bar_chart",aggregate);
 
-    season_matrix = new matrix("matrix-area",matchData);
+    season_matrix = new matrix_object("matrix-area",matchData);
 
     updateMap();
 
@@ -106,9 +106,10 @@ function sliderUpdate(){
 
     updateMap();
     //matrix("matrix-area",matchData);
-    matrix.prototype.initVis(matchData);
+    //matrix.prototype.initVis(matchData);
     intraseason_chart.wrangleData();
     bar_chart.wrangleData();
+    season_matrix.wrangleData();
 
 }
 
@@ -134,6 +135,34 @@ function unhighlightTeam(unformatted_team){
     // interseason_chart.svg.selectAll("#"+team).transition().style("opacity",".4").style("stroke-width","2px");
     bar_chart.svg.selectAll("#"+team).transition().attr("fill", function(d) { return maincolor(d.Team)}).style("opacity",.6);
     //svg_cells.selectAll("#"+team).attr("stroke","grey").attr("stroke-width","1");
+}
+
+function highlightGame(game_id){
+
+    console.log(game_id);
+
+    intraseason_chart.svg.selectAll("#game"+game_id).transition().attr("r","20");
+
+    //interseason_chart.svg.selectAll("#"+team).transition().style({
+    //    opacity: 1,
+    //    "stroke-width": 5
+    //});
+    //bar_chart.svg.selectAll("#"+team).transition().attr("fill","yellow");
+
+    console.log(d3.select("#matrix-area").selectAll("#game"+game_id));
+    d3.select("#matrix-area").selectAll("#game"+game_id).transition().attr("fill","yellow");
+}
+
+function unhighlightGame(game_id){
+
+    console.log(game_id);
+
+    //intraseason_chart.svg.selectAll("#"+team).transition().style("stroke", function (d) {
+    //    return maincolor(d.key);
+    //});
+    //interseason_chart.svg.selectAll("#"+team).transition().style("opacity",".4").style("stroke-width","2px");
+    //bar_chart.svg.selectAll("#"+team).transition().attr("fill", function(d) { return maincolor(d.Team)}).style("opacity",.6);
+    ////svg_cells.selectAll("#"+team).attr("stroke","grey").attr("stroke-width","1");
 }
 
 function updateMap(){

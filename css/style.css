@@ -79,7 +79,7 @@
 
 
 #slider{
-    width:600px;
+    width:550px;
     position:fixed;
 }
 
@@ -155,18 +155,23 @@ path.secondline {
 /*}*/
 
 .info{
-    font-size: 20.5px;
+    font-size: 20px;
 }
 
-.score {
+.score{
     font-size: 50px;
 }
+
 
 .info_small{
     font-size: 16px;
 }
 
 .txtscore{
+    cursor: pointer;
+}
+
+circle{
     cursor: pointer;
 }
 
