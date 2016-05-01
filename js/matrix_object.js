@@ -549,6 +549,8 @@ matrix_object.prototype.updateVis= function() {
         .on('mouseout', vis.tiptext.hide)
         .on('click', function (d) {
 
+            highlightGame(d.unique_id.toString());
+
             vis.svg_info.style("display","block");
             vis.svg_info.select("#image1").attr("xlink:href", 'data/logos/' + d.HomeTeam + '.png')
             vis.svg_info.select("#image2").attr("xlink:href", 'data/logos/' + d.AwayTeam + '.png')

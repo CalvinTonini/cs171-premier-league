@@ -43,6 +43,8 @@ matrix.prototype.initVis = function(data) {
             vis.width = 720,
             vis.height = 650;
 
+        var trunc_id = -1;
+
         /* Initialize tooltip */
         vis.tiptext = d3.tip()
             .attr('class', 'd3-tip')
@@ -370,6 +372,8 @@ matrix.prototype.initVis = function(data) {
             .on('click', function (d) {
                 console.log(d.unique_id);
 
+                trunc_id = d.unique_id.toString;
+
                 //
                 //if (toggle == 0)
                 //{
@@ -383,6 +387,8 @@ matrix.prototype.initVis = function(data) {
                 //    d3.selectAll(cells.txtscore).style("fill","black");
                 //    toggle = 0; .
                 //}
+
+                highlightGame(trunc_id)
 
 
                 d3.selectAll("text.info")

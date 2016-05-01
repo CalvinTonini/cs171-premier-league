@@ -126,6 +126,8 @@ function highlightGame(game_id){
 
 function unhighlightGame(game_id){
 
+    intraseason_chart.svg.selectAll("#game"+game_id).transition().attr("r","3");
+
     d3.select("#matrix-area").selectAll("rect").filter("#game"+game_id +"blue").transition().attr("fill","#72BCD4");
     d3.select("#matrix-area").selectAll("rect").filter("#game"+game_id +"red").transition().attr("fill","#FF9999");
     d3.select("#matrix-area").selectAll("rect").filter("#game"+game_id +"grey").transition().attr("fill","grey");

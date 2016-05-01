@@ -133,8 +133,8 @@ UKmap.prototype.updateMap = function (){
     vis.logos = vis.g.selectAll("image")
         .data(vis.places.features,function(d){ return d.properties.name});
 
-    vis.logos.attr("x",function(d){ return projection(d.geometry.coordinates)[0];})
-        .attr("y",function(d){ return projection(d.geometry.coordinates)[1];});
+    vis.logos.attr("x",function(d){ return vis.projection(d.geometry.coordinates)[0];})
+        .attr("y",function(d){ return vis.projection(d.geometry.coordinates)[1];});
 
     vis.logos.enter().append("image")
         .attr("class","enter")
