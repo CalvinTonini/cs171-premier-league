@@ -111,6 +111,7 @@ function sliderUpdate(){
     bar_chart.wrangleData();
     season_matrix.wrangleData();
 
+
 }
 
 

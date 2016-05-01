@@ -41,7 +41,7 @@ matrix.prototype.initVis = function(data) {
 
         vis.margin = {top: 60, right: 0, bottom: 10, left: 80},
             vis.width = 720,
-            vis.height = 550;
+            vis.height = 650;
 
         /* Initialize tooltip */
         vis.tiptext = d3.tip()
@@ -117,12 +117,13 @@ matrix.prototype.initVis = function(data) {
 
         });
 
-console.log(data);
+//console.log(data);
 
         data = data.filter(function (d) {
             return d.Season == Season_selection
         });
 
+        console.log("HERE:")
        console.log(data);
 
 
