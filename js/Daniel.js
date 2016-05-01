@@ -31,7 +31,7 @@ LineChart.prototype.initVis = function() {
     });
 
 
-    vis.margin = {top: 20, right: 10, bottom: 30, left: 30};
+    vis.margin = {top: 20, right: 40, bottom: 30, left: 30};
 
     vis.width = 800 - vis.margin.left - vis.margin.right;
 
