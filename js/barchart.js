@@ -13,7 +13,7 @@ BarChart.prototype.initVis = function() {
 
     var vis = this;
 
-    vis.margin = {top: 20, right: 0, bottom: 30, left: 125};
+    vis.margin = {top: 20, right: 20, bottom: 30, left: 120};
 
     vis.width = 400 - vis.margin.left - vis.margin.right;
 

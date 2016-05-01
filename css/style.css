@@ -1,82 +1,56 @@
 
-/*.ui-slider-tick-mark{*/
-    /*display:inline-block;*/
-    /*width:2px;*/
-    /*background:black;*/
-    /*height:16px;*/
-    /*position:absolute;*/
-    /*top:-4px;*/
-/*}*/
 
-/*body {*/
-    /*font: 10px sans-serif;*/
-/*}*/
 
-/*.axis path,*/
 
-/*.axis line {*/
-    /*fill: none;*/
-    /*stroke: #000;*/
-    /*shape-rendering: crispEdges;*/
-/*}*/
-
-/*.x.axis path {*/
-    /*display: none;*/
-/*}*/
-
-.axis path,
-.axis line {
-    fill: none;
-    stroke: #000;
-    /*shape-rendering: crispEdges;*/
-}
-
-.x.axis path {
-    display: none;
-}
 
 #slider{
     font-size:10px;
 }
 
-/*.axis {*/
-    /*shape-rendering: crispEdges;*/
-/*}*/
+body { padding-top: 55px; }
 
-/*.x.axis line {*/
-    /*stroke: #fff;*/
-/*}*/
+.homeimage {
+    position: relative;
+    width: 100%; /* for IE 6 */
+}
 
-/*.x.axis .minor {*/
-    /*stroke-opacity: .5;*/
-/*}*/
+#John{
+    padding-top:60px;
+}
 
-/*.x.axis path {*/
-    /*display: none;*/
-/*}*/
+#Calvin{
+    padding-top:60px;
+}
 
-/*#myRange{*/
-    /*width: 400px;*/
-/*}*/
+#Eamon{
+    padding-top:60px;
+}
+#Daniel{
+    padding-top:70px;
+}
 
-/*#sliderlabel{*/
-    /*padding-left:50px;*/
-    /*color:#777;*/
-    /*padding-right:20px;*/
-/*}*/
 
-/*.slider .handle {*/
-    /*fill: #fff;*/
-    /*stroke: #000;*/
-    /*stroke-opacity: .5;*/
-    /*stroke-width: 1.25px;*/
-    /*cursor: crosshair;*/
-/*}*/
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+}
 
-/*.sliderticks{*/
-    /*font-size:10px;*/
-/*}*/
+h2 span {
+    color: white;
+    font: bold 24px/45px Helvetica, Sans-Serif;
+    letter-spacing: -1px;
+    background: rgb(0, 0, 0); /* fallback color */
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+}
 
+a.navbar-brand{
+    padding-top:15px;
+}
 
 #slider{
     width:550px;
@@ -91,6 +65,18 @@
 
 div.nav.navbar-nav{
     padding-top:15px;
+}
+
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    /*shape-rendering: crispEdges;*/
+}
+
+.x.axis path {
+    display: none;
 }
 
 path.line {
