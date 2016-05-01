@@ -416,7 +416,6 @@ function dimensionFunction(){
 }
 
 function logoHover(){
-    console.log(toggle)
     if(toggle){ return 40;}
     else{ return 25;}
 }
