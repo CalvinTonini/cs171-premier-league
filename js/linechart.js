@@ -61,7 +61,6 @@ lineChart.prototype.wrangleData = function() {
     vis.data.forEach(function (d) {
         d["seasonDate"] = parseDate(d["Season"].split("-")[0]);
         d.active = true;
-        d.hover = false;
     });
 
     vis.nest = d3.nest()
@@ -90,21 +89,20 @@ lineChart.prototype.wrangleData = function() {
         .on("click", function (d) {
             var active = d.active ? false : true;
             var newOpacity = active ? 0 : 1;
-            d.active = active;
             d3.select(this).transition().duration(100).style("opacity", function () {
-                if (newOpacity == 0) {
+                if (active) {
                     return 0.4;
                 }
                 else {
                     return 0.8;
                 }
-            })
+            });
+            d.active = active;
         })
         .on("mouseover", function (d) {
             vis.svg.selectAll("#"+d.key.replace(/ +/g, "")).style("opacity", 1);
             vis.svg.selectAll("#"+d.key.replace(/ +/g, "")).style("stroke-width", 5);
             vis.teamname.text(d.key);
-            d.hover = true;
         })
         .on("mouseout", function (d) {
             if (d.active) {
@@ -115,7 +113,6 @@ lineChart.prototype.wrangleData = function() {
             }
             vis.svg.selectAll("#"+d.key.replace(/ +/g, "")).style("stroke-width", 1);
             vis.teamname.text(d.key);
-            d.hover = false;
         });
 
     // Update the visualization
@@ -172,16 +169,20 @@ lineChart.prototype.updateVis = function () {
         })
         .style("stroke-width","2px")
         .on("mouseover", function (d) {
-            d3.select(this).style("opacity", 1);
-            d3.select(this).style("stroke-width", 5);
-            d3.select("#" + d.key.replace(/ +/g, "") + "inter").style("opacity", 1);
-            vis.teamname.text(d.key);
+            if (!d.active) {
+                d3.select(this).style("opacity", 1);
+                d3.select(this).style("stroke-width", 5);
+                d3.select("#" + d.key.replace(/ +/g, "") + "inter").style("opacity", 1);
+                vis.teamname.text(d.key);
+            }
         })
         .on("mouseout", function (d) {
-            d3.select(this).style("opacity", 0.4);
-            d3.select(this).style("stroke-width", 1);
-            d3.select("#" + d.key.replace(/ +/g, "") + "inter").style("opacity", 0.8);
-            vis.teamname.text(d.key);
+            if (!d.active) {
+                d3.select(this).style("opacity", 0.4);
+                d3.select(this).style("stroke-width", 1);
+                d3.select("#" + d.key.replace(/ +/g, "") + "inter").style("opacity", 0.8);
+                vis.teamname.text(d.key);
+            }
         });
 
     teams.exit().remove();
