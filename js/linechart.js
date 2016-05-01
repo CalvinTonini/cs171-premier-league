@@ -2,8 +2,6 @@
  * Created by cni on 2016-04-14.
  */
 
-
-
 // var years =  [1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014];
 
 lineChart = function(_parentElement, _data) {
@@ -75,10 +73,10 @@ lineChart.prototype.wrangleData = function() {
 
     // make legend
     d3.selectAll(".toggles")
-        .data(vis.nest).enter()
         .append("svg")
         .attr("width", 100)
         .attr("height", 100)
+        .data(vis.nest)
         .append("image")
         .attr("xlink:href", function (d) {
             return 'data/logos/' + d.key + '.png';
@@ -94,6 +92,7 @@ lineChart.prototype.wrangleData = function() {
             d.active = active;
             console.log("hit");
         });
+
     // Update the visualization
     vis.updateVis();
 };
