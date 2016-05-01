@@ -109,10 +109,10 @@ path.secondline {
 }
 
 
-.subunit.SCT { fill: #ddc; }
-.subunit.WLS { fill: #cdd; }
-.subunit.NIR { fill: #cdc; }
-.subunit.ENG { fill: #dcd; }
+.subunit.SCT { fill: #ddd4d9; }
+.subunit.WLS { fill: #a1ddd4; }
+/*.subunit.NIR { fill: #cdc; }*/
+.subunit.ENG { fill: #fbee87; }
 
 .subunit.IRL,
 .subunit-label.IRL {
@@ -146,6 +146,16 @@ path.secondline {
 .place:hover,.update:hover{
     stroke-width: 2;
     stroke: yellow;
+}
+
+#seas{
+    border-style: solid;
+    border-width: 0.25px;
+}
+path{
+    stroke: black;
+    stroke-width: 0.25 px;
+    fill: black;
 }
 
 /*text {*/
