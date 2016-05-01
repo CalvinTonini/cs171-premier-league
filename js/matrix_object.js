@@ -454,7 +454,19 @@ matrix_object.prototype.updateVis= function() {
     vis.gamecells.enter().append("rect")
         .attr("class","gamecells")
         .attr("id", function (d) {
-            return "game"+ d.unique_id.toString();
+
+            if (d.FTR == "H") {
+                return "game"+ d.unique_id.toString() + "blue";
+            }
+            else if (d.FTR == "A") {
+                return "game"+ d.unique_id.toString() + "red";
+            }
+            else if (d.FTR == "D") {
+                return "game"+ d.unique_id.toString() + "lightgrey";
+            }
+            else if (d.FTR == "Na") {
+                return "game"+ d.unique_id.toString() + "grey";
+            }
         })
         .attr("height", cell_height)
         .attr("width", 32)
@@ -503,6 +515,7 @@ matrix_object.prototype.updateVis= function() {
         .attr("id", function (d) {
             return "game" + d.unique_id.toString();
         })
+
         .text(function (d) {
             if (d.FTR != "Na") {
                 return d.FTHG + "-" + d.FTAG

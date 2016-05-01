@@ -138,7 +138,13 @@ function unhighlightTeam(unformatted_team){
     //svg_cells.selectAll("#"+team).attr("stroke","grey").attr("stroke-width","1");
 }
 
+var old_game_id= -1;
+
 function highlightGame(game_id){
+
+    unhighlightGame(old_game_id);
+
+    old_game_id = game_id;
 
     console.log(game_id);
 
@@ -151,12 +157,19 @@ function highlightGame(game_id){
     //bar_chart.svg.selectAll("#"+team).transition().attr("fill","yellow");
 
     console.log(d3.select("#matrix-area").selectAll("#game"+game_id));
-    d3.select("#matrix-area").selectAll("#game"+game_id).transition().attr("fill","yellow");
+    d3.select("#matrix-area").selectAll("rect").filter("#game"+game_id +"blue").transition().attr("fill","yellow");
+    d3.select("#matrix-area").selectAll("rect").filter("#game"+game_id +"red").transition().attr("fill","yellow");
+    d3.select("#matrix-area").selectAll("rect").filter("#game"+game_id +"grey").transition().attr("fill","yellow");
+    d3.select("#matrix-area").selectAll("rect").filter("#game"+game_id +"lightgrey").transition().attr("fill","yellow");
 }
 
 function unhighlightGame(game_id){
 
-    console.log(game_id);
+    d3.select("#matrix-area").selectAll("rect").filter("#game"+game_id +"blue").transition().attr("fill","#72BCD4");
+    d3.select("#matrix-area").selectAll("rect").filter("#game"+game_id +"red").transition().attr("fill","#FF9999");
+    d3.select("#matrix-area").selectAll("rect").filter("#game"+game_id +"grey").transition().attr("fill","grey");
+    d3.select("#matrix-area").selectAll("rect").filter("#game"+game_id +"lightgrey").transition().attr("fill","lightgrey");
+
 
     //intraseason_chart.svg.selectAll("#"+team).transition().style("stroke", function (d) {
     //    return maincolor(d.key);
