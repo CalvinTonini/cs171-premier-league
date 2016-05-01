@@ -236,7 +236,7 @@ LineChart.prototype.updateVis = function(){
         })
         .attr("r", 3)
         .attr("id",function(d){
-            return(d.unique_id)
+            return("game" + d.unique_id)
         });
 
 

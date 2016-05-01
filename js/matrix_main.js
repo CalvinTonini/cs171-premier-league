@@ -388,7 +388,7 @@ matrix.prototype.initVis = function(data) {
                 //    toggle = 0; .
                 //}
 
-                highlightGame(trunc_id)
+                highlightGame(trunc_id, d.HomeTeam, d.AwayTeam)
 
 
                 d3.selectAll("text.info")

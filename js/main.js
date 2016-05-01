@@ -109,7 +109,9 @@ function highlightGame(game_id){
 
     console.log(game_id);
 
-    intraseason_chart.svg.selectAll("#game"+game_id).transition().attr("r","20");
+    //intraseason_chart.svg.selectAll("lines").attr("opacity",".1");
+    //intraseason_chart.svg.selectAll("#circles").attr("opacity","0");
+    intraseason_chart.svg.selectAll("#game"+game_id).transition().attr("r","15");
 
     //interseason_chart.svg.selectAll("#"+team).transition().style({
     //    opacity: 1,
