@@ -1,12 +1,12 @@
 
-var widthy = 380,
-    heighty = 500;
+var widthy = 600,
+    heighty = 800;
 
 var projection = d3.geo.albers()
     .center([2.5, 54.0])
     .rotate([4.4, 0])
     .parallels([50, 60])
-    .scale(600 * 5)
+    .scale(600 * 10)
     .translate([widthy / 2, heighty / 2]);
 
 var path = d3.geo.path()
