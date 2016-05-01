@@ -84,7 +84,7 @@ lineChart.prototype.wrangleData = function() {
         .on("click", function (d) {
             var active = d.active ? false : true;
             var newOpacity = active ? 0 : 1;
-            vis.svg.selectAll("#"+d.key)
+            vis.svg.selectAll("#"+d.key.replace(/ +/g, ""))
                 .transition().duration(100)
                 .style("opacity", newOpacity);
             d.active = active;
