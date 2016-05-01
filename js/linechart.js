@@ -61,6 +61,7 @@ lineChart.prototype.wrangleData = function() {
     vis.data.forEach(function (d) {
         d["seasonDate"] = parseDate(d["Season"].split("-")[0]);
         d.active = true;
+        d.hover = false;
     });
 
     vis.nest = d3.nest()
@@ -79,16 +80,18 @@ lineChart.prototype.wrangleData = function() {
         .attr("xlink:href", function (d) {
             return 'data/logos/' + d.key + '.png';
         })
+        .attr("class", "resultstext")
         .attr("width", 100)
         .attr("height", 100)
         .on("click", function (d) {
             var active = d.active ? false : true;
             var newOpacity = active ? 0 : 1;
-            vis.svg.selectAll("#"+d.key.replace(/ +/g, ""))
-                .transition().duration(100)
-                .style("opacity", newOpacity);
+            if (!d.hover) {
+                vis.svg.selectAll("#" + d.key.replace(/ +/g, ""))
+                    .transition().duration(100)
+                    .style("opacity", newOpacity);
+            }
             d.active = active;
-            console.log("hit");
             d3.select(this).transition().duration(100).style("opacity", function () {
                 if (newOpacity == 0) {
                     return 0.4;
@@ -97,6 +100,23 @@ lineChart.prototype.wrangleData = function() {
                     return newOpacity;
                 }
             })
+        })
+        .on("mouseover", function (d) {
+            vis.svg.selectAll("#"+d.key.replace(/ +/g, "")).style("opacity", 1);
+            vis.svg.selectAll("#"+d.key.replace(/ +/g, "")).style("stroke-width", 5);
+            vis.teamname.text(d.key);
+            d.hover = true;
+        })
+        .on("mouseout", function (d) {
+            if (d.active) {
+                vis.svg.selectAll("#" + d.key.replace(/ +/g, "")).style("opacity", 0);
+            }
+            else {
+                vis.svg.selectAll("#" + d.key.replace(/ +/g, "")).style("opacity", 0.4);
+            }
+            vis.svg.selectAll("#"+d.key.replace(/ +/g, "")).style("stroke-width", 1);
+            vis.teamname.text(d.key);
+            d.hover = false;
         });
 
     // Update the visualization
