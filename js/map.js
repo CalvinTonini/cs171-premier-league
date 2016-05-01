@@ -126,8 +126,8 @@ UKmap.prototype.updateMap = function (){
     //    .transition()
     //    .duration(2000)
     //    .attr("r",4);
-    vis.g.selectAll("image").classed({"logoZoom" : false, "enter" : true });
-    vis.g.selectAll("image").style("opacity",1).attr("height",vis.dimensionFunction).attr("width",vis.dimensionFunction);
+    vis.svg1.selectAll("image").classed({"logoZoom" : false, "enter" : true });
+    vis.svg1.selectAll("image").style("opacity",1).attr("height",vis.dimensionFunction).attr("width",vis.dimensionFunction);
 
 
     vis.logos = vis.g.selectAll("image")
@@ -162,8 +162,8 @@ UKmap.prototype.updateMap = function (){
         .on("click", function(d){
 
             // Erase all selections opacities, start off fresh with opacity 1, regular sized logos
-            vis.g.selectAll("image").classed({"logoZoom" : false, "enter" : true });
-            vis.g.selectAll("image")
+            vis.svg1.selectAll("image").classed({"logoZoom" : false, "enter" : true });
+            vis.svg1.selectAll("image")
                 .transition()
                 .style("opacity",1)
                 .attr("height",vis.dimensionFunction)
@@ -318,7 +318,7 @@ UKmap.prototype.clicked = function () {
     if (!vis.toggle) { k = 4;}
     else { k = 1;}
 
-    vis.svg1.transition()
+    vis.g.transition()
         .duration(750)
         .attr("transform", "translate(" + ((vis.widthy / 2) + 3.5) + "," +
             ((vis.heighty  / 3) + 200) + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
@@ -328,7 +328,7 @@ UKmap.prototype.dblclicked = function () {
     var vis = this;
     var x, y, k;
 
-    if (toggle) {
+    if (vis.toggle) {
         x = d3.mouse(this)[0];
         y = d3.mouse(this)[1];
         k = 4;
