@@ -446,12 +446,12 @@ matrix_object.prototype.add_svg_info = function(id) {
 
 
     vis.svg_info.style("display","block");
-    vis.svg_info.select("#image1").attr("xlink:href", 'data/logos/' + vis.d[0].HomeTeam + '.png')
-    vis.svg_info.select("#image2").attr("xlink:href", 'data/logos/' + vis.d[0].AwayTeam + '.png')
-    vis.svg_info.select("#infodate").text(vis.formatDate(vis.d[0].Date));
-    vis.svg_info.select("#hometeam").text(vis.d[0].HomeTeam);
-    vis.svg_info.select("#awayteam").text(vis.d[0].AwayTeam);
-    vis.svg_info.select("#score").text(vis.d[0].FTHG + "-" + vis.d[0].FTAG);
+    vis.svg_info.select("#image1").transition().attr("xlink:href", 'data/logos/' + vis.d[0].HomeTeam + '.png')
+    vis.svg_info.select("#image2").transition().attr("xlink:href", 'data/logos/' + vis.d[0].AwayTeam + '.png')
+    vis.svg_info.select("#infodate").transition().text(vis.formatDate(vis.d[0].Date));
+    vis.svg_info.select("#hometeam").transition().text(vis.d[0].HomeTeam);
+    vis.svg_info.select("#awayteam").transition().text(vis.d[0].AwayTeam);
+    vis.svg_info.select("#score").transition().text(vis.d[0].FTHG + "-" + vis.d[0].FTAG);
 
     var selected = $( "#slider" ).labeledslider( "option", "value" );
 

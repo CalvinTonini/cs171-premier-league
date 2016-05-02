@@ -237,7 +237,8 @@ LineChart.prototype.updateVis = function(){
         .attr("r", 3)
         .attr("id",function(d){
             return("game" + d.unique_id)
-        });
+        })
+        .style("opacity",.6);
 
 
     vis.circlegroup2.enter().append("g").attr("class","circlegroup").selectAll("circle").data(function(d){ return(d.values)}).enter()
@@ -258,10 +259,12 @@ LineChart.prototype.updateVis = function(){
         .attr("r", 3)
         .attr("id",function(d){
             return("game"+d.unique_id.toString())
-        });
+        })
+        .style("opacity",.6);
 
 
-        vis.circlegroup2.on("mouseover", function(d) {
+
+    vis.circlegroup2.on("mouseover", function(d) {
             highlightTeam(d.key);
         })
         .on("mouseout", function(d, i) {
