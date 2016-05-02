@@ -126,7 +126,7 @@ UKmap.prototype.updateMap = function (){
 
     vis.subunit2
         .attr("class", function(d) { return "subunit-label " + d.id; })
-        .attr("transform", function(d) { return "translate(" + vis.path.centroid(d) + ")"; })
+        .attr("transform", function(d) { return "translate(" + vis.path.centroid(d) +")"; })
         .attr("dy", ".35em")
         .text(function(d) { return d.properties.name; });
 
