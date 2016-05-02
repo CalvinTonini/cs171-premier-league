@@ -74,8 +74,8 @@ lineChart.prototype.wrangleData = function() {
     // make legend
     d3.selectAll(".toggles")
         .append("svg")
-        .attr("width", 100)
-        .attr("height", 100)
+        .attr("width", 25)
+        .attr("height", 25)
         .data(vis.nest)
         .append("image")
         .attr("xlink:href", function (d) {
@@ -85,8 +85,8 @@ lineChart.prototype.wrangleData = function() {
         .attr("id", function (d) {
             return d.key.replace(/ +/g, "") + "inter";
         })
-        .attr("width", 100)
-        .attr("height", 100)
+        .attr("width", 25)
+        .attr("height", 25)
         .attr("opacity", 0.8)
         .on("click", function (d) {
             var active = d.active ? false : true;
