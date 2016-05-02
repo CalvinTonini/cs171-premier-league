@@ -140,6 +140,12 @@ lineChart.prototype.wrangleData = function() {
                 d.active = false;
             });
         });
+    vis.year_line = vis.svg.append("line")
+        .attr("id", "year_line")
+        .attr("class", "line")
+        .attr("x1", 100).attr("x2", 100)
+        .attr("y1", 0).attr("y2", vis.height)
+        .attr("opacity", 1);
 
     // Update the visualization
     vis.updateVis();
@@ -149,6 +155,7 @@ lineChart.prototype.updateVis = function () {
     var vis = this;
     var selection = document.getElementById("across_season_form");
     selection = selection.options[selection.selectedIndex].value;
+    var selected_year = $( "#slider" ).labeledslider( "option", "value" );
 
     vis.x.domain(d3.extent(vis.data, function (d) {
         return d["seasonDate"];
@@ -165,6 +172,11 @@ lineChart.prototype.updateVis = function () {
             return d[selection];
         }));
     }
+    
+    vis.year_line.attr({
+        x1: vis.x(selected_year),
+        x2: vis.x(selected_year)
+    });
 
     vis.line = d3.svg.line()
         .defined(function(d) { return d[selection]; })
