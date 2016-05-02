@@ -68,6 +68,12 @@ lineChart.prototype.wrangleData = function() {
         })
         .entries(vis.data);
 
+    vis.nest.forEach(function (d) {
+        d.values.sort(function(a, b) {
+            return a.seasonDate - b.seasonDate;
+        });
+        d.active = false;
+    });
 
     // make legend
     d3.selectAll(".toggles")
@@ -108,7 +114,7 @@ lineChart.prototype.wrangleData = function() {
                 vis.svg.selectAll("#" + d.key.replace(/ +/g, "")).style("opacity", 0);
             }
             else {
-                vis.svg.selectAll("#" + d.key.replace(/ +/g, "")).style("opacity", 0.4);
+                vis.svg.selectAll("#" + d.key.replace(/ +/g, "")).style("opacity", 0.6);
             }
             vis.svg.selectAll("#"+d.key.replace(/ +/g, "")).style("stroke-width", 1);
             vis.teamname.text(d.key);
@@ -131,7 +137,7 @@ lineChart.prototype.wrangleData = function() {
         .attr("class", "btn btn-default resultstext")
         .text("All On")
         .on("click", function() {
-            vis.svg.selectAll(".teamlines").style("opacity", 0.4);
+            vis.svg.selectAll(".teamlines").style("opacity", 0.6);
             d3.selectAll(".teamlogos").style("opacity", 0.8);
             // Update whether or not the elements are active
             vis.nest.forEach(function (d) {
@@ -177,23 +183,17 @@ lineChart.prototype.updateVis = function () {
         x1: vis.x(selected_year),
         x2: vis.x(selected_year)
     });
-
-    vis.nest.forEach(function (d) {
-        d.values.sort(function(a, b) {
-            return a.seasonDate - b.seasonDate;
-        })
-        for(i=0;i < d.values.length;i++){
-            if(d.values[i][selection]==0) {
-                d.values[i]=null;
-            }
-        };
-    });
-
-
+    
     vis.line = d3.svg.line()
-        .defined(function(d) { return d })
-        .x(function (d) { return vis.x(d["seasonDate"]); })
-        .y(function (d) { return vis.y(d[selection]); });
+        .defined(function(d) {
+            return (d[selection] != 0);
+        })
+        .x(function (d) {
+            return vis.x(d["seasonDate"]);
+        })
+        .y(function (d) {
+            return vis.y(d[selection]);
+        });
 
     var teams = vis.svg.selectAll(".line")
         .data(vis.nest);
@@ -206,7 +206,7 @@ lineChart.prototype.updateVis = function () {
         .append("path")
         .attr({
             class: "line teamlines",
-            opacity: 0.4,
+            opacity: 0.6,
             d: function (d) {
                 return vis.line(d.values);
             },
@@ -217,7 +217,7 @@ lineChart.prototype.updateVis = function () {
         .style("stroke", function(d) {
             return maincolor(d.key);
         })
-        .style("stroke-width","2px")
+        .style("stroke-width", 1)
         .on("mouseover", function (d) {
             if (!d.active) {
                 d3.select(this).style("opacity", 1);
@@ -228,7 +228,7 @@ lineChart.prototype.updateVis = function () {
         })
         .on("mouseout", function (d) {
             if (!d.active) {
-                d3.select(this).style("opacity", 0.4);
+                d3.select(this).style("opacity", 0.6);
                 d3.select(this).style("stroke-width", 1);
                 d3.select("#" + d.key.replace(/ +/g, "") + "inter").style("opacity", 0.8);
                 vis.teamname.text(d.key);
