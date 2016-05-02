@@ -78,6 +78,8 @@ function sliderUpdate(){
 
 function highlightTeam(unformatted_team){
 
+
+
     var team = unformatted_team.replace(/ +/g, "");
     intraseason_chart.svg.selectAll("#"+team).transition().style("stroke","yellow").style("opacity",.6);
     // interseason_chart.svg.selectAll("#"+team).transition().style({
@@ -103,11 +105,14 @@ var old_game_id= -1;
 
 function highlightGame(game_id){
 
+
+
     unhighlightGame(old_game_id);
 
     old_game_id = game_id;
 
-    console.log(game_id);
+
+
 
     //intraseason_chart.svg.selectAll("lines").attr("opacity",".1");
     //intraseason_chart.svg.selectAll("#circles").attr("opacity","0");
@@ -124,6 +129,10 @@ function highlightGame(game_id){
     d3.select("#matrix-area").selectAll("rect").filter("#game"+game_id +"red").transition().attr("fill","yellow");
     d3.select("#matrix-area").selectAll("rect").filter("#game"+game_id +"grey").transition().attr("fill","yellow");
     d3.select("#matrix-area").selectAll("rect").filter("#game"+game_id +"lightgrey").transition().attr("fill","yellow");
+
+    season_matrix.add_svg_info(game_id);
+
+
 }
 
 function unhighlightGame(game_id){

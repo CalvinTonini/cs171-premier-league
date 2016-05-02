@@ -45,6 +45,7 @@ matrix_object.prototype.initVis = function() {
 
     });
 
+
     vis.cell_width = 32;
     vis.cell_height = 25;
 
@@ -348,7 +349,7 @@ matrix_object.prototype.wrangleData = function() {
 
     vis.filtered = vis.data.filter(check);
 
-    console.log(vis.filtered);
+    //console.log(vis.filtered);
 
 
     //console.log(data)
@@ -362,12 +363,12 @@ matrix_object.prototype.wrangleData = function() {
         }
     }
 
-    console.log('nodes');
-    console.log(vis.nodes.length);
-    console.log(vis.nodes);
+    //console.log('nodes');
+    //console.log(vis.nodes.length);
+    //console.log(vis.nodes);
 
 
-    console.log(vis.filtered.length);
+    //console.log(vis.filtered.length);
 
     for (i = 0; i < vis.filtered.length; i++) {
         placeholder = {
@@ -401,7 +402,111 @@ matrix_object.prototype.wrangleData = function() {
     vis.updateVis();
 
 
-}
+};
+
+matrix_object.prototype.add_svg_info = function(id) {
+    //console.log("hi");
+
+
+    //var id_for_click = document.getElementById(id);
+    //id_for_click.click();
+
+    //d3.csv("data/eamon.csv", function(data) {
+    //
+
+    var vis = this;
+    //
+    //vis.filtered = vis.data.filter(check);
+    //console.log(vis.filtered);
+    //vis.svg_info2 = vis.svg_info.selectAll(".gamecells").data(vis.filtered);
+
+    //console.log(vis.data);
+
+
+
+
+    //console.log(vis.data.unique_id);
+    //var d = vis.data.filter(function() {return vis.data.unique_id > id});
+    //console.log(d);
+
+    vis.d = [];
+
+
+    for (i = 0; i < vis.data.length; i++) {
+        if (vis.data[i].unique_id == id) {
+            //console.log[i];
+            vis.d.push(vis.data[i]);
+        }
+    }
+
+   // console.log(vis.d);
+
+    //console.log(vis.d[0].HomeTeam);
+
+
+
+    vis.svg_info.style("display","block");
+    vis.svg_info.select("#image1").attr("xlink:href", 'data/logos/' + vis.d[0].HomeTeam + '.png')
+    vis.svg_info.select("#image2").attr("xlink:href", 'data/logos/' + vis.d[0].AwayTeam + '.png')
+    vis.svg_info.select("#infodate").text(vis.formatDate(vis.d[0].Date));
+    vis.svg_info.select("#hometeam").text(vis.d[0].HomeTeam);
+    vis.svg_info.select("#awayteam").text(vis.d[0].AwayTeam);
+    vis.svg_info.select("#score").text(vis.d[0].FTHG + "-" + vis.d[0].FTAG);
+
+    var selected = $( "#slider" ).labeledslider( "option", "value" );
+
+    //console.log ("Here");
+    //console.log (selected);
+    if ( selected > 1999) {
+
+        vis.svg_info.select("#awayshots").text(vis.d[0].AS);
+        vis.svg_info.select("#homeshots").text(vis.d[0].HS);
+        vis.svg_info.select("#awayshotstarget").text(vis.d[0].AST);
+        vis.svg_info.select("#homeshotstarget").text(vis.d[0].HST);
+        vis.svg_info.select("#awayyellowcards").text(vis.d[0].AY);
+        vis.svg_info.select("#awayredcards").text(vis.d[0].AR);
+        vis.svg_info.select("#homeyellowcards").text(vis.d[0].HY);
+        vis.svg_info.select("#homeredcards").text(vis.d[0].HR);
+
+        vis.svg_info.select("#awayshots").style('opacity', 1);
+        vis.svg_info.select("#homeshots").style('opacity', 1);
+        vis.svg_info.select("#awayshotstarget").style('opacity', 1);
+        vis.svg_info.select("#homeshotstarget").style('opacity', 1);
+        vis.svg_info.select("#awayyellowcards").style('opacity', 1);
+        vis.svg_info.select("#awayredcards").style('opacity', 1);
+        vis.svg_info.select("#homeyellowcards").style('opacity', 1);
+        vis.svg_info.select("#homeredcards").style('opacity', 1);
+        vis.svg_info.select("#shots1").style('opacity', 1);
+        vis.svg_info.select("#shots2").style('opacity', 1);
+        vis.svg_info.select("#shotsontarget1").style('opacity', 1);
+        vis.svg_info.select("#shotsontarget2").style('opacity', 1);
+        vis.svg_info.select("#redcards1").style('opacity', 1);
+        vis.svg_info.select("#redcards2").style('opacity', 1);
+        vis.svg_info.select("#yellowcards1").style('opacity', 1);
+        vis.svg_info.select("#yellowcards2").style('opacity', 1);
+
+    }
+    if ( selected <= 1999) {
+
+        vis.svg_info.select("#awayshots").style('opacity', 0);
+        vis.svg_info.select("#homeshots").style('opacity', 0);
+        vis.svg_info.select("#awayshotstarget").style('opacity', 0);
+        vis.svg_info.select("#homeshotstarget").style('opacity', 0);
+        vis.svg_info.select("#awayyellowcards").style('opacity', 0);
+        vis.svg_info.select("#awayredcards").style('opacity', 0);
+        vis.svg_info.select("#homeyellowcards").style('opacity', 0);
+        vis.svg_info.select("#homeredcards").style('opacity', 0);
+        vis.svg_info.select("#shots1").style('opacity', 0);
+        vis.svg_info.select("#shots2").style('opacity', 0);
+        vis.svg_info.select("#shotsontarget1").style('opacity', 0);
+        vis.svg_info.select("#shotsontarget2").style('opacity', 0);
+        vis.svg_info.select("#redcards1").style('opacity', 0);
+        vis.svg_info.select("#redcards2").style('opacity', 0);
+        vis.svg_info.select("#yellowcards1").style('opacity', 0);
+        vis.svg_info.select("#yellowcards2").style('opacity', 0);
+
+    }
+};
 
 matrix_object.prototype.updateVis= function() {
 
@@ -565,6 +670,7 @@ matrix_object.prototype.updateVis= function() {
         .on('mouseout', vis.tiptext.hide)
         .on('click', function (d) {
 
+
             highlightGame(d.unique_id.toString());
 
             vis.svg_info.style("display","block");
@@ -577,37 +683,37 @@ matrix_object.prototype.updateVis= function() {
 
             var selected = $( "#slider" ).labeledslider( "option", "value" );
 
-            console.log ("Here");
-            console.log (selected);
+           // console.log ("Here");
+            //console.log (selected);
             if ( selected > 1999) {
 
-            vis.svg_info.select("#awayshots").text(d.AS);
-            vis.svg_info.select("#homeshots").text(d.HS);
-            vis.svg_info.select("#awayshotstarget").text(d.AST);
-            vis.svg_info.select("#homeshotstarget").text(d.HST);
-            vis.svg_info.select("#awayyellowcards").text(d.AY);
-            vis.svg_info.select("#awayredcards").text(d.AR);
-            vis.svg_info.select("#homeyellowcards").text(d.HY);
-            vis.svg_info.select("#homeredcards").text(d.HR);
+                vis.svg_info.select("#awayshots").text(d.AS);
+                vis.svg_info.select("#homeshots").text(d.HS);
+                vis.svg_info.select("#awayshotstarget").text(d.AST);
+                vis.svg_info.select("#homeshotstarget").text(d.HST);
+                vis.svg_info.select("#awayyellowcards").text(d.AY);
+                vis.svg_info.select("#awayredcards").text(d.AR);
+                vis.svg_info.select("#homeyellowcards").text(d.HY);
+                vis.svg_info.select("#homeredcards").text(d.HR);
 
-            vis.svg_info.select("#awayshots").style('opacity', 1);
-            vis.svg_info.select("#homeshots").style('opacity', 1);
-            vis.svg_info.select("#awayshotstarget").style('opacity', 1);
-            vis.svg_info.select("#homeshotstarget").style('opacity', 1);
-            vis.svg_info.select("#awayyellowcards").style('opacity', 1);
-            vis.svg_info.select("#awayredcards").style('opacity', 1);
-            vis.svg_info.select("#homeyellowcards").style('opacity', 1);
-            vis.svg_info.select("#homeredcards").style('opacity', 1);
-            vis.svg_info.select("#shots1").style('opacity', 1);
-            vis.svg_info.select("#shots2").style('opacity', 1);
-            vis.svg_info.select("#shotsontarget1").style('opacity', 1);
-            vis.svg_info.select("#shotsontarget2").style('opacity', 1);
-            vis.svg_info.select("#redcards1").style('opacity', 1);
-            vis.svg_info.select("#redcards2").style('opacity', 1);
-            vis.svg_info.select("#yellowcards1").style('opacity', 1);
-            vis.svg_info.select("#yellowcards2").style('opacity', 1);
+                vis.svg_info.select("#awayshots").style('opacity', 1);
+                vis.svg_info.select("#homeshots").style('opacity', 1);
+                vis.svg_info.select("#awayshotstarget").style('opacity', 1);
+                vis.svg_info.select("#homeshotstarget").style('opacity', 1);
+                vis.svg_info.select("#awayyellowcards").style('opacity', 1);
+                vis.svg_info.select("#awayredcards").style('opacity', 1);
+                vis.svg_info.select("#homeyellowcards").style('opacity', 1);
+                vis.svg_info.select("#homeredcards").style('opacity', 1);
+                vis.svg_info.select("#shots1").style('opacity', 1);
+                vis.svg_info.select("#shots2").style('opacity', 1);
+                vis.svg_info.select("#shotsontarget1").style('opacity', 1);
+                vis.svg_info.select("#shotsontarget2").style('opacity', 1);
+                vis.svg_info.select("#redcards1").style('opacity', 1);
+                vis.svg_info.select("#redcards2").style('opacity', 1);
+                vis.svg_info.select("#yellowcards1").style('opacity', 1);
+                vis.svg_info.select("#yellowcards2").style('opacity', 1);
 
-        }
+            }
             if ( selected <= 1999) {
 
                 vis.svg_info.select("#awayshots").style('opacity', 0);
