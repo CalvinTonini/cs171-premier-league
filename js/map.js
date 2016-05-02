@@ -25,10 +25,9 @@ UKmap.prototype.initVis = function () {
         .projection(vis.projection)
         .pointRadius(2);
 
-
     vis.toggle = true;
 
-    vis.logoSelect;
+    vis.logoSelect = null;
 
 //var zoom = d3.behavior.zoom()
 //    .scaleExtent([1,5])
@@ -48,7 +47,7 @@ UKmap.prototype.initVis = function () {
 //});
 //tips.offset([-10, 0]);
 //svg1.call(tips);
-    this.updateMap();
+    vis.updateMap();
 };
 
 UKmap.prototype.updateMap = function (){
@@ -57,11 +56,7 @@ UKmap.prototype.updateMap = function (){
     vis.dats = vis.mapData;
     vis.dat1 = vis.logosData;
 
-
     var selected = $( "#slider" ).labeledslider( "option", "value" );
-
-    console.log(selected);
-
 
     //var selected = +document.getElementById("myRange").value;
 
@@ -82,9 +77,57 @@ UKmap.prototype.updateMap = function (){
     vis.subunit1
         .attr("class", function(d) { return "subunit " + d.id; })
         .attr("d", vis.path)
-        .on("click",vis.clicked)
-        .on("dblclick",vis.dblclicked);
+        .on("click",clicked)
+        .on("dblclick",dblclicked);
 
+    function clicked () {
+        var x = d3.mouse(this)[0],
+            y = d3.mouse(this)[1],
+            k;
+
+        if (!vis.toggle) { k = 4;}
+        else { k = 1;}
+        vis.g.transition()
+            .duration(750)
+            .attr("transform", "translate(" + ((vis.widthy / 2) + 3.5) + "," +
+                ((vis.heighty  / 3) + 200) + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
+    }
+    function dblclicked () {
+        var x, y, k;
+
+        if (vis.toggle) {
+            x = d3.mouse(this)[0];
+            y = d3.mouse(this)[1];
+            k = 4;
+            d3.selectAll(".enter")
+                .transition()
+                .duration(750)
+                .attr("height", 15)
+                .attr("width",  15);
+            d3.select(".logoZoom")
+                .attr("width",25)
+                .attr("height",25);
+            vis.toggle = !vis.toggle;
+        } else {
+            x = vis.widthy / 2;
+            y = vis.heighty / 3;
+            k = 1;
+            d3.selectAll(".enter")
+                .transition()
+                .duration(750)
+                .attr("height", 30)
+                .attr("width",  30);
+            d3.select(".logoZoom")
+                .attr("width",40)
+                .attr("height",40);
+            vis.toggle = !vis.toggle;
+        }
+
+        vis.g.transition()
+            .duration(750)
+            .attr("transform", "translate(" + vis.widthy / 2 + ","
+                + vis.heighty / 3 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
+    }
     //svg1.append("path")
     //    .datum(topojson.mesh(mapData, mapData.objects.subunits, function(a, b) { return a !== b && a.id !== "IRL"; }))
     //    .attr("d", path)
@@ -127,7 +170,7 @@ UKmap.prototype.updateMap = function (){
     //    .duration(2000)
     //    .attr("r",4);
     vis.svg1.selectAll("image").classed({"logoZoom" : false, "enter" : true });
-    vis.svg1.selectAll("image").style("opacity",1).attr("height",vis.dimensionFunction).attr("width",vis.dimensionFunction);
+    vis.svg1.selectAll("image").style("opacity",1).attr("height",dimensionFunction).attr("width",dimensionFunction);
 
 
     vis.logos = vis.g.selectAll("image")
@@ -146,17 +189,17 @@ UKmap.prototype.updateMap = function (){
         .attr("y",function(d){ return vis.projection(d.geometry.coordinates)[1];})
         .transition()
         .duration(750)
-        .attr("height", vis.dimensionFunction)
-        .attr("width", vis.dimensionFunction);
+        .attr("height", dimensionFunction)
+        .attr("width", dimensionFunction);
 
-    vis.logos.on("mousemove", function(d,i) {
+    vis.logos.on("mousemove", function(d) {
             var mouse = d3.mouse(vis.svg1.node()).map( function(d) { return parseInt(d); } );
             vis.tips
                 .classed("hidden", false)
                 .attr("style", "left:"+(mouse[0])+"px;top:"+(mouse[1])+"px")
                 .html(d.properties.name + " of " + d.properties.club + " Football Club");
         })
-        .on("mouseout",  function(d,i) {
+        .on("mouseout",  function() {
             vis.tips.classed("hidden", true);
         })
         .on("click", function(d){
@@ -166,8 +209,8 @@ UKmap.prototype.updateMap = function (){
             vis.svg1.selectAll("image")
                 .transition()
                 .style("opacity",1)
-                .attr("height",vis.dimensionFunction)
-                .attr("width",vis.dimensionFunction);
+                .attr("height",dimensionFunction)
+                .attr("width",dimensionFunction);
             vis.places.features.forEach(function(d){
                 unhighlightTeam(d.properties.team);
             });
@@ -195,14 +238,14 @@ UKmap.prototype.updateMap = function (){
                     .transition()
                     .duration(750)
                     .style("opacity",0.3)
-                    .attr("width",vis.dimensionFunction)
-                    .attr("height",vis.dimensionFunction);
+                    .attr("width",dimensionFunction)
+                    .attr("height",dimensionFunction);
                 d3.select(this)
                     .transition()
                     .duration(750)
                     .style("opacity",1)
-                    .attr("width",vis.logoHover)
-                    .attr("height",vis.logoHover);
+                    .attr("width",logoHover)
+                    .attr("height",logoHover);
                 highlightTeam(d.properties.team);
                 vis.logoSelect = d;
             }
@@ -212,12 +255,21 @@ UKmap.prototype.updateMap = function (){
                     .transition()
                     .duration(750)
                     .style("opacity",1)
-                    .attr("width",vis.dimensionFunction)
-                    .attr("height",vis.dimensionFunction);
+                    .attr("width",dimensionFunction)
+                    .attr("height",dimensionFunction);
                 unhighlightTeam(d.properties.team);
                 vis.logoSelect = null;
             }
         });
+
+    function dimensionFunction () {
+        if(vis.toggle){ return 30;}
+        else{ return 15;}
+    }
+    function logoHover () {
+        if(vis.toggle){ return 40;}
+        else{ return 25;}
+    }
 
     //dots.on("mousemove", function(d,i) {
     //        var mouse = d3.mouse(svg1.node()).map( function(d) { return parseInt(d); } );
@@ -296,68 +348,3 @@ UKmap.prototype.updateMap = function (){
 //}
 
 //svg1.call(zoom);
-
-UKmap.prototype.dimensionFunction = function () {
-    var vis = this;
-    if(vis.toggle){ return 30;}
-    else{ return 15;}
-};
-
-UKmap.prototype.logoHover = function () {
-    var vis = this;
-    if(vis.toggle){ return 40;}
-    else{ return 25;}
-};
-
-UKmap.prototype.clicked = function () {
-    var vis = this;
-    var x = d3.mouse(this)[0],
-        y = d3.mouse(this)[1],
-        k;
-
-    if (!vis.toggle) { k = 4;}
-    else { k = 1;}
-
-    vis.g.transition()
-        .duration(750)
-        .attr("transform", "translate(" + ((vis.widthy / 2) + 3.5) + "," +
-            ((vis.heighty  / 3) + 200) + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
-};
-
-UKmap.prototype.dblclicked = function () {
-    var vis = this;
-    var x, y, k;
-
-    if (vis.toggle) {
-        x = d3.mouse(this)[0];
-        y = d3.mouse(this)[1];
-        k = 4;
-        d3.selectAll(".enter")
-            .transition()
-            .duration(750)
-            .attr("height", 15)
-            .attr("width",  15);
-        d3.select(".logoZoom")
-            .attr("width",25)
-            .attr("height",25);
-        vis.toggle = !vis.toggle;
-    } else {
-        x = vis.widthy / 2;
-        y = vis.heighty / 3;
-        k = 1;
-        d3.selectAll(".enter")
-            .transition()
-            .duration(750)
-            .attr("height", 30)
-            .attr("width",  30);
-        d3.select(".logoZoom")
-            .attr("width",40)
-            .attr("height",40);
-        vis.toggle = !vis.toggle;
-    }
-
-    vis.g.transition()
-        .duration(750)
-        .attr("transform", "translate(" + vis.widthy / 2 + ","
-            + vis.heighty / 3 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
-};
