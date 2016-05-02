@@ -63,7 +63,7 @@ function sliderUpdate(){
     intraseason_chart.wrangleData();
     bar_chart.wrangleData();
     season_matrix.wrangleData();
-
+    interseason_chart.updateVis();
 
 }
 
@@ -124,4 +124,4 @@ function unhighlightGame(game_id){
     d3.select("#matrix-area").selectAll("rect").filter("#game"+game_id +"grey").transition().attr("fill","grey");
     d3.select("#matrix-area").selectAll("rect").filter("#game"+game_id +"lightgrey").transition().attr("fill","lightgrey");
 
-};
+}
