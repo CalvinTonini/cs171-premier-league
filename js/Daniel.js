@@ -84,12 +84,6 @@ LineChart.prototype.wrangleData = function(){
 
 
     vis.season = $( "#slider" ).labeledslider( "option", "value" );
-        //console.log(value);
-
-
-
-    //var season = +document.getElementById("myRange").value;
-
 
     vis.season = vis.season.toString() + "-" + (vis.season+1).toString()
 
@@ -108,26 +102,16 @@ LineChart.prototype.wrangleData = function(){
     // In the first step no data wrangling/filtering needed
     vis.displayData = vis.nested;
 
-    //console.log(vis.displayData);
+
     // Update the visualization
     vis.updateVis();
-}
+};
 
 
 
 LineChart.prototype.updateVis = function(){
 
     var vis = this;
-
-    //vis.teams_unique = [];
-    //
-    //for (var i in vis.displayData) {
-    //    vis.teams_unique.push(vis.displayData[i].key)
-    //}
-    //
-    ////vis.color.domain(vis.teams_unique);
-    //
-    //console.log(vis.teams_unique);
 
     var sel = document.getElementById('attribute');
 
@@ -289,246 +273,7 @@ LineChart.prototype.updateVis = function(){
 
 
 
-    //vis.circlegroup2 = vis.svg.select("#circles").selectAll(".teamgroup").data(vis.displayData);
-    //
-    //
-    //vis.circlegroup2.selectAll("path").transition().duration(1000)
-    //    .attr("d",function (d) { return vis.line(d);})
-    //    .style("stroke", function (d) {
-    //        return vis.maincolor(d.key);
-    //    });
-    //
-    //
-    //vis.circlegroup2.selectAll("circle").transition().duration(1500)
-    //    .attr("fill", function(d) {
-    //        return vis.strokecolor(d.Team);
-    //    })
-    //    .attr("stroke", "black")
-    //    .attr("stroke-width",".5px")
-    //    .attr("cx", function(d) {
-    //        return vis.x(d.Date); // use the fields directly; no reference to "values"
-    //    })
-    //    .attr("cy", function(d) {
-    //        return vis.y(d[vis.selected])
-    //    })
-    //    .attr("r", 3);
-    //
-    //
-    //vis.circlegroup2.enter().append("path").attr("class","line").transition().duration(500)
-    //    .attr("d", function (d) {
-    //        return vis.line(d.values);})
-    //    .style("stroke", function (d) {
-    //        return vis.maincolor(d.key);
-    //    })
-    //    .style("stroke-width",3)
-    //    .style("opacity",1)
-    //
-    //
-    //
-    //vis.circlegroup2.enter().append("g").attr("class","teamgroup").selectAll("circle").data(function(d){ return(d.values)}).enter()
-    //    .append("circle")
-    //    .attr("class","circle")
-    //    .attr("stroke", "black")
-    //    .attr("fill", function(d) {
-    //        return vis.strokecolor(d.Team);
-    //    })
-    //    .attr("stroke-width",".5px")
-    //    .attr("cx", function(d) {
-    //        return vis.x(d.Date); // use the fields directly; no reference to "values"
-    //    })
-    //    .attr("cy", function(d) {
-    //        return vis.y(d[vis.selected])
-    //    })
-    //    .attr("r", 3);
-    //
-    //
-    //vis.circlegroup2.selectAll("circle").data(function(d){return(d.values)}).exit().remove();
-    //
-    //
-    //vis.circlegroup2.exit().remove();
-
-    //var rank = vis.svg.selectAll(".team")
-    //    .data(vis.displayData)
-    //    .enter().append("g")
-    //    .attr("class", "team");
-    //rank.append("path")
-    //    .attr("class", "line")
-    //    .attr("d", function(d) { return vis.line(d.values); })
-    //    .style("stroke", function(d) { return vis.maincolor(d.key); })
-    //
-    //var point = rank.append("g")
-    //    .attr("class", "line-point");
-    //
-    //point.selectAll('circle')
-    //    .data(function(d){ return d.values})
-    //    .enter().append('circle')
-    //    .attr("cx", function(d) { return vis.x(d.Date) })
-    //    .attr("cy", function(d) { return vis.y(d[vis.selected]) })
-    //    .attr("r", 3.5)
-    //    .style("stroke", "black")
-    //    .style("stroke-width",".5px")
-    //    .style("fill", function(d) { return vis.strokecolor(d.Team); });
-
-    //rank.exit().remove();
-
-
-    //
-    //
-
-
-    //    .
-    //
-    ////
-    ////vis.circlegroup2.selectAll("circle").data(function(d) {
-    ////    return d.values; // tell d3 where the children are
-    ////}).attr("class","circle")
-    ////    .attr("stroke", function(d) {
-    ////        return vis.color(d.Team);
-    ////    })
-    ////    .attr("fill", function(d) {
-    ////        return vis.color(d.Team);
-    ////    })
-    ////    .attr("cx", function(d) {
-    ////        return vis.x(d.Date); // use the fields directly; no reference to "values"
-    ////    })
-    ////    .attr("cy", function(d) {
-    ////        return vis.y(d[vis.selected])
-    ////    })
-    ////    .attr("r", 7);
-    //
-    //console.log(vis.displayData);
-    //
-    //var blah  = vis.circlegroup2.enter().append("g").attr("class","circlegroup")
-    //    .data(function(d) { console.log(d); return d.values}).enter().append("circle").attr("class","circle")
-    //    .attr("stroke", function(d) {
-    //        return vis.color(d.Team);
-    //    })
-    //    .attr("fill", function(d) {
-    //        return vis.color(d.Team);
-    //    })
-    //    .attr("cx", function(d) {
-    //        return vis.x(d.Date); // use the fields directly; no reference to "values"
-    //    })
-    //    .attr("cy", function(d) {
-    //        return vis.y(d[vis.selected])
-    //    })
-    //    .attr("r", 7);
-    //
-
-
-    //
-    //vis.trans = function(theteam){
-    //    for (var i in vis.displayData){
-    //        if(vis.displayData[i].key==theteam){
-    //            var values = vis.displayData[i].values
-    //        }
-    //    }
-    //    var len = values.length;
-    //    var right = vis.x(values[len-1].Date) + 10;
-    //    var left = vis.y(values[len-1][vis.selected]);
-    //    return "translate("+ right + "," + left + ")"
-    //}
-
-
-    //var variable = vis.selected
-    //
-    //var parsedate2 = d3.time.format("%b %d %Y");
-
-
-
-
-
-
-
-
-    //.on("mouseout", vis.text.text(""))
-        //.on("mouseover", function(d, i) {
-        //    //vis.text.text(d.key)
-        //    //vis.text.style("fill",vis.color(d.key))
-        //    //vis.text.attr("transform",vis.trans(d.key))
-        //
-        //});
-
-    //vis.tip.attr('class', 'd3-tip')
-    //    .offset([-10, 0])
-    //    .html(function(d) {
-    //        console.log(d);
-    //        return "<strong>Year:</strong> <span style='color:red'>" + parsedate2(d.Date) + "</span>" + "<br>" + "<strong>Team:</strong> <span style='color:red'>" + d.Team + "</span>" + "<br>" + "<strong>" + variable + ":"+ "</strong> <span style='color:red'>" + d[vis.selected] + "</span>" + "<br>";
-    //    })
-
-
-    //
-    //vis.circlegroup2
-    //    .style("opacity",1);
-        //.on("mouseover",function(d){
-        //    //vis.text.text(d.Team);
-        //    //vis.text.style("fill",vis.color(d.Team));
-        //    //vis.text.attr("transform",vis.trans(d.Team));
-        //    ////d3.select(this).transition().duration(300).attr("r", 12);
-        //    //vis.text.style("fill",vis.color(d.Team));
-        //})
-        //.on("mouseout", vis.text.text(""));
-
-            //d3.select(this).transition().duration(300).attr("r", 5);
-            //vis.tip.hide
-        //.on("mouseout",vis.tip.hide)
-        //.on("mousemove", function(d){
-        //    vis.text.style("fill",vis.color(d.Team));
-        //    vis.text.attr("transform",vis.trans(d.Team));
-        //});
-
-    //
-    //circle.exit().remove();
-    //
-    //circle.enter().append("circle")
-    //    .attr("r", 3)
-    //    .on('mouseover', vis.tip.show).on('mouseout', vis.tip.hide);
-    //
-    //circle.attr("fill","blue").transition().duration(800).attr("cx", function(d) { return vis.x(d.Date)}).attr("cy", function(d) { return vis.y(d[vis.selected])});
-    //
-
-    //vis.svg.select("rect").on("mousemove", vis.mousemove);
-
-
-    //var team = vis.svg.selectAll(".team")
-    //    .data(vis.displayData);
-
-    //.on("mouseout", function(d, i) {
-    //        vis.text.text("");
-    //        d3.select(this)
-    //            .transition().duration(2)
-    //            .style("opacity", 0.6);
-    //    }
-    //)
-    //    .on("mouseover", function(d, i) {
-    //        d3.select(this).transition().duration(2).style("opacity", 1);
-    //        vis.text.text(d.key)
-    //        vis.text.style("fill",vis.color(d.key))
-    //        vis.text.attr("transform",vis.trans(d.values))
-    //    }
-
-    //
-    //team.enter().append("path")
-    //    .attr("class", "team");
-    //
-    //team
-    //    .append("path")
-    //    .attr("class", "line")
-    //    .attr("d", function (d) {
-    //        return vis.line(d.values);
-    //    })
-    //    .style("stroke", function (d) {
-    //        return vis.color(d.key);
-    //    })
-    //    .style("stroke-width",5)
-    //    .style("opacity",.6)
-
-    //
-    //    );
-
-    // Call axis functions with the new domain
-
-}
+};
 
 
 
