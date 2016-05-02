@@ -158,6 +158,15 @@ path{
     font-size: 20px;
 }
 
+.paragraphmedium{
+    font-size: 25px;
+}
+
+.paragraphsmall{
+    font-size: 12.5px;
+    padding-left:5em
+}
+
 .score{
     font-size: 50px;
 }

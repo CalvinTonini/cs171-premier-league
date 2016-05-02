@@ -79,7 +79,7 @@ matrix_object.prototype.initVis = function() {
 
     vis.svg_info = d3.select("#matrix-info-area").append("svg")
         .attr("width", 400)
-        .attr("height", 580)
+        .attr("height", 380)
         .append("g")
         .attr("transform", "translate(0, 50)")
 
