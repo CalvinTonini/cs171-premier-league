@@ -14,7 +14,6 @@ LineChart.prototype.initVis = function() {
 
     var vis = this;
 
-    //console.log(vis.data);
 
     vis.parseDate = d3.time.format("%Y-%m-%d").parse;
 

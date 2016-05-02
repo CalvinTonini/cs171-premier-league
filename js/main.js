@@ -2,7 +2,7 @@
 var aggregate, intraseason_chart, interseason_chart, map;
 
 queue()
-    .defer(d3.csv,"data/season_aggregate_stats.csv")
+    .defer(d3.csv,"data/season_aggregate_stats_disjoint.csv")
     .defer(d3.csv, "data/eamon.csv")
     .defer(d3.csv, "data/intraseason_data.csv")
     .defer(d3.json,"data/tsconfig.json")
@@ -23,6 +23,9 @@ queue()
         function stringsToNumber (object) {
             var keys = d3.keys(object);
             for (var i = 0; i < keys.length; i++) {
+                if(object[keys[i]]==8888){
+                    object[keys[i]]=null
+                }
                 if (!isNaN(+object[keys[i]])) {
                     object[keys[i]] = +object[keys[i]];
                 }

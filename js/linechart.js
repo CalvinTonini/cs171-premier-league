@@ -68,9 +68,7 @@ lineChart.prototype.wrangleData = function() {
         })
         .entries(vis.data);
 
-    vis.nest.forEach(function (d) {
-        d.active = false;
-    });
+
     // make legend
     d3.selectAll(".toggles")
         .append("svg")
@@ -141,12 +139,14 @@ lineChart.prototype.wrangleData = function() {
             });
         });
 
+
     // Update the visualization
     vis.updateVis();
 };
 
 lineChart.prototype.updateVis = function () {
     var vis = this;
+
     var selection = document.getElementById("across_season_form");
     selection = selection.options[selection.selectedIndex].value;
 
@@ -166,8 +166,20 @@ lineChart.prototype.updateVis = function () {
         }));
     }
 
+    vis.nest.forEach(function (d) {
+        d.values.sort(function(a, b) {
+            return a.seasonDate - b.seasonDate;
+        })
+        for(i=0;i < d.values.length;i++){
+            if(d.values[i][selection]==0) {
+                d.values[i]=null;
+            }
+        };
+    });
+
+
     vis.line = d3.svg.line()
-        .defined(function(d) { return d[selection]; })
+        .defined(function(d) { return d })
         .x(function (d) { return vis.x(d["seasonDate"]); })
         .y(function (d) { return vis.y(d[selection]); });
 
