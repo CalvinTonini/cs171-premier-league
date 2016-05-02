@@ -63,6 +63,11 @@ BarChart.prototype.initVis = function() {
     //
     //vis.svg.call(vis.tip);
 
+    vis.text = vis.svg.append("text").style("text-anchor", "middle").style("font-size",15)
+        .attr("transform", "translate(" + (vis.width/2) + "," + (vis.height + vis.margin.bottom -10)+ ")");
+
+
+
     vis.wrangleData();
 
 
@@ -93,6 +98,12 @@ BarChart.prototype.wrangleData = function(){
     var sel = document.getElementById('attribute');
 
     vis.selected  = sel.options[sel.selectedIndex].value;
+
+    vis.nice = d3.select("#Daniel").selectAll("option").filter(function(d, i) {
+        return this.selected;
+    })[0][0]["label"];
+
+    console.log(vis.nice);
 
 
     vis.selected = vis.selected.split("_")[1]
@@ -204,6 +215,7 @@ BarChart.prototype.updateVis = function() {
 
 
     vis.rect.exit().transition().remove();
+    vis.text.text(vis.nice);
 
 
     vis.svg.select(".y-axis").transition().duration(800)
