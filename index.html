@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>A Visual Exploration of Premier League History</title>
 
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href = "css/bootstrap.min.css">
     <link rel="stylesheet" href = "css/jquery.css">
     <link rel="stylesheet" href = "css/ext-jquery-ui.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href = "css/style.css">
 
 
 </head>
@@ -123,7 +123,7 @@
               </div>
               <div class="form-group">
                   <label for="across_season_form">Metric:</label>
-                  <select class="form-control" id="across_season_form"  onchange="updatevars()">
+                  <select class="form-control" id="across_season_form" onchange="updatevars()">
                       <option value = "rank">End of Season Rank</option>
                       <option value = "TotalYellowCards">Total Yellow Cards</option>
                       <option value = "TotalShotsOnTarget">Total Shots On Target</option>
@@ -139,26 +139,13 @@
         </div>
 
         <br/>
-        <p class = "paragraph"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The Premier, founded in 1992, and since then has hosted games each year from August to May. The bottom three teams each year get relegated so there's always new competition. However, throughout the 2000’s the league has been dominated by the “Big Four”, namely Manchester United, Arsenal, Chelsea and Liverpool. These teams secured the top spots 5 times from the 2003 to the 2008 season. </p>
+        <p class = "paragraph"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The Premier, founded in 1992, and since then has hosted games each year from August to May. The bottom three teams each year get relegated so there's always new competition. However, throughout the 2000’s the league has been dominated by the “Big Four”, namely <mark id="bigFour" class="resultstext">Manchester United, Arsenal, Chelsea and Liverpool</mark>. These teams secured the top spots 5 times from the 2003 to the 2008 season. </p>
         <br/>
-        <p class="paragraph"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The graph above is able to offer insight to how the League has been changing over time. For example, it is interesting to note how the number of shots on target falls across the board in 2012. This may indicate that the league tightened its standards for what on target is defined as. Another interesting trend is how the number of fouls steadily decreased from 2000 to 2012. This may indicate teams playing more defensively and avoiding fouls or referees changing how often the call a foul. We invite you to try and find more interesting trends from this data. </p>
-      <div  id = "John" class = "row">
+        <p class="paragraph"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The graph above is able to offer insight to how the League has been changing over time. For example, it is interesting to note how the <mark id="shots" class="resultstext">number of shots on target</mark> falls across the board in 2012. This may indicate that the league tightened its standards for what on target is defined as. Another interesting trend is how the <mark id="fouls" class="resultstext">number of fouls</mark> steadily decreased from 2000 to 2012. This may indicate teams playing more defensively and avoiding fouls or referees changing how often the call a foul. We invite you to try and find more interesting trends from this data. </p>
+      <div id = "John" class = "row">
           <div class = "col-xs-7">
               <h2>History in One Map</h2>
               <div id="map"></div>
-              <!--<label for="myRange">Season:</label>-->
-              <!--<input title="Year Selection" type="range" id="myRange" min="1993" max="2014" list="tickmarks" onchange="mapupDate()">-->
-              <!--<datalist id=tickmarks>-->
-                  <!--<option>1993</option>-->
-                  <!--<option>1996</option>-->
-                  <!--<option>1999</option>-->
-                  <!--<option>2002</option>-->
-                  <!--<option>2005</option>-->
-                  <!--<option>2008</option>-->
-                  <!--<option>2011</option>-->
-                  <!--<option>2014</option>-->
-              <!--</datalist>-->
-              <!--<text id="sliderlabel"></text>-->
           </div>
           <div class = "col-xs-5">
               <h2>Relegation and Promotion</h2>
@@ -179,12 +166,6 @@
                         <option value = "cummulative_GoalDifferential">Total Goal Differential</option>
                         <option value = "cummulative_TotalFouls">Total Fouls</option>
                     </select>
-                    <!--<label for="season"> Season:</label>-->
-                    <!--<select class="form-control" id="season"  onchange="updateChoropleth()">-->
-                    <!--<option value = "cummulative_TotalPoints">Total Points</option>-->
-                    <!--<option value ="cummulatie_GoalsFor">Total Goals Scored</option>-->
-                    <!--<option value = "cummulative_TotalFouls">Total Fouls</option>-->
-                    <!--</select>-->
                 </div>
             </div>
         </div>
