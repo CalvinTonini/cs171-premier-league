@@ -6,7 +6,7 @@ BarChart = function(_parentElement, _data){
     this.data = _data;
     this.displayData = []; // see data wrangling
     this.initVis();
-}
+};
 
 
 BarChart.prototype.initVis = function() {
@@ -44,10 +44,7 @@ BarChart.prototype.initVis = function() {
     vis.text = vis.svg.append("text").style("text-anchor", "middle").style("font-size",15)
         .attr("transform", "translate(" + (vis.width/2) + "," + (vis.height + vis.margin.bottom -10)+ ")");
 
-
-
     vis.wrangleData();
-
 
 };
 
@@ -55,19 +52,15 @@ BarChart.prototype.wrangleData = function(){
 
     var vis = this;
 
-
-
     vis.season = $( "#slider" ).labeledslider( "option", "value" );
 
-    vis.season = vis.season.toString() + "-" + (vis.season+1).toString()
-
+    vis.season = vis.season.toString() + "-" + (vis.season+1).toString();
 
     function check(value) {
         return value.Season ==  vis.season;
     }
 
     vis.filtered = vis.data.filter(check);
-
 
     var sel = document.getElementById('attribute');
 
@@ -77,20 +70,15 @@ BarChart.prototype.wrangleData = function(){
         return this.selected;
     })[0][0]["label"];
 
-    console.log(vis.nice);
-
-
-    vis.selected = vis.selected.split("_")[1]
-
+    vis.selected = vis.selected.split("_")[1];
 
     vis.filtered.sort(function(a, b) { return b[vis.selected] - a[vis.selected]; });
 
     vis.displayData = vis.filtered;
 
-
     // Update the visualization
     vis.updateVis();
-}
+};
 
 
 
