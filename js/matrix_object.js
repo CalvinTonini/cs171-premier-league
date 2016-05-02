@@ -3,19 +3,6 @@
  */
 
 
-
-//$(function() {
-//
-//    $( "#slider" ).slider({
-//        min: 1993,
-//        max: 2014,
-//        step:1,
-//        value: 2000,
-//        change: function (event, ui) { update_matrix();}
-//    });
-//
-//});
-
 var season_for_info = 0;
 
 
@@ -30,9 +17,6 @@ matrix_object = function(_parentElement, _data){
 matrix_object.prototype.initVis = function() {
 
     var vis = this;
-
-    //document.querySelector( '#matrix-area' ).innerHTML = '';
-    //document.querySelector( '#matrix-info-area' ).innerHTML = '';
 
     vis.data.forEach(function (d) {
         var unique = 1;
@@ -74,7 +58,6 @@ matrix_object.prototype.initVis = function() {
         .append("g")
         .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
-    //vis.svg_cells.selectAll("*").remove();
 
 
     vis.svg_info = d3.select("#matrix-info-area").append("svg")
@@ -185,146 +168,146 @@ matrix_object.prototype.initVis = function() {
 
 
 
-        vis.svg_info.append("text")
-            .attr("class", "info_small")
-            .attr("x", "315")
-            .attr("y", "260")
-            .style("text-anchor", "middle")
-            .style("font-weight", "bold")
-            .attr("id", "shots1")
-            .text("Shots: ");
+    vis.svg_info.append("text")
+        .attr("class", "info_small")
+        .attr("x", "315")
+        .attr("y", "260")
+        .style("text-anchor", "middle")
+        .style("font-weight", "bold")
+        .attr("id", "shots1")
+        .text("Shots: ");
 
-        vis.svg_info.append("text")
-            .attr("class", "info_small")
-            .attr("x", "80")
-            .attr("y", "260")
-            .style("text-anchor", "middle")
-            .style("font-weight", "bold")
-            .attr("id", "shots2")
-            .text("Shots: ");
-
-
-        vis.svg_info.append("text")
-            .attr("class", "info_small")
-            .attr("x", "350")
-            .attr("y", "260")
-            .style("text-anchor", "middle")
-            .attr("id", "awayshots");
+    vis.svg_info.append("text")
+        .attr("class", "info_small")
+        .attr("x", "80")
+        .attr("y", "260")
+        .style("text-anchor", "middle")
+        .style("font-weight", "bold")
+        .attr("id", "shots2")
+        .text("Shots: ");
 
 
-        vis.svg_info.append("text")
-            .attr("class", "info_small")
-            .attr("x", "115")
-            .attr("y", "260")
-            .style("text-anchor", "middle")
-            .attr("id", "homeshots");
-
-        vis.svg_info.append("text")
-            .attr("class", "info_small")
-            .attr("x", "315")
-            .attr("y", "280")
-            .style("text-anchor", "middle")
-            .style("font-weight", "bold")
-            .attr("id", "shotsontarget1")
-            .text("Shots on Target: ");
+    vis.svg_info.append("text")
+        .attr("class", "info_small")
+        .attr("x", "350")
+        .attr("y", "260")
+        .style("text-anchor", "middle")
+        .attr("id", "awayshots");
 
 
-        vis.svg_info.append("text")
-            .attr("class", "info_small")
-            .attr("x", "85")
-            .attr("y", "280")
-            .style("text-anchor", "middle")
-            .style("font-weight", "bold")
-            .attr("id", "shotsontarget2")
-            .text("Shots on Target: ");
+    vis.svg_info.append("text")
+        .attr("class", "info_small")
+        .attr("x", "115")
+        .attr("y", "260")
+        .style("text-anchor", "middle")
+        .attr("id", "homeshots");
 
-        vis.svg_info.append("text")
-            .attr("class", "info_small")
-            .attr("x", "315")
-            .attr("y", "300")
-            .style("text-anchor", "middle")
-            .style("font-weight", "bold")
-            .attr("id", "yellowcards1")
-            .text("Yellow Cards: ");
-
-        vis.svg_info.append("text")
-            .attr("class", "info_small")
-            .attr("x", "85")
-            .attr("y", "300")
-            .style("text-anchor", "middle")
-            .style("font-weight", "bold")
-            .attr("id", "yellowcards2")
-            .text("Yellow Cards: ");
-
-        vis.svg_info.append("text")
-            .attr("class", "info_small")
-            .attr("x", "315")
-            .attr("y", "320")
-            .style("text-anchor", "middle")
-            .style("font-weight", "bold")
-            .attr("id", "redcards1")
-            .text("Red Cards: ");
-
-        vis.svg_info.append("text")
-            .attr("class", "info_small")
-            .attr("x", "85")
-            .attr("y", "320")
-            .style("text-anchor", "middle")
-            .style("font-weight", "bold")
-            .attr("id", "redcards2")
-            .text("Red Cards: ");
-
-        vis.svg_info.append("text")
-            .attr("class", "info_small")
-            .attr("x", "385")
-            .attr("y", "280")
-            .style("text-anchor", "middle")
-            .attr("id", "awayshotstarget");
-
-        vis.svg_info.append("text")
-            .attr("class", "info_small")
-            .attr("x", "155")
-            .attr("y", "280")
-            .style("text-anchor", "middle")
-            .attr("id", "homeshotstarget");
+    vis.svg_info.append("text")
+        .attr("class", "info_small")
+        .attr("x", "315")
+        .attr("y", "280")
+        .style("text-anchor", "middle")
+        .style("font-weight", "bold")
+        .attr("id", "shotsontarget1")
+        .text("Shots on Target: ");
 
 
-        vis.svg_info.append("text")
-            .attr("class", "info_small")
-            .attr("x", "375")
-            .attr("y", "300")
-            .style("text-anchor", "middle")
-            .attr("id", "awayyellowcards");
+    vis.svg_info.append("text")
+        .attr("class", "info_small")
+        .attr("x", "85")
+        .attr("y", "280")
+        .style("text-anchor", "middle")
+        .style("font-weight", "bold")
+        .attr("id", "shotsontarget2")
+        .text("Shots on Target: ");
+
+    vis.svg_info.append("text")
+        .attr("class", "info_small")
+        .attr("x", "315")
+        .attr("y", "300")
+        .style("text-anchor", "middle")
+        .style("font-weight", "bold")
+        .attr("id", "yellowcards1")
+        .text("Yellow Cards: ");
+
+    vis.svg_info.append("text")
+        .attr("class", "info_small")
+        .attr("x", "85")
+        .attr("y", "300")
+        .style("text-anchor", "middle")
+        .style("font-weight", "bold")
+        .attr("id", "yellowcards2")
+        .text("Yellow Cards: ");
+
+    vis.svg_info.append("text")
+        .attr("class", "info_small")
+        .attr("x", "315")
+        .attr("y", "320")
+        .style("text-anchor", "middle")
+        .style("font-weight", "bold")
+        .attr("id", "redcards1")
+        .text("Red Cards: ");
+
+    vis.svg_info.append("text")
+        .attr("class", "info_small")
+        .attr("x", "85")
+        .attr("y", "320")
+        .style("text-anchor", "middle")
+        .style("font-weight", "bold")
+        .attr("id", "redcards2")
+        .text("Red Cards: ");
+
+    vis.svg_info.append("text")
+        .attr("class", "info_small")
+        .attr("x", "385")
+        .attr("y", "280")
+        .style("text-anchor", "middle")
+        .attr("id", "awayshotstarget");
+
+    vis.svg_info.append("text")
+        .attr("class", "info_small")
+        .attr("x", "155")
+        .attr("y", "280")
+        .style("text-anchor", "middle")
+        .attr("id", "homeshotstarget");
 
 
-        vis.svg_info.append("text")
-            .attr("class", "info_small")
-            .attr("x", "145")
-            .attr("y", "300")
-            .style("text-anchor", "middle")
-            .attr("id", "homeyellowcards");
+    vis.svg_info.append("text")
+        .attr("class", "info_small")
+        .attr("x", "375")
+        .attr("y", "300")
+        .style("text-anchor", "middle")
+        .attr("id", "awayyellowcards");
 
 
-        vis.svg_info.append("text")
-            .attr("class", "info_small")
-            .attr("x", "365")
-            .attr("y", "320")
-            .style("text-anchor", "middle")
-            .attr("id", "awayredcards");
+    vis.svg_info.append("text")
+        .attr("class", "info_small")
+        .attr("x", "145")
+        .attr("y", "300")
+        .style("text-anchor", "middle")
+        .attr("id", "homeyellowcards");
 
 
-        vis.svg_info.append("text")
-            .attr("class", "info_small")
-            .attr("x", "135")
-            .attr("y", "320")
-            .style("text-anchor", "middle")
-            .attr("id", "homeredcards");
+    vis.svg_info.append("text")
+        .attr("class", "info_small")
+        .attr("x", "365")
+        .attr("y", "320")
+        .style("text-anchor", "middle")
+        .attr("id", "awayredcards");
+
+
+    vis.svg_info.append("text")
+        .attr("class", "info_small")
+        .attr("x", "135")
+        .attr("y", "320")
+        .style("text-anchor", "middle")
+        .attr("id", "homeredcards");
 
 
     vis.wrangleData();
 
 
-}
+};
 
 matrix_object.prototype.wrangleData = function() {
 
@@ -333,7 +316,6 @@ matrix_object.prototype.wrangleData = function() {
 
 
     vis.season = $("#slider").labeledslider("option", "value");
-    //console.log(value);
 
 
     vis.season = vis.season.toString() + "-" + (vis.season + 1).toString()
@@ -349,11 +331,6 @@ matrix_object.prototype.wrangleData = function() {
 
     vis.filtered = vis.data.filter(check);
 
-    //console.log(vis.filtered);
-
-
-    //console.log(data)
-
     vis.nodes = [];
 
 
@@ -362,13 +339,6 @@ matrix_object.prototype.wrangleData = function() {
             vis.nodes.push(vis.filtered[i].HomeTeam);
         }
     }
-
-    //console.log('nodes');
-    //console.log(vis.nodes.length);
-    //console.log(vis.nodes);
-
-
-    //console.log(vis.filtered.length);
 
     for (i = 0; i < vis.filtered.length; i++) {
         placeholder = {
@@ -381,12 +351,9 @@ matrix_object.prototype.wrangleData = function() {
             unique_id: 9999
         };
 
-        //console.log(placeholder);
         if (i == 0 || (i % (vis.nodes.length + 1) == 0)) {
             vis.filtered.splice(i, 0, placeholder);
 
-            //console.log(placeholder);
-            //console.log(data);
         }
 
 
@@ -405,43 +372,18 @@ matrix_object.prototype.wrangleData = function() {
 };
 
 matrix_object.prototype.add_svg_info = function(id) {
-    //console.log("hi");
-
-
-    //var id_for_click = document.getElementById(id);
-    //id_for_click.click();
-
-    //d3.csv("data/eamon.csv", function(data) {
-    //
 
     var vis = this;
-    //
-    //vis.filtered = vis.data.filter(check);
-    //console.log(vis.filtered);
-    //vis.svg_info2 = vis.svg_info.selectAll(".gamecells").data(vis.filtered);
-
-    //console.log(vis.data);
-
-
-
-
-    //console.log(vis.data.unique_id);
-    //var d = vis.data.filter(function() {return vis.data.unique_id > id});
-    //console.log(d);
 
     vis.d = [];
 
 
     for (i = 0; i < vis.data.length; i++) {
         if (vis.data[i].unique_id == id) {
-            //console.log[i];
             vis.d.push(vis.data[i]);
         }
     }
 
-   // console.log(vis.d);
-
-    //console.log(vis.d[0].HomeTeam);
 
 
 
@@ -455,8 +397,6 @@ matrix_object.prototype.add_svg_info = function(id) {
 
     var selected = $( "#slider" ).labeledslider( "option", "value" );
 
-    //console.log ("Here");
-    //console.log (selected);
     if ( selected > 1999) {
 
         vis.svg_info.select("#awayshots").text(vis.d[0].AS);
@@ -512,16 +452,12 @@ matrix_object.prototype.updateVis= function() {
 
     var vis = this;
 
-    var count = 0;
-
     var cell_width = 32;
     var cell_height = 25;
 
-    //vis.rect = vis.svg_cells.selectAll("rect")
-    //        .data(vis.displayData);
 
 // Enter (initialize the newly added elements)
-//
+
 
     vis.gamecells = vis.svg_cells.selectAll(".gamecells").data(vis.displayData);
 
@@ -593,7 +529,7 @@ matrix_object.prototype.updateVis= function() {
         .attr("width", 32)
         .attr("x", function (d, index) {
 
-            return (((index % vis.nodes.length) //+ count
+            return (((index % vis.nodes.length)
                 ) * cell_width) + 70
         }).attr("y", function (d, index) {
 
@@ -683,8 +619,6 @@ matrix_object.prototype.updateVis= function() {
 
             var selected = $( "#slider" ).labeledslider( "option", "value" );
 
-           // console.log ("Here");
-            //console.log (selected);
             if ( selected > 1999) {
 
                 vis.svg_info.select("#awayshots").text(d.AS);
@@ -739,177 +673,6 @@ matrix_object.prototype.updateVis= function() {
 
     vis.gametext.exit().remove();
 
-
-
-    //vis.gametext.exit().remove();
-
-
-
-    //vis.cells.enter().append("g");
-    //
-    //vis.cells.selectAll("rect")
-    //    .attr("id", function (d) {
-    //        return "game"+ d.unique_id.toString();
-    //    })
-    //    .attr("height", cell_height)
-    //    .attr("width", 32)
-    //    .attr("x", function (d, index) {
-    //
-    //        return (((index % vis.nodes.length) //+ count
-    //            ) * cell_width) + 50
-    //    }).attr("y", function (d, index) {
-    //
-    //        return Math.floor((index / vis.nodes.length)) * (cell_height + 1)
-    //    })
-    //    .attr("stroke", "grey")
-    //    .attr("fill", function (d) {
-    //
-    //        if (d.FTR == "H") {
-    //            return "#72BCD4";
-    //        }
-    //        else if (d.FTR == "A") {
-    //            return "#FF9999";
-    //        }
-    //        else if (d.FTR == "D") {
-    //            return "lightgrey";
-    //        }
-    //        else if (d.FTR == "Na") {
-    //            return "grey";
-    //        }
-    //    });
-    //
-    //vis.cells.selectAll(".results")
-    //    .attr("x", function (d, index) {
-    //
-    //        return (((index % vis.nodes.length)) * cell_width) + 55
-    //    })
-    //    .attr("y", function (d, index) {
-    //
-    //        return Math.floor((index / vis.nodes.length)) * (cell_height + 1)
-    //    })
-    //    .attr("dy", "1.2em")
-    //    .attr("class", "txtscore")
-    //    .attr("id", function (d) {
-    //        return "game" + d.unique_id.toString();
-    //    })
-    //    .text(function (d) {
-    //        if (d.FTR != "Na") {
-    //            return d.FTHG + "-" + d.FTAG
-    //        }
-    //    })
-    //    .on('mouseover', vis.tiptext.show)
-    //    .on('mouseout', vis.tiptext.hide)
-    //    .on('click', function (d) {
-    //
-    //        vis.svg_info.style("display","block");
-    //        vis.svg_info.select("#image1").attr("xlink:href", 'data/logos/' + d.HomeTeam + '.png')
-    //        vis.svg_info.select("#image2").attr("xlink:href", 'data/logos/' + d.AwayTeam + '.png')
-    //        vis.svg_info.select("#infodate").text(vis.formatDate(d.Date));
-    //        vis.svg_info.select("#hometeam").text(d.HomeTeam);
-    //        vis.svg_info.select("#awayteam").text(d.AwayTeam);
-    //        vis.svg_info.select("#awayshots").text(d.AS);
-    //        vis.svg_info.select("#homeshots").text(d.HS);
-    //        vis.svg_info.select("#score").text(d.FTHG + "-" + d.FTAG);
-    //        vis.svg_info.select("#awayshotstarget").text(d.AST);
-    //        vis.svg_info.select("#homeshotstarget").text(d.HST);
-    //        vis.svg_info.select("#awayyellowcards").text(d.AY);
-    //        vis.svg_info.select("#awayredcards").text(d.AR);
-    //        vis.svg_info.select("#homeyellowcards").text(d.HY);
-    //        vis.svg_info.select("#homeredcards").text(d.HR);
-    //
-    //
-    //    });
-    //
-    //vis.cells.append("rect")
-    //    .attr("class", "rect")
-    //    .attr("id", function (d) {
-    //        return "game"+ d.unique_id.toString();
-    //    })
-    //    .attr("height", cell_height)
-    //    .attr("width", 32)
-    //    .attr("x", function (d, index) {
-    //
-    //        return (((index % vis.nodes.length) //+ count
-    //            ) * cell_width) + 50
-    //    }).attr("y", function (d, index) {
-    //
-    //        return Math.floor((index / vis.nodes.length)) * (cell_height + 1)
-    //    })
-    //    .attr("stroke", "grey")
-    //    .attr("fill", function (d) {
-    //
-    //        if (d.FTR == "H") {
-    //            return "#72BCD4";
-    //        }
-    //        else if (d.FTR == "A") {
-    //            return "#FF9999";
-    //        }
-    //        else if (d.FTR == "D") {
-    //            return "lightgrey";
-    //        }
-    //        else if (d.FTR == "Na") {
-    //            return "grey";
-    //        }
-    //    });
-    //
-    //
-    //vis.cells.append("text")
-    //    .attr("class","results")
-    //    .attr("x", function (d, index) {
-    //
-    //        return (((index % vis.nodes.length)) * cell_width) + 55
-    //    })
-    //    .attr("y", function (d, index) {
-    //
-    //        return Math.floor((index / vis.nodes.length)) * (cell_height + 1)
-    //    })
-    //    .attr("dy", "1.2em")
-    //    .attr("class", "txtscore")
-    //    .attr("id", function (d) {
-    //        return "game" + d.unique_id.toString();
-    //    })
-    //    .text(function (d) {
-    //        if (d.FTR != "Na") {
-    //            return d.FTHG + "-" + d.FTAG
-    //        }
-    //    })
-    //    .on('mouseover', vis.tiptext.show)
-    //    .on('mouseout', vis.tiptext.hide)
-    //    .on('click', function (d) {
-    //
-    //        vis.svg_info.style("display","block");
-    //        vis.svg_info.select("#image1").attr("xlink:href", 'data/logos/' + d.HomeTeam + '.png')
-    //        vis.svg_info.select("#image2").attr("xlink:href", 'data/logos/' + d.AwayTeam + '.png')
-    //        vis.svg_info.select("#infodate").text(vis.formatDate(d.Date));
-    //        vis.svg_info.select("#hometeam").text(d.HomeTeam);
-    //        vis.svg_info.select("#awayteam").text(d.AwayTeam);
-    //        vis.svg_info.select("#awayshots").text(d.AS);
-    //        vis.svg_info.select("#homeshots").text(d.HS);
-    //        vis.svg_info.select("#score").text(d.FTHG + "-" + d.FTAG);
-    //        vis.svg_info.select("#awayshotstarget").text(d.AST);
-    //        vis.svg_info.select("#homeshotstarget").text(d.HST);
-    //        vis.svg_info.select("#awayyellowcards").text(d.AY);
-    //        vis.svg_info.select("#awayredcards").text(d.AR);
-    //        vis.svg_info.select("#homeyellowcards").text(d.HY);
-    //        vis.svg_info.select("#homeredcards").text(d.HR);
-    //
-    //
-    //
-    //    });
-    //
-    ////vis.cells.selectAll("text").data(function(d){return(d)}).exit().remove();
-    //
-    ////vis.cells.selectAll("rect").remove();
-    ////vis.cells.selectAll("text").remove();
-    //
-    //
-    //vis.cells.exit().remove();
-
-
-    //vis.cells.selectAll("rect").data(function(d){return(d)}).exit().remove();
-
-    //vis.gs.exit().remove();
-
     vis.teamlabels = vis.svg_cells.selectAll(".teamlabels").data(vis.displayData);
 
     vis.teamlabels.transition()
@@ -938,46 +701,6 @@ matrix_object.prototype.updateVis= function() {
         });
 
     vis.teamlabels.exit().transition().remove();
-
-//
-//
-//
-//
-//
-//
-//
-//
-//var nodes_trunc = vis.nodes;
-//
-//    for (i = 0; i < nodes_trunc.length; i++) {
-//        if (nodes_trunc[i] == "Blackburn") {
-//            nodes_trunc[i] = "Bbn";
-//        }
-//        else if (nodes_trunc[i] == "Man City") {
-//            nodes_trunc[i] = "MC";
-//        }
-//        else if (nodes_trunc[i] == "Man United") {
-//            nodes_trunc[i] = "MU";
-//        }
-//        else if (nodes_trunc[i] == "Sheffield United") {
-//            nodes_trunc[i] = "SU";
-//        }
-//        else if (nodes_trunc[i] == "Sheffield Weds") {
-//            nodes_trunc[i] = "SW";
-//        }
-//        else if (nodes_trunc[i] == "West Brom") {
-//            nodes_trunc[i] = "WB";
-//        }
-//        else if (nodes_trunc[i] == "West Ham") {
-//            nodes_trunc[i] = "WH";
-//        }
-//        else {
-//            nodes_trunc[i] = nodes_trunc[i].substring(0, 3);
-//        }
-//
-//    }
-//
-//
 
     var nodes_trunc = vis.nodes;
 
@@ -1038,9 +761,5 @@ matrix_object.prototype.updateVis= function() {
         .text(function (d, index) {
             return vis.nodes[index];
         });
-
-
-
-
 };
 
