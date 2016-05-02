@@ -95,10 +95,10 @@ path.secondline {
 }
 
 
-.subunit.SCT { fill: #ddd4d9; }
-.subunit.WLS { fill: #a1ddd4; }
+.subunit.SCT { fill: light grey ;}
+.subunit.WLS { fill: light grey; }
 /*.subunit.NIR { fill: #cdc; }*/
-.subunit.ENG { fill: #fbee87; }
+.subunit.ENG { fill: light grey; }
 
 .subunit.IRL,
 .subunit-label.IRL {
@@ -117,7 +117,7 @@ path.secondline {
 }
 
 .subunit-label {
-    fill: #777;
+    fill: white;
     fill-opacity: .5;
     font-size: 20px;
     font-weight: 300;

@@ -46,15 +46,12 @@ LineChart.prototype.initVis = function() {
 
 
 
-
-
     vis.svg = d3.select("#"+vis.parentElement).append("svg")
         .attr("width", vis.width + vis.margin.left + vis.margin.right)
         .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
         .append("g")
         .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
-    vis.text = vis.svg.append("text").style("text-anchor", "start").style("font-size",15);
 
     vis.linegroup = vis.svg.append("g").attr("id", "lines");
 
