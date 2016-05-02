@@ -60,7 +60,6 @@ lineChart.prototype.wrangleData = function() {
     // In the first step no data wrangling/filtering needed
     vis.data.forEach(function (d) {
         d["seasonDate"] = parseDate(d["Season"].split("-")[0]);
-        d.active = true;
     });
 
     vis.nest = d3.nest()
@@ -69,6 +68,9 @@ lineChart.prototype.wrangleData = function() {
         })
         .entries(vis.data);
 
+    vis.nest.forEach(function (d) {
+        d.active = false;
+    });
     // make legend
     d3.selectAll(".toggles")
         .append("svg")
@@ -79,7 +81,7 @@ lineChart.prototype.wrangleData = function() {
         .attr("xlink:href", function (d) {
             return 'data/logos/' + d.key + '.png';
         })
-        .attr("class", "resultstext")
+        .attr("class", "resultstext teamlogos")
         .attr("id", function (d) {
             return d.key.replace(/ +/g, "") + "inter";
         })
@@ -88,7 +90,6 @@ lineChart.prototype.wrangleData = function() {
         .attr("opacity", 0.8)
         .on("click", function (d) {
             var active = d.active ? false : true;
-            var newOpacity = active ? 0 : 1;
             d3.select(this).transition().duration(100).style("opacity", function () {
                 if (active) {
                     return 0.4;
@@ -155,7 +156,7 @@ lineChart.prototype.updateVis = function () {
     teams.enter()
         .append("path")
         .attr({
-            class: "line",
+            class: "line teamlines",
             opacity: 0.4,
             d: function (d) {
                 return vis.line(d.values);
@@ -189,4 +190,33 @@ lineChart.prototype.updateVis = function () {
 
     vis.svg.select(".x-axis").call(vis.xAxis);
     vis.svg.select(".y-axis").call(vis.yAxis);
+
+    vis.svg.append("text")
+        .attr("x", 0)
+        .attr("y", vis.height - vis.margin.top + 10)
+        .attr("class", "resultstext")
+        .style("fill", "steelblue")
+        .text("off")
+        .on("click", function() {
+            vis.svg.selectAll(".teamlines").style("opacity", 0);
+            d3.selectAll(".teamlogos").style("opacity", 0.4);
+            // Update whether or not the elements are active
+            vis.nest.forEach(function (d) {
+                d.active = true;
+            });
+        });
+    vis.svg.append("text")
+        .attr("x", 0)
+        .attr("y", vis.height - vis.margin.top)
+        .attr("class", "resultstext")
+        .style("fill", "steelblue")
+        .text("on")
+        .on("click", function() {
+            vis.svg.selectAll(".teamlines").style("opacity", 0.4);
+            d3.selectAll(".teamlogos").style("opacity", 0.8);
+            // Update whether or not the elements are active
+            vis.nest.forEach(function (d) {
+                d.active = false;
+            });
+        });
 };
