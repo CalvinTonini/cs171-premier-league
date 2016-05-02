@@ -191,12 +191,10 @@ lineChart.prototype.updateVis = function () {
     vis.svg.select(".x-axis").call(vis.xAxis);
     vis.svg.select(".y-axis").call(vis.yAxis);
 
-    vis.svg.append("text")
-        .attr("x", 0)
-        .attr("y", vis.height - vis.margin.top + 10)
+    d3.select("#offbutton").append("text")
         .attr("class", "resultstext")
         .style("fill", "steelblue")
-        .text("off")
+        .text("All Off")
         .on("click", function() {
             vis.svg.selectAll(".teamlines").style("opacity", 0);
             d3.selectAll(".teamlogos").style("opacity", 0.4);
@@ -205,12 +203,10 @@ lineChart.prototype.updateVis = function () {
                 d.active = true;
             });
         });
-    vis.svg.append("text")
-        .attr("x", 0)
-        .attr("y", vis.height - vis.margin.top)
+    d3.select("#onbutton").append("text")
         .attr("class", "resultstext")
         .style("fill", "steelblue")
-        .text("on")
+        .text("All On")
         .on("click", function() {
             vis.svg.selectAll(".teamlines").style("opacity", 0.4);
             d3.selectAll(".teamlogos").style("opacity", 0.8);
