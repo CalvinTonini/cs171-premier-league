@@ -13,7 +13,7 @@ BarChart.prototype.initVis = function() {
 
     var vis = this;
 
-    vis.margin = {top: 20, right: 20, bottom: 30, left: 105};
+    vis.margin = {top: 20, right: 20, bottom: 45, left: 105};
 
     vis.width = 430 - vis.margin.left - vis.margin.right;
 
@@ -42,7 +42,7 @@ BarChart.prototype.initVis = function() {
         .attr("class", "y-axis axis");
 
     vis.text = vis.svg.append("text").style("text-anchor", "middle").style("font-size",15)
-        .attr("transform", "translate(" + (vis.width/2) + "," + (vis.height + vis.margin.bottom -10)+ ")");
+        .attr("transform", "translate(" + (vis.width/2) + "," + (vis.height + vis.margin.bottom )+ ")");
 
 
 

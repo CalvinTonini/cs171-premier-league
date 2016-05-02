@@ -5,9 +5,10 @@ queue()
     .defer(d3.csv,"data/season_aggregate_stats_disjoint.csv")
     .defer(d3.csv, "data/eamon.csv")
     .defer(d3.csv, "data/intraseason_data.csv")
+    .defer(d3.csv,"data/season_aggregate_stats.csv")
     .defer(d3.json,"data/tsconfig.json")
     .defer(d3.json,"data/logos.json")
-    .await(function(error, agg,matches, intra, mapJson, logosJson) {
+    .await(function(error, agg,matches, intra, agg_notdisjoint, mapJson, logosJson) {
 
 
         intraseason = intra;
@@ -15,6 +16,7 @@ queue()
         mapData = mapJson;
         matchData = matches;
         logosData = logosJson;
+        agg_not = agg_notdisjoint;
 
         aggregate.forEach(function (d) {
             stringsToNumber(d);
@@ -41,7 +43,7 @@ function createvis(){
 
     intraseason_chart = new LineChart("intra_season",intraseason);
 
-    bar_chart = new BarChart("bar_chart",aggregate);
+    bar_chart = new BarChart("bar_chart",agg_not);
 
     season_matrix = new matrix_object("matrix-area",matchData);
 
