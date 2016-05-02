@@ -116,6 +116,31 @@ lineChart.prototype.wrangleData = function() {
             vis.teamname.text(d.key);
         });
 
+    d3.select("#offbutton")
+        .append("button")
+        .attr("class", "btn btn-default resultstext")
+        .text("All Off")
+        .on("click", function() {
+            vis.svg.selectAll(".teamlines").style("opacity", 0);
+            d3.selectAll(".teamlogos").style("opacity", 0.4);
+            // Update whether or not the elements are active
+            vis.nest.forEach(function (d) {
+                d.active = true;
+            });
+        });
+    d3.select("#onbutton")
+        .append("button")
+        .attr("class", "btn btn-default resultstext")
+        .text("All On")
+        .on("click", function() {
+            vis.svg.selectAll(".teamlines").style("opacity", 0.4);
+            d3.selectAll(".teamlogos").style("opacity", 0.8);
+            // Update whether or not the elements are active
+            vis.nest.forEach(function (d) {
+                d.active = false;
+            });
+        });
+
     // Update the visualization
     vis.updateVis();
 };
@@ -190,43 +215,4 @@ lineChart.prototype.updateVis = function () {
 
     vis.svg.select(".x-axis").call(vis.xAxis);
     vis.svg.select(".y-axis").call(vis.yAxis);
-
-    d3.select("#offbutton")
-        .append("svg")
-        .attr("width", 50)
-        .attr("height", 50)
-        .append("text")
-        .attr({
-            x: 0,
-            y: 25
-        })
-        .attr("class", "resultstext")
-        .text("All Off")
-        .on("click", function() {
-            vis.svg.selectAll(".teamlines").style("opacity", 0);
-            d3.selectAll(".teamlogos").style("opacity", 0.4);
-            // Update whether or not the elements are active
-            vis.nest.forEach(function (d) {
-                d.active = true;
-            });
-        });
-    d3.select("#onbutton")
-        .append("svg")
-        .attr("width", 50)
-        .attr("height", 50)
-        .append("text")
-        .attr({
-            x: 0,
-            y: 25
-        })
-        .attr("class", "resultstext")
-        .text("All On")
-        .on("click", function() {
-            vis.svg.selectAll(".teamlines").style("opacity", 0.4);
-            d3.selectAll(".teamlogos").style("opacity", 0.8);
-            // Update whether or not the elements are active
-            vis.nest.forEach(function (d) {
-                d.active = false;
-            });
-        });
 };
