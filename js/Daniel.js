@@ -224,12 +224,11 @@ LineChart.prototype.updateVis = function(){
     vis.circlegroup2.enter().append("g").attr("class","circlegroup").selectAll("circle").data(function(d){ return(d.values)}).enter()
         .append("circle")
         .attr("class","circle")
-        .attr("stroke", "black"
-        )
+        .attr("stroke", "black")
+        .attr("stroke-width",".5px")
         .attr("fill", function(d) {
             return strokecolor(d.Team);
         })
-        .attr("stroke-width",".5px")
         .attr("cx", function(d) {
             return vis.x(d.Date); // use the fields directly; no reference to "values"
         })

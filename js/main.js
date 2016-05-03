@@ -98,10 +98,11 @@ function highlightGame(game_id){
     old_game_id = game_id;
 
     intraseason_chart.svg.selectAll("#game"+game_id).transition().duration(1000)
-        .attr("stroke","yellow")
-        .attr("stroke-width","8.5px")
+        .attr("fill","yellow")
+        .attr("stroke","#777")
+        .attr("stroke-width","2px")
         .style("opacity",1)
-        .attr("r",4);
+        .attr("r",12);
 
     d3.select("#matrix-area").selectAll("rect").filter("#game"+game_id +"blue").transition().attr("fill","yellow");
     d3.select("#matrix-area").selectAll("rect").filter("#game"+game_id +"red").transition().attr("fill","yellow");
