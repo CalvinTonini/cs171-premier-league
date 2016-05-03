@@ -28,4 +28,4 @@ intraseason data above
 being able to mouseover the bargraphs bars to highlight specific teams on the intraseason line graph
 
 Our project is live at: calvintonini.github.io/cs171-premier-league
-Our screencap can be found at:
+Our screencap can be found at: https://youtu.be/4TH7ezwLIZ8
