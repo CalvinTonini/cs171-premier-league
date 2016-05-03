@@ -70,7 +70,7 @@
         },
         {
           "type":"Point",
-          "coordinates":[7645,2346],
+          "coordinates":[7695,2306],
           "properties":{
             "name":"St. Andrews",
             "club": "Birmingham City",
@@ -158,7 +158,7 @@
         },
         {
           "type":"Point",
-          "coordinates":[6782,1429],
+          "coordinates":[6702,1479],
           "properties":{
             "name":"Cardiff City Stadium",
             "club": "Cardiff City",
@@ -571,7 +571,7 @@
         },
         {
           "type":"Point",
-          "coordinates":[7584,2373],
+          "coordinates":[7544,2333],
           "properties":{
             "name":"The Hawthorns",
             "club": "West Bromwich Albion",

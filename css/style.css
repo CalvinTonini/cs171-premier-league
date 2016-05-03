@@ -95,7 +95,7 @@ path.secondline {
 }
 
 
-.subunit.SCT { fill: light grey ;}
+.subunit.SCT { fill: light #868d8c;}
 .subunit.WLS { fill: light grey; }
 /*.subunit.NIR { fill: #cdc; }*/
 .subunit.ENG { fill: light grey; }

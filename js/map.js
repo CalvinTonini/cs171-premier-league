@@ -36,7 +36,13 @@ UKmap.prototype.initVis = function () {
 
     vis.g = vis.svg1.append("g");
 
-    vis.tips = d3.select("#map").append("div").attr("class","tooltip hidden");
+    //vis.tips = d3.select("#map").append("div").attr("class","tooltip hidden");
+
+    //vis.tiptext = d3.tip()
+    //    .attr('class', 'd3-tip')
+    //    .offset([-10, 0]);
+
+    vis.tip = d3.select("#map").append("div").attr("class","tooltip hidden");
 
     vis.updateMap();
 };
@@ -76,6 +82,7 @@ UKmap.prototype.updateMap = function (){
 
         if (!vis.toggle) { k = 4;}
         else { k = 1;}
+
         vis.g.transition()
             .duration(750)
             .attr("transform", "translate(" + ((vis.widthy / 2) + 3.5) + "," +
@@ -91,9 +98,11 @@ UKmap.prototype.updateMap = function (){
             d3.selectAll(".enter")
                 .transition()
                 .duration(750)
-                .attr("height", 15)
-                .attr("width",  15);
+                .attr("height", 20)
+                .attr("width",  20);
             d3.select(".logoZoom")
+                .transition()
+                .duration(750)
                 .attr("width",25)
                 .attr("height",25);
             vis.toggle = !vis.toggle;
@@ -107,8 +116,10 @@ UKmap.prototype.updateMap = function (){
                 .attr("height", 30)
                 .attr("width",  30);
             d3.select(".logoZoom")
-                .attr("width",40)
-                .attr("height",40);
+                .transition()
+                .duration(750)
+                .attr("width",50)
+                .attr("height",50);
             vis.toggle = !vis.toggle;
         }
 
@@ -153,15 +164,16 @@ UKmap.prototype.updateMap = function (){
         .attr("height", dimensionFunction)
         .attr("width", dimensionFunction);
 
-    vis.logos.on("mousemove", function(d) {
-            var mouse = d3.mouse(vis.svg1.node()).map( function(d) { return parseInt(d); } );
-            vis.tips
-                .classed("hidden", false)
-                .attr("style", "left:"+(mouse[0])+"px;top:"+(mouse[1])+"px")
-                .html(d.properties.name + " of " + d.properties.club + " Football Club");
+    vis.logos.on("mousemove", function(d,i) {
+            var mouse = d3.mouse(vis.svg1.node()).map(function (d) {
+                return parseInt(d);
+            });
+            vis.tip.classed("hidden", false)
+                .attr("style", "left:" + (mouse[0]) + "px;top:" + (mouse[1]) + "px")
+                .html(d.properties.club + " at " + "<span style='color:blue'>" + d.properties.name + "</span>");
         })
-        .on("mouseout",  function() {
-            vis.tips.classed("hidden", true);
+        .on("mouseout", function(d,i) {
+            vis.tip.classed("hidden", true);
         })
         .on("click", function(d){
 
@@ -225,18 +237,18 @@ UKmap.prototype.updateMap = function (){
 
     function dimensionFunction () {
         if(vis.toggle){ return 30;}
-        else{ return 15;}
+        else{ return 20;}
     }
     function logoHover () {
-        if(vis.toggle){ return 40;}
+        if(vis.toggle){ return 50;}
         else{ return 25;}
     }
 
-    vis.logos.exit().transition().duration(800).attr("height",0).attr("width",0).remove();
+    vis.logos.call(vis.tiptext);
+    vis.logos.exit().transition().duration(750).attr("height",0).attr("width",0).remove();
     vis.subunit1.exit().remove();
     vis.subunit2.exit().remove();
 
     d3.select("#sliderlabel").text(selected);
-
 
 };
