@@ -244,7 +244,6 @@ UKmap.prototype.updateMap = function (){
         else{ return 25;}
     }
 
-    vis.logos.call(vis.tiptext);
     vis.logos.exit().transition().duration(750).attr("height",0).attr("width",0).remove();
     vis.subunit1.exit().remove();
     vis.subunit2.exit().remove();
