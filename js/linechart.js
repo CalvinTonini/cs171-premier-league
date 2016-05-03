@@ -2,8 +2,6 @@
  * Created by cni on 2016-04-14.
  */
 
-// var years =  [1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014];
-
 lineChart = function(_parentElement, _data) {
     this.parentElement = _parentElement;
     this.data = _data;
@@ -57,7 +55,7 @@ lineChart.prototype.wrangleData = function() {
 
     var parseDate = d3.time.format("%Y").parse;
     
-    // In the first step no data wrangling/filtering needed
+    // change dates into something more usable
     vis.data.forEach(function (d) {
         d["seasonDate"] = parseDate(d["Season"].split("-")[0]);
     });
@@ -68,8 +66,15 @@ lineChart.prototype.wrangleData = function() {
         })
         .entries(vis.data);
 
+    vis.nest.forEach(function (d) {
+        d.values.sort(function(a, b) {
+            return a.seasonDate - b.seasonDate;
+        });
+        // each line/logo set is initially "active"
+        d.active = false;
+    });
 
-    // make legend
+    // make toggle logos
     d3.selectAll(".toggles")
         .append("svg")
         .attr("width", 50)
@@ -87,6 +92,7 @@ lineChart.prototype.wrangleData = function() {
         .attr("height", 50)
         .attr("opacity", 0.8)
         .on("click", function (d) {
+            // on click enable or disable the line and change the logo opacity
             var active = d.active ? false : true;
             d3.select(this).transition().duration(100).style("opacity", function () {
                 if (active) {
@@ -98,6 +104,7 @@ lineChart.prototype.wrangleData = function() {
             });
             d.active = active;
         })
+        // on mouseover of logo highlight the line
         .on("mouseover", function (d) {
             vis.svg.selectAll("#"+d.key.replace(/ +/g, "")).style("opacity", 1);
             vis.svg.selectAll("#"+d.key.replace(/ +/g, "")).style("stroke-width", 5);
@@ -108,12 +115,13 @@ lineChart.prototype.wrangleData = function() {
                 vis.svg.selectAll("#" + d.key.replace(/ +/g, "")).style("opacity", 0);
             }
             else {
-                vis.svg.selectAll("#" + d.key.replace(/ +/g, "")).style("opacity", 0.4);
+                vis.svg.selectAll("#" + d.key.replace(/ +/g, "")).style("opacity", 0.6);
             }
             vis.svg.selectAll("#"+d.key.replace(/ +/g, "")).style("stroke-width", 1);
             vis.teamname.text(d.key);
         });
 
+    // on off buttons for every line/logo set
     d3.select("#offbutton")
         .append("button")
         .attr("class", "btn btn-default resultstext")
@@ -131,13 +139,15 @@ lineChart.prototype.wrangleData = function() {
         .attr("class", "btn btn-default resultstext")
         .text("All On")
         .on("click", function() {
-            vis.svg.selectAll(".teamlines").style("opacity", 0.4);
+            vis.svg.selectAll(".teamlines").style("opacity", 0.6);
             d3.selectAll(".teamlogos").style("opacity", 0.8);
             // Update whether or not the elements are active
             vis.nest.forEach(function (d) {
                 d.active = false;
             });
         });
+
+    // set up a vertical line that tracks the time slider
     vis.year_line = vis.svg.append("line")
         .attr("id", "year_line")
         .attr("class", "line")
@@ -145,7 +155,40 @@ lineChart.prototype.wrangleData = function() {
         .attr("y1", 0).attr("y2", vis.height)
         .attr("opacity", 1);
 
-
+    // preselected combinations of data
+    d3.select("#bigFour")
+        .on("click", function () {
+            vis.nest.forEach(function (d) {
+                if (d.key == "Man United" || d.key == "Chelsea" || d.key == "Liverpool" || d.key == "Arsenal") {
+                    d.active = false;
+                    vis.svg.selectAll("#" + d.key.replace(/ +/g, "")).style("opacity", 0.6);
+                    d3.select("#" + d.key.replace(/ +/g, "") + "inter").style("opacity", 0.8);
+                }
+                else {
+                    d.active = true;
+                    vis.svg.selectAll("#" + d.key.replace(/ +/g, "")).style("opacity", 0);
+                    d3.select("#" + d.key.replace(/ +/g, "") + "inter").style("opacity", 0.4);
+                }
+            })
+        })
+        .on("dblclick", function () {
+            vis.svg.selectAll(".teamlines").style("opacity", 0.6);
+            d3.selectAll(".teamlogos").style("opacity", 0.8);
+            // Update whether or not the elements are active
+            vis.nest.forEach(function (d) {
+                d.active = false;
+            });
+        });
+    d3.select("#shots")
+        .on("click", function () {
+            document.getElementById("across_season_form").value = "TotalShotsOnTarget";
+            updatevars();
+        });
+    d3.select("#fouls")
+        .on("click", function () {
+            document.getElementById("across_season_form").value = "TotalFouls";
+            updatevars();
+        });
     // Update the visualization
     vis.updateVis();
 };
@@ -160,6 +203,8 @@ lineChart.prototype.updateVis = function () {
     vis.x.domain(d3.extent(vis.data, function (d) {
         return d["seasonDate"];
     }));
+
+    // the y domain should be inverted for rankings (counting down vs counting up)
     if (selection == "rank") {
         vis.y.domain([d3.max(vis.data, function (d) {
             return d[selection];
@@ -172,33 +217,29 @@ lineChart.prototype.updateVis = function () {
             return d[selection];
         }));
     }
-    
+
+    // set up a vertical line that displays the year
     vis.year_line.attr({
         x1: vis.x(selected_year),
         x2: vis.x(selected_year)
     });
-
-    vis.nest.forEach(function (d) {
-        d.values.sort(function(a, b) {
-            return a.seasonDate - b.seasonDate;
-        })
-        for(i=0;i < d.values.length;i++){
-            if(d.values[i][selection]==0) {
-                d.values[i]=null;
-            }
-        };
-    });
-
-
+    
     vis.line = d3.svg.line()
-        .defined(function(d) { return d })
-        .x(function (d) { return vis.x(d["seasonDate"]); })
-        .y(function (d) { return vis.y(d[selection]); });
+        .defined(function(d) {
+            // only display the line if that point is non-zero (team not in league that year)
+            return (d[selection] != 0);
+        })
+        .x(function (d) {
+            return vis.x(d["seasonDate"]);
+        })
+        .y(function (d) {
+            return vis.y(d[selection]);
+        });
 
     var teams = vis.svg.selectAll(".line")
         .data(vis.nest);
 
-    teams.transition().duration(1000).attr("d", function (d) {
+    teams.transition().duration(500).attr("d", function (d) {
         return vis.line(d.values);
     });
 
@@ -206,7 +247,7 @@ lineChart.prototype.updateVis = function () {
         .append("path")
         .attr({
             class: "line teamlines",
-            opacity: 0.4,
+            opacity: 0.6,
             d: function (d) {
                 return vis.line(d.values);
             },
@@ -217,7 +258,8 @@ lineChart.prototype.updateVis = function () {
         .style("stroke", function(d) {
             return maincolor(d.key);
         })
-        .style("stroke-width","2px")
+        .style("stroke-width", 1)
+        // on mouseover highlight the line and the logo if the line is enabled
         .on("mouseover", function (d) {
             if (!d.active) {
                 d3.select(this).style("opacity", 1);
@@ -228,7 +270,7 @@ lineChart.prototype.updateVis = function () {
         })
         .on("mouseout", function (d) {
             if (!d.active) {
-                d3.select(this).style("opacity", 0.4);
+                d3.select(this).style("opacity", 0.6);
                 d3.select(this).style("stroke-width", 1);
                 d3.select("#" + d.key.replace(/ +/g, "") + "inter").style("opacity", 0.8);
                 vis.teamname.text(d.key);
@@ -237,6 +279,7 @@ lineChart.prototype.updateVis = function () {
 
     teams.exit().remove();
 
+    // call the Axis
     vis.svg.select(".x-axis").call(vis.xAxis);
     vis.svg.select(".y-axis").call(vis.yAxis);
 };

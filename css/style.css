@@ -262,3 +262,7 @@ circle{
     font-weight: bold;
     text-anchor: middle;
 }
+
+mark {
+    background-color: lightblue;
+}
